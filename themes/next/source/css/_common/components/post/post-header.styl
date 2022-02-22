@@ -1,0 +1,145 @@
+.posts-expand .post-header {
+  font-size: $font-size-large;
+}
+
+.posts-expand .post-title {
+  font-size: $font-size-largest;
+  font-weight: normal;
+  margin: initial;
+  text-align: left;
+  
+  word-wrap();
+
+  if (hexo-config('post_edit.enable')) {
+    .post-edit-link {
+      border-bottom: none;
+      color: $grey;
+      display: inline-block;
+      float: right;
+      font-size: $font-size-larger;
+      margin-left: -1.2em;
+      the-transition-ease-in();
+
+      +mobile-small() {
+        margin-left: initial;
+      }
+
+      &:hover {
+        color: $sidebar-highlight;
+      }
+    }
+  }
+}
+
+.post-block{
+  background-color: #fff;
+  padding: 0 2rem 1rem 2rem;
+  margin-bottom: 2rem;
+}
+
+h2.post-title,h1.post-title {
+    padding: 2rem 0 0 0;
+}
+
+.posts-expand .post-title-link {
+  border-bottom: none;
+  color: var(--link-color);
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+
+  &::before {
+    background: var(--link-color);
+    bottom: 0;
+    content: '';
+    height: 2px;
+    left: 0;
+    position: absolute;
+    transform: scaleX(0);
+    visibility: hidden;
+    width: 100%;
+    the-transition();
+  }
+
+  &:hover::before {
+    transform: scaleX(1);
+    visibility: visible;
+  }
+
+  .fa-external-link-alt {
+    font-size: $font-size-small;
+    margin-left: 5px;
+  }
+}
+
+.posts-expand .post-meta {
+  color: $grey-dark;
+  font-family: $font-family-posts;
+  font-size: $font-size-smallest;
+  text-align: left;
+  letter-spacing: .7px;
+  margin-bottom: 5px;
+
+  .post-description {
+    font-size: $font-size-small;
+    margin-top: 2px;
+  }
+
+  time {
+    border-bottom: 1px dashed $grey-dark;
+    cursor: pointer;
+  }
+}
+
+.post-meta .post-meta-item + .post-meta-item::before {
+  content: '|';
+  margin: 0 .5em;
+}
+
+.post-meta-divider {
+  margin: 0 .5em;
+}
+
+.post-meta-item-icon {
+  margin-right: 3px;
+
+  +tablet-mobile() {
+    display: inline-block;
+  }
+}
+
+.post-meta-item-text {
+  if (!hexo-config('post_meta.item_text')) {
+    display: none;
+  }
+
+  +tablet-mobile() {
+    display: none;
+  }
+}
+
+.posts-expand .post-title {
+    position: relative;
+    font-size: 1em;
+    font-weight: 400;
+}
+
+.posts-expand .post-meta, .posts-expand .post-title {
+    text-align: left;
+}
+.post-body {
+    font-size: 1em;
+    line-height: 2;
+    border-radius: 5px;
+}
+
+.post-body a {
+    color: #6db33f;
+    border-bottom: none;
+}
+
+@media (min-width: 992px){
+  .posts-expand .post-body {
+    text-align: left;
+  }
+}
