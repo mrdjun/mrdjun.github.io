@@ -103,7 +103,9 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+  type: git
+  repository: https://gitee.com/mrdjun/mrdjun.git
+  branch: master
 
 search:
   path: search.xml

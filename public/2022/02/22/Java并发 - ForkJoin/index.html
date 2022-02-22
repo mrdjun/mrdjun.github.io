@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic|Inconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.funpeak.cn","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="​        ForkJoinPool 是ExecutorService 接口的实现，它专为可以递归分解成小块的工作而设计。Java 7开始引入了一种新的Fork&#x2F;Join线程池，它可以执行一种特殊的任务（Runnable）：把一个大任务拆成多个小任务并行处理，最后将子任务结果合并成最后的计算结果。充分利用多线程处理器的优势，提高程序性能。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java并发 - ForkJoinPool">
+<meta property="og:url" content="http://www.funpeak.cn/2022/02/22/Java%E5%B9%B6%E5%8F%91%20-%20ForkJoin/index.html">
+<meta property="og:site_name" content="FUN-BLOG">
+<meta property="og:description" content="​        ForkJoinPool 是ExecutorService 接口的实现，它专为可以递归分解成小块的工作而设计。Java 7开始引入了一种新的Fork&#x2F;Join线程池，它可以执行一种特殊的任务（Runnable）：把一个大任务拆成多个小任务并行处理，最后将子任务结果合并成最后的计算结果。充分利用多线程处理器的优势，提高程序性能。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-22T14:41:40.267Z">
+<meta property="article:modified_time" content="2022-02-22T15:12:18.070Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="Java,Spring Boot,Spring Cloud,Spring OAuth2,K8s,Elastic Search">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.funpeak.cn/2022/02/22/Java%E5%B9%B6%E5%8F%91%20-%20ForkJoin/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Java并发 - ForkJoinPool | FUN-BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container hidden">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">FUN-BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Fun blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section">🏠 Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section">📦 Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-labels">
+
+    <a href="/tags/" rel="section">🔖 Labels</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends/" rel="section">👬 Friends</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <span id="scrollpercent">0</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://www.funpeak.cn/2022/02/22/Java%E5%B9%B6%E5%8F%91%20-%20ForkJoin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="A simple blog, code repository, just keep blogging">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FUN-BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java并发 - ForkJoinPool
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text"></span>
+              
+
+              <time title="Created: 2022-02-22 22:41:40 / Modified: 23:12:18" itemprop="dateCreated datePublished" datetime="2022-02-22T22:41:40+08:00">2022-02-22</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class=""></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>​        ForkJoinPool 是ExecutorService 接口的实现，它专为可以递归分解成小块的工作而设计。Java 7开始引入了一种新的Fork/Join线程池，它可以执行一种特殊的任务（Runnable）：把一个大任务拆成多个小任务并行处理，最后将子任务结果合并成最后的计算结果。充分利用多线程处理器的优势，提高程序性能。</p>
+<h2 id="具有高性能低冲突的原因"><a href="#具有高性能低冲突的原因" class="headerlink" title="具有高性能低冲突的原因"></a>具有高性能低冲突的原因</h2><ul>
+<li><p>每个Worker线程都维护一个任务队列，即ForkJoinWorkerThread中的任务队列；</p>
+</li>
+<li><p>ForkJoin维护的任务队列是双端队列（DeQueue），可以同时支持LIFO（先进后出）和FIFO（先进先出）；</p>
+</li>
+<li><p>子任务会被加入到原先任务所在 Worker 线程的任务队列；</p>
+</li>
+<li><p>当任务队列为空时，线程会随机从其他的 Worker 的队列中拿走一个任务执行（工作窃取：steal work），工作窃取带来的性能提升偏理论，API的复杂性较高，实际研发中可控性来说不如其他API。</p>
+</li>
+</ul>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><ul>
+<li><p>如果一个 Worker 线程遇到了 join 操作，而这时候正在处理其他任务，会等到这个任务结束。否则直接返回；</p>
+</li>
+<li><p>如果一个 Worker 线程窃取任务失败，它会调用 yield 或者 sleep 之类的方法休息一会儿，再尝试（如果所有线程都是空闲状态，即没有任务执行，那么该线程也会进入阻塞状态等待新任务的到来）；</p>
+</li>
+</ul>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><p>使用尽可能少的线程池，在大多数情况下，最好的决定是为每个应用程序或系统使用一个线程池；</p>
+<p>如果不需要特定调整，请使用默认的公共线程池；</p>
+<p>使用合理的阈值将ForkJoinTask拆分为子任务；</p>
+<p>避免在ForkJoinTask中出现任何阻塞（例如耗时IO，大量查询数据库、网络请求等）；</p>
+<p>适合数据处理、结果汇总、统计等场景；</p>
+<p>java8实例：java.utilArrays类用于其 parallelSort() 方法；</p>
+<h2 id="应用示例"><a href="#应用示例" class="headerlink" title="应用示例"></a>应用示例</h2><p>例如，下面将从 0 加到 10_0000_0000：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test1</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">long</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10_0000_0000L</span>; i++) &#123;</span><br><span class="line">        sum += i;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(sum + <span class="string">&quot;,耗时：&quot;</span> + (System.currentTimeMillis() - start) + <span class="string">&quot;ms&quot;</span>);<span class="comment">// 耗时：361ms</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 ForkJoinPool 执行该任务：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test2</span><span class="params">()</span> <span class="keyword">throws</span> ExecutionException, InterruptedException &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line"></span><br><span class="line">    <span class="type">ForkJoinPool</span> <span class="variable">pool</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ForkJoinPool</span>();</span><br><span class="line">    ForkJoinTask&lt;Long&gt; task = <span class="keyword">new</span> <span class="title class_">Task04051</span>(<span class="number">0L</span>, <span class="number">10_0000_0000L</span>);</span><br><span class="line">    ForkJoinTask&lt;Long&gt; submit = pool.submit(task);</span><br><span class="line">    <span class="type">Long</span> <span class="variable">result</span> <span class="operator">=</span> submit.get();</span><br><span class="line"></span><br><span class="line">    System.out.println(result + <span class="string">&quot;,耗时：&quot;</span> + (System.currentTimeMillis() - start) + <span class="string">&quot;ms&quot;</span>); <span class="comment">// 耗时：186ms</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用  stream 并行执行任务：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test3</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">	<span class="comment">// 与 LongStream 类似的有DoubleStream、IntegerStream 等</span></span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> LongStream.rangeClosed(<span class="number">0L</span>, num).parallel().reduce(<span class="number">0</span>, Long::sum);</span><br><span class="line"></span><br><span class="line">    System.out.println(sum + <span class="string">&quot;,耗时：&quot;</span> + (System.currentTimeMillis() - start) + <span class="string">&quot;ms&quot;</span>);<span class="comment">// 耗时：126ms</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/17/test/" rel="prev" title="我的第二篇博客">
+      <i class="fa fa-chevron-left"></i> 我的第二篇博客
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E6%9C%89%E9%AB%98%E6%80%A7%E8%83%BD%E4%BD%8E%E5%86%B2%E7%AA%81%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.</span> <span class="nav-text">具有高性能低冲突的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">3.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">4.</span> <span class="nav-text">应用示例</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">A simple blog, code repository, just keep blogging</div>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  <span class="author" itemprop="copyrightHolder">© 2019 - 2022 MrDJun</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script src="/js/busuanzi.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="site-uv" title="Total Visitors">
+        UV <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="site-pv" title="Total Views">
+        PV <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('/js/valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'xKK1x17C1L3IjTbtVRsuQdDo-gzGzoHsz',
+      appKey     : 'C4rgGvNKMO0FjyqV9G69aglI',
+      placeholder: "",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/mo.min.js"></script>
+    <script>
+      $(function(){$("a").not(".nav-link,.cloud-tie-join-count,.ignore-href,.jstree-anchor").addClass("animsition-link")});var burst1=new mojs.Burst({left:0,top:0,radius:{5:40},children:{shape:"circle",fill:["red","cyan","orange"],fillOpacity:.8,radiusX:3.5,radiusY:3.5}});document.addEventListener("click",function(a){null==a.target.href&&"footer"!=a.target.className&&"copyright"!=a.target.className&&"author__urls social-icons"!=a.target.className&&"author__avatar"!=a.target.className&&"sidebar sidebar-active"!=a.target.className&&burst1.tune({x:a.pageX,y:a.pageY}).generate().replay()})
+    </script>
+    <div data-name="mojs-shape" style="position: absolute; width: 0px; height: 0px; margin-left: 0px; margin-top: 0px; opacity: 1; left: 0px; top: 0px; transform: translate(909px, 1631px) rotate(0deg) scale(1, 1); transform-origin: 50% 50%;"><div data-name="mojs-shape" class="" style="position: absolute; width: 9px; height: 9px; margin-left: -4.5px; margin-top: -4.5px; opacity: 1; left: 50%; top: 50%; transform: translate(1e-06px, -40px) rotate(90deg) scale(0, 0); transform-origin: 50% 50%;"><svg style="display: block; width: 100%; height: 100%; left: 0px; top: 0px;"><ellipse rx="3.5" ry="3.5" cx="4.5" cy="4.5" fill-opacity="0.8" stroke-linecap="" stroke-dashoffset="" fill="red" stroke-dasharray="" stroke-opacity="1" stroke-width="2" stroke="transparent"></ellipse></svg></div><div data-name="mojs-shape" class="" style="position: absolute; width: 9px; height: 9px; margin-left: -4.5px; margin-top: -4.5px; opacity: 1; left: 50%; top: 50%; transform: translate(38.0423px, -12.3607px) rotate(162deg) scale(0, 0); transform-origin: 50% 50%;"><svg style="display: block; width: 100%; height: 100%; left: 0px; top: 0px;"><ellipse rx="3.5" ry="3.5" cx="4.5" cy="4.5" fill-opacity="0.8" stroke-linecap="" stroke-dashoffset="" fill="cyan" stroke-dasharray="" stroke-opacity="1" stroke-width="2" stroke="transparent"></ellipse></svg></div><div data-name="mojs-shape" class="" style="position: absolute; width: 9px; height: 9px; margin-left: -4.5px; margin-top: -4.5px; opacity: 1; left: 50%; top: 50%; transform: translate(23.5114px, 32.3607px) rotate(234deg) scale(0, 0); transform-origin: 50% 50%;"><svg style="display: block; width: 100%; height: 100%; left: 0px; top: 0px;"><ellipse rx="3.5" ry="3.5" cx="4.5" cy="4.5" fill-opacity="0.8" stroke-linecap="" stroke-dashoffset="" fill="orange" stroke-dasharray="" stroke-opacity="1" stroke-width="2" stroke="transparent"></ellipse></svg></div><div data-name="mojs-shape" class="" style="position: absolute; width: 9px; height: 9px; margin-left: -4.5px; margin-top: -4.5px; opacity: 1; left: 50%; top: 50%; transform: translate(-23.5114px, 32.3607px) rotate(306deg) scale(0, 0); transform-origin: 50% 50%;"><svg style="display: block; width: 100%; height: 100%; left: 0px; top: 0px;"><ellipse rx="3.5" ry="3.5" cx="4.5" cy="4.5" fill-opacity="0.8" stroke-linecap="" stroke-dashoffset="" fill="red" stroke-dasharray="" stroke-opacity="1" stroke-width="2" stroke="transparent"></ellipse></svg></div><div data-name="mojs-shape" class="" style="position: absolute; width: 9px; height: 9px; margin-left: -4.5px; margin-top: -4.5px; opacity: 1; left: 50%; top: 50%; transform: translate(-38.0423px, -12.3607px) rotate(378deg) scale(0, 0); transform-origin: 50% 50%;"><svg style="display: block; width: 100%; height: 100%; left: 0px; top: 0px;"><ellipse rx="3.5" ry="3.5" cx="4.5" cy="4.5" fill-opacity="0.8" stroke-linecap="" stroke-dashoffset="" fill="cyan" stroke-dasharray="" stroke-opacity="1" stroke-width="2" stroke="transparent"></ellipse></svg></div></div>
+</body>
+</html>

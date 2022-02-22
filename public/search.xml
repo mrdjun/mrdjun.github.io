@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>我的第一篇博客</title>
+    <url>/2022/02/17/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>我的第二篇博客</title>
+    <url>/2022/02/17/test/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Java并发 - ForkJoinPool</title>
+    <url>/2022/02/22/Java%E5%B9%B6%E5%8F%91%20-%20ForkJoin/</url>
+    <content><![CDATA[<p>​        ForkJoinPool 是ExecutorService 接口的实现，它专为可以递归分解成小块的工作而设计。Java 7开始引入了一种新的Fork/Join线程池，它可以执行一种特殊的任务（Runnable）：把一个大任务拆成多个小任务并行处理，最后将子任务结果合并成最后的计算结果。充分利用多线程处理器的优势，提高程序性能。</p>
+<h2 id="具有高性能低冲突的原因"><a href="#具有高性能低冲突的原因" class="headerlink" title="具有高性能低冲突的原因"></a>具有高性能低冲突的原因</h2><ul>
+<li><p>每个Worker线程都维护一个任务队列，即ForkJoinWorkerThread中的任务队列；</p>
+</li>
+<li><p>ForkJoin维护的任务队列是双端队列（DeQueue），可以同时支持LIFO（先进后出）和FIFO（先进先出）；</p>
+</li>
+<li><p>子任务会被加入到原先任务所在 Worker 线程的任务队列；</p>
+</li>
+<li><p>当任务队列为空时，线程会随机从其他的 Worker 的队列中拿走一个任务执行（工作窃取：steal work），工作窃取带来的性能提升偏理论，API的复杂性较高，实际研发中可控性来说不如其他API。</p>
+</li>
+</ul>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><ul>
+<li><p>如果一个 Worker 线程遇到了 join 操作，而这时候正在处理其他任务，会等到这个任务结束。否则直接返回；</p>
+</li>
+<li><p>如果一个 Worker 线程窃取任务失败，它会调用 yield 或者 sleep 之类的方法休息一会儿，再尝试（如果所有线程都是空闲状态，即没有任务执行，那么该线程也会进入阻塞状态等待新任务的到来）；</p>
+</li>
+</ul>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><p>使用尽可能少的线程池，在大多数情况下，最好的决定是为每个应用程序或系统使用一个线程池；</p>
+<p>如果不需要特定调整，请使用默认的公共线程池；</p>
+<p>使用合理的阈值将ForkJoinTask拆分为子任务；</p>
+<p>避免在ForkJoinTask中出现任何阻塞（例如耗时IO，大量查询数据库、网络请求等）；</p>
+<p>适合数据处理、结果汇总、统计等场景；</p>
+<p>java8实例：java.utilArrays类用于其 parallelSort() 方法；</p>
+<h2 id="应用示例"><a href="#应用示例" class="headerlink" title="应用示例"></a>应用示例</h2><p>例如，下面将从 0 加到 10_0000_0000：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test1</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">long</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10_0000_0000L</span>; i++) &#123;</span><br><span class="line">        sum += i;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(sum + <span class="string">&quot;,耗时：&quot;</span> + (System.currentTimeMillis() - start) + <span class="string">&quot;ms&quot;</span>);<span class="comment">// 耗时：361ms</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 ForkJoinPool 执行该任务：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test2</span><span class="params">()</span> <span class="keyword">throws</span> ExecutionException, InterruptedException &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line"></span><br><span class="line">    <span class="type">ForkJoinPool</span> <span class="variable">pool</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ForkJoinPool</span>();</span><br><span class="line">    ForkJoinTask&lt;Long&gt; task = <span class="keyword">new</span> <span class="title class_">Task04051</span>(<span class="number">0L</span>, <span class="number">10_0000_0000L</span>);</span><br><span class="line">    ForkJoinTask&lt;Long&gt; submit = pool.submit(task);</span><br><span class="line">    <span class="type">Long</span> <span class="variable">result</span> <span class="operator">=</span> submit.get();</span><br><span class="line"></span><br><span class="line">    System.out.println(result + <span class="string">&quot;,耗时：&quot;</span> + (System.currentTimeMillis() - start) + <span class="string">&quot;ms&quot;</span>); <span class="comment">// 耗时：186ms</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用  stream 并行执行任务：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test3</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">	<span class="comment">// 与 LongStream 类似的有DoubleStream、IntegerStream 等</span></span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> LongStream.rangeClosed(<span class="number">0L</span>, num).parallel().reduce(<span class="number">0</span>, Long::sum);</span><br><span class="line"></span><br><span class="line">    System.out.println(sum + <span class="string">&quot;,耗时：&quot;</span> + (System.currentTimeMillis() - start) + <span class="string">&quot;ms&quot;</span>);<span class="comment">// 耗时：126ms</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+</search>
