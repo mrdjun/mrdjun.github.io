@@ -25,6 +25,12 @@ if (hexo-config('toc.enable')) {
       if (not hexo-config('toc.wrap')) {
         white-space: nowrap;
       }
+
+      a {
+        &:hover {
+          color: $orange;
+        }
+      }
     }
 
     .nav {
@@ -45,15 +51,15 @@ if (hexo-config('toc.enable')) {
       }
 
       .active > a {
-        border-bottom-color: $sidebar-highlight;
-        color: $sidebar-highlight;
+        border-bottom-color: $orange;
+        color: $orange;
       }
 
       .active-current > a {
-        color: $sidebar-highlight;
+        color: $orange;
 
         &:hover {
-          color: $sidebar-highlight;
+          color: $orange;
         }
       }
     }

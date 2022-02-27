@@ -48,14 +48,18 @@ if (hexo-config('sidebar.position') == 'right') {
       height: auto;
       font-size: $font-size-smaller;
 
-      #links {
-          li{
-              color: var( --text-color);
-            	display: inline-block;
-            i {
-              padding: 0 4px;
-            }
+      #links li {
+        color: var( --text-color);
+        display: inline-block;
+        i {
+          padding: 0 4px;
+        }
+
+        a {
+          &:hover {
+            color: $green-grass;
           }
+        }
       }
     }
   }
