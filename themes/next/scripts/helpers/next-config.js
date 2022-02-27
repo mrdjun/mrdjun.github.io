@@ -8,7 +8,6 @@ const { parse } = require('url');
  * Export theme config
  */
 hexo.extend.helper.register('next_config', function() {
-  console.log(123)
   const { config, theme, url_for, __ } = this;
   const exportConfig = {
     hostname  : parse(config.url).hostname || config.url,
