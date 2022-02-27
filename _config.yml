@@ -3,18 +3,17 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: FUN-BLOG
-subtitle: 'Fun blog'
+title: MrDJun
+subtitle: 'mrdjun'
 description: 'A simple blog, code repository, just keep blogging'
 keywords: Java,Spring Boot,Spring Cloud,Spring OAuth2,K8s,Elastic Search
 author: MrDJun
 language: en
 timezone: 'Asia/Shanghai'
-brand: true
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://www.funpeak.cn
+url: https://mrdjun.gitee.io
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -107,6 +106,7 @@ deploy:
   repository: https://gitee.com/mrdjun/mrdjun.git
   branch: master
 
+# localSearch
 search:
   path: search.xml
   field: post

@@ -1,25 +1,44 @@
 .site-author{
-  padding:1rem;
+  background: var(--content-bg-color);
+  border-radius: 6px;
+  padding: 2rem;
+  margin: 0.4rem;
+  position: relative;
+  overflow: hidden;
 }
+
 .site-author-image {
-  border: $site-author-image-border-width solid #bbb;
-  display: block;
-  margin: 0 auto;
+  border: $site-author-image-border-width solid $site-author-image-border-color;
   max-width: $site-author-image-width;
   padding: 2px;
-
+ 
   if (hexo-config('avatar.rounded')) {
     border-radius: 50%;
   }
+
+  if (hexo-config('avatar.rotated')) {
+    transition: transform 1s ease-out;
+
+    &:hover {
+      transform: rotateZ(360deg);
+    }
+  }
 }
 
-if (hexo-config('avatar.rotated')) {
-  .site-author-image {
-    transition: transform 1s ease-out;
-  }
-
-  .site-author-image:hover {
-    transform: rotateZ(360deg);
+#btn_darkmode {
+  width: 2.4rem;
+  height: 2.4rem;
+  background-color: var(--text-color);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform .15s;
+  display: block;
+  top: -20px;
+  right: -20px;
+  position: absolute;
+  
+  &:hover {
+    transform:scale(2);  
   }
 }
 
@@ -27,12 +46,11 @@ if (hexo-config('avatar.rotated')) {
   color: $site-author-name-color;
   font-weight: $site-author-name-weight;
   margin: $site-author-name-margin;
-  text-align: center;
+  font-size: $site-author-name-size;
 }
 
 .site-description {
   color: $site-description-color;
   font-size: $site-description-font-size;
   margin-top: $site-description-margin-top;
-  text-align: center;
 }

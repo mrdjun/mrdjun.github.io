@@ -1,0 +1,165 @@
+
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  {%- if theme.avatar.url %}
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="{{ author }}"
+      src="{{ url_for(theme.avatar.url) }}">
+  {%- endif %}
+  <p class="site-author-name" itemprop="name">{{ author }}</p>
+  <div class="site-description" itemprop="description">{{ description }}</div>
+</div>
+
+{%- if theme.site_state %}
+  <div class="site-state-wrap site-overview-item animated">
+    <nav class="site-state">
+      {%- if config.archive_dir != '/' and site.posts.length > 0 %}
+        <div class="site-state-item site-state-posts">
+          {%- set archive_dir = theme.menu.archives.split('||')[0] | trim if theme.menu.archives else config.archive_dir + '/' %}
+          <a href="{{ url_for(archive_dir) }}">
+            <span class="site-state-item-count">{{ site.posts.length }}</span>
+            <span class="site-state-item-name">{{ __('state.posts') }}</span>
+          </a>
+        </div>
+      {%- endif %}
+
+      {%- if site.categories.length > 0 %}
+        {%- set categoriesPageQuery = site.pages.find({type: 'categories'}, {lean: true}) %}
+        {%- set hasCategoriesPage = categoriesPageQuery.length > 0 %}
+        <div class="site-state-item site-state-categories">
+          {%- set category_dir = theme.menu.categories.split('||')[0] | trim if theme.menu.categories else config.category_dir + '/' %}
+          {%- if hasCategoriesPage %}
+            <a href="{{ url_for(category_dir) }}">
+            {%- endif %}
+            <span class="site-state-item-count">{{ site.categories.length }}</span>
+            <span class="site-state-item-name">{{ __('state.categories') }}</span>
+            {%- if hasCategoriesPage %}
+            </a>
+          {% endif %}
+        </div>
+      {%- endif %}
+
+      {%- if site.tags.length > 0 %}
+        {%- set tagsPageQuery = site.pages.find({type: 'tags'}, {lean: true}) %}
+        {%- set hasTagsPage = tagsPageQuery.length > 0 %}
+        <div class="site-state-item site-state-tags">
+          {%- set tag_dir = theme.menu.tags.split('||')[0] | trim if theme.menu.tags else config.tag_dir + '/' %}
+          {%- if hasTagsPage %}
+            <a href="{{ url_for(tag_dir) }}">
+            {%- endif %}
+            <span class="site-state-item-count">{{ site.tags.length }}</span>
+            <span class="site-state-item-name">{{ __('state.tags') }}</span>
+            {%- if hasTagsPage %}
+            </a>
+          {% endif %}
+        </div>
+      {%- endif %}
+    </nav>
+  </div>
+{%- endif %}
+
+{%- if theme.chat.enable and (theme.chatra.enable or theme.tidio.enable or theme.gitter.enable) %}
+  <div class="sidebar-button site-overview-item animated">
+    <button{% if theme.gitter.enable %} class="js-gitter-toggle-chat-button"{% endif %}>
+      {%- if theme.chat.icon %}
+        <i class="{{ theme.chat.icon }}"></i>
+      {% endif %}
+      {{ theme.chat.text }}
+    </button>
+  </div>
+{%- endif %}
+
+{%- if theme.social %}
+  <div class="links-of-author site-overview-item animated">
+    {%- for name, link in theme.social %}
+      <span class="links-of-author-item">
+        {%- set sidebarURL = link.split('||')[0] | trim %}
+        {%- set sidebarIcon = '<i class="' + link.split('||')[1] | trim + ' fa-fw"></i>' if theme.social_icons.enable and link.split('||')[1] else '' %}
+        {%- set sidebarText = '' if (theme.social_icons.enable and theme.social_icons.icons_only) else name %}
+        {{ next_url(sidebarURL, sidebarIcon + sidebarText, {title: name + ' → ' + sidebarURL}) }}
+      </span>
+    {%- endfor %}
+  </div>
+{%- endif %}
+
+{%- if theme.menu_settings.home %}
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+      {%- for name, link in theme.menu %}
+        <li>
+          {%- set sidebarURL = link.split('||')[0] | trim %}
+          {%- set sidebarIcon = '<i class="' + link.split('||')[1] | trim + ' fa-fw"></i>' if theme.social_icons.enable and link.split('||')[1] else '' %}
+          {%- set sidebarText = '' if (theme.social_icons.enable and theme.social_icons.icons_only) else name %}
+          {{ next_url(sidebarURL, sidebarIcon + sidebarText, '') }}
+        </li>
+      {%- endfor %}
+      {%- if theme.algolia_search.enable or theme.local_search.enable %}
+        <li>
+          <a class="popup-trigger" href="javascript:;">
+            {%- if theme.menu_settings.icons %}🔍{% endif %}
+            {{ __('menu.search') }}
+          </a>
+        </li>
+      {%- endif %}
+    </ur>
+  </div>
+{%- endif %}
+
+{%- if theme.creative_commons.license and theme.creative_commons.sidebar %}
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    {%- set ccImage = '<img src="' + theme.vendors.creative_commons.url + '" alt="Creative Commons">' %}
+    {{ next_url(ccURL, ccImage, {class: 'cc-opacity'}) }}
+  </div>
+{%- endif %}
+
+{# Blogroll #}
+{%- if theme.links %}
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title">
+      {%- if theme.links_settings.icon %}
+        <i class="{{ theme.links_settings.icon }} fa-fw"></i>
+      {% endif %}
+      {{ theme.links_settings.title }}
+    </div>
+    <ul class="links-of-blogroll-list">
+      {%- for blogrollText, blogrollURL in theme.links %}
+        <li class="links-of-blogroll-item">
+          {{ next_url(blogrollURL, blogrollText, {title: blogrollURL}) }}
+        </li>
+      {%- endfor %}
+    </ul>
+  </div>
+{%- endif %}
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="#" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-fw fa-diamond" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-fw fa-skyatlas" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_blank" itemprop="sameAs" class="ignore-href">
+        <i class="fa fa-fw fa-codepen" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_blank" itemprop="sameAs" class="ignore-href">
+        <i class="fa fa-fw fa-github-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+  </div>
+  <div class="copyright">
+    {%- set copyright_year = date(null, 'YYYY') %}
+  &copy; {% if theme.footer.since and theme.footer.since != copyright_year %}{{ theme.footer.since }} – {% endif %}
+    <span itemprop="copyrightYear">{{ copyright_year }}</span>
+    <span class="author" itemprop="copyrightHolder">{{ theme.footer.copyright or author }}</span>
+  </div>
+  <div>
+    <script type="text/javascript" src="/js/busuanzi.js"></script>&nbsp;&nbsp;UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
