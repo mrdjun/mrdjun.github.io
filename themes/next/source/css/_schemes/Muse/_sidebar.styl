@@ -32,13 +32,13 @@ if (hexo-config('sidebar.position') == 'right') {
     .sidebar-active & {
       left: 0;
     }
-    
+
     +mobile() {
       display: none;
     }
 
     .asider-footer {
-      color: var( --text-color);
+      color: var(--opposite-color);
       margin: 0 auto;
       left: 0;
       text-align: center;
@@ -49,7 +49,7 @@ if (hexo-config('sidebar.position') == 'right') {
       font-size: $font-size-smaller;
 
       #links li {
-        color: var( --text-color);
+        font-weight: bold;
         display: inline-block;
         i {
           padding: 0 4px;
@@ -78,7 +78,7 @@ if (hexo-config('sidebar.position') == 'right') {
      width: $sidebar-desktop-small;
      font-size: $font-size-smallest;
   }
-  
+
   a {
     border-bottom-color: $black-light;
     color: $grey-dark;

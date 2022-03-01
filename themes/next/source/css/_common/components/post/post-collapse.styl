@@ -1,10 +1,16 @@
+.archive-block {
+  background: var(--content-bg-color);
+  padding: 1rem;
+  border-radius: 6px
+}
+
 .posts-collapse .post-content {
   margin-bottom: $posts-collapse-margin;
   margin-left: $posts-collapse-margin;
   position: relative;
   background: var(--content-bg-color);
   padding: 1rem;
-  border-radius: 10px;
+  border-radius: 6px;
 
   +mobile() {
     margin-left: $posts-collapse-margin-mobile;
@@ -27,18 +33,20 @@
   }
 
   .collection-year {
-    font-size: $font-size-largest;
+    font-size: $font-size-larger;
     font-weight: bold;
-    margin: 60px 0;
+    //margin: 60px 0;
     position: relative;
+    color: $green-grass;
+
 
     &::before {
-      background: $grey;
+      font-family: FontAwesome;
+      content: '\f273';
+      //background: $grey;
       margin-left: -4px;
       margin-top: -4px;
       position: absolute;
-      top: 50%;
-      round-icon(8px);
     }
   }
 
@@ -53,9 +61,9 @@
   }
 
   .post-header {
-    border-bottom: 1px dashed $grey-light;
+    //border-bottom: 1px dashed $grey-light;
     // 2px is equal to half the width of .posts-collapse::before
-    margin: 30px 2px 0;
+    margin: 12px 2px 0;
     padding-left: 15px;
     position: relative;
     transition: border $transition-ease;
@@ -74,7 +82,7 @@
       border-bottom-color: $grey-dim;
 
       &::before {
-        background: $black-deep;
+        background: $orange;
       }
     }
   }
@@ -91,12 +99,22 @@
     a {
       border-bottom: 0;
       color: var(--link-color);
+
+      &:hover {
+        color: $link-hover-color;
+
+        &::before {
+          background: $orange;
+        }
+      }
     }
 
     .fa-external-link-alt {
       font-size: $font-size-small;
       margin-left: 5px;
     }
+
+
   }
 
   &::before {
@@ -107,6 +125,6 @@
     position: absolute;
     // To do: 1.25em is inaccurate when .collection-title has line breaks on mobile
     top: 1.25em;
-    width: 4px;
+    width: 2px;
   }
 }
