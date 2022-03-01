@@ -3,6 +3,7 @@
   border-radius: 6px;
   padding: 1.5rem 0.5rem;
   text-align: left;
+  font-size: $font-size-small
 
   a {
     color: var(--text-color);
@@ -14,41 +15,42 @@
     width: 135px;
     margin-left: 40px;
     font-weight: 500;
-    border-bottom: none!important
+    border-bottom: none !important
 
     &:hover {
       color: var(--link-hover-color);
     }
-	&:before{
-		font-family: FontAwesome;
-		content: "\f02e";
-		margin-right: .4em;
-		color: $green-grass
-	}
+
+    &:before {
+      font-family: FontAwesome;
+      content: "\f02e";
+      margin-right: .4em;
+      color: var(--link-hover-color);
+    }
   }
 }
 
 .tag-cloud-title {
-	text-align: left;
-	position: relative;
-	top: 3px;
-	margin-bottom: 10px;
-	left: 20px;
-	font-family: $font-family-base;
-	font-size: 17px;
-	font-weight: 500;
-	opacity: .9
+  text-align: left;
+  position: relative;
+  top: 3px;
+  margin-bottom: 10px;
+  left: 20px;
+  font-family: $font-family-base;
+  font-size: $font-size-large;
+  font-weight: 500;
+  opacity: .9
 }
 
 .tag-cloud-tags {
-	margin-top: 10px;
-	display: block;
-	color: red !important;
-	padding: 0 20px!important
+  margin-top: 10px;
+  display: block;
+  color: red !important;
+  padding: 0 20px !important
 }
 
-@media screen and (max-width:1399px) {
-	.tag-cloud a {
-		font-size: 13px!important
-	}
+@media screen and (max-width: 1399px) {
+  .tag-cloud a {
+    font-size: 13px !important
+  }
 }

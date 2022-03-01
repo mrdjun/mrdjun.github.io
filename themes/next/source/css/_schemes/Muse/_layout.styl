@@ -20,14 +20,16 @@
   margin-top: $content-padding-top;
 }
 
-.post-block:first-of-type {
-  padding-top: $posts-first-padding;
+if($posts-first-padding != 0) {
+  .post-block:first-of-type {
+    padding-top: $posts-first-padding;
 
-  +mobile() {
-    padding-top: $posts-first-padding-mobile;
+    +mobile() {
+      padding-top: $posts-first-padding-mobile;
+    }
   }
 }
 
 .hidden{
-  display: none;  
+  display: none;
 }

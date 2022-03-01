@@ -101,7 +101,7 @@ open_graph:
 menu:
   🏠 Home: /
   📦 Archives: /archives/
-  🔖 Labels: /tags/ 
+  🔖 Labels: /tags/
   👬 Friends: /friends/
   #about: /about/ || fa fa-user
   #categories: /categories/ || fa fa-th
@@ -125,7 +125,7 @@ sidebar:
   # Sidebar Position.
   position: left
   #position: right
-  
+
   # toggle the sidebar
   toggle: false
 
@@ -251,6 +251,8 @@ footer:
 
 # Automatically excerpt description in homepage as preamble text.
 excerpt_description: true
+post:
+  display_description: false
 
 # Read more button
 # If true, the read more button will be displayed in excerpt section.
@@ -325,7 +327,7 @@ post_navigation: left
 # TagCloud settings for tags page.
 tagcloud:
   min: 14 # Minimum font size in px
-  max: 30 # Maximum font size in px
+  max: 14 # Maximum font size in px
   amount: 200 # Total amount of tags
   orderby: name # Order of tags
   order: 1 # Sort order
@@ -398,7 +400,7 @@ back2top:
   # Display percent sign
   percent_sign: false
   display_icon: false
-  
+
 
 # Reading progress bar
 reading_progress:
@@ -539,7 +541,7 @@ math:
 
 # Easily enable fast Ajax navigation on your website.
 # For more information: https://github.com/next-theme/pjax
-pjax: false
+pjax: true
 
 # FancyBox is a tool that offers a nice and elegant way to add zooming functionality for images.
 # For more information: https://fancyapps.com/fancybox/
@@ -735,13 +737,13 @@ firestore:
 # Show Views / Visitors of the website / page with busuanzi.
 # For more information: http://ibruce.info/2015/04/04/busuanzi/
 busuanzi_count:
-  enable: false
-  total_visitors: true
+  enable: true
+  total_visitors: false
   total_visitors_icon: fa fa-user
-  total_views: true
+  total_views: false
   total_views_icon: fa fa-eye
   post_views: true
-  post_views_icon: far fa-eye
+  post_views_icon: fa fa-laptop
 
 
 # ---------------------------------------------------------------
@@ -827,7 +829,7 @@ note:
 # Tabs tag
 tabs:
   # Make the nav bar of tabs with long content stick to the top.
-  sticky: false
+  sticky: true
   transition:
     tabs: false
     labels: true
@@ -907,7 +909,7 @@ vendors:
   # custom_cdn_url: https://cdn.jsdelivr.net/npm/${npm_name}@${version}/${minified}
   # custom_cdn_url: https://cdnjs.cloudflare.com/ajax/libs/${cdnjs_name}/${version}/${cdnjs_file}
   custom_cdn_url:
-  
+
 # 鼠标点击爆炸特效
 mouse:
   explode: false

@@ -19,10 +19,11 @@
   border-bottom: 1px solid $table-border-color;
 }
 
-.post-block:first-of-type {
-  padding-top: $posts-first-padding;
+if($posts-first-padding != 0) {
+  .post-block:first-of-type {
+    padding-top: $posts-first-padding;
+  }
 }
-
 .pagination {
   +mobile() {
     margin-bottom: 10px;
