@@ -2,7 +2,9 @@ if (hexo-config('back2top.enable')) {
   .back-to-top {
     font-size: $b2t-font-size;
     position: fixed;
-    right: 30px;
+    if (not hexo-config('sidebar.toggle')) {
+       right: 30px;
+    }
     letter-spacing: .4px;
     cursor: pointer;
     text-align: center;

@@ -131,28 +131,20 @@
 {%- endif %}
 
 <div class="asider-footer">
+  {%- if theme.sidebar.display_links %}
   <div id="links">
+   {%- for name, link in theme.sidebar.links %}
     <li>
-      <a href="#" target="_blank" itemprop="url" class="ignore-href">
-        <i class="fa fa-fw fas fa-diamond" aria-hidden="true"></i>
+      {%- set sidebarIcon = '<i class="' + link.split('||')[1] | trim + ' fa-fw"></i>' %}
+      {%- set sidebarURL = link.split('||')[0] | trim %}
+      <a href="{{sidebarURL}}" target="_blank" itemprop="url" class="ignore-href">
+        {{ sidebarIcon }}
       </a>
     </li>
-    <li>
-      <a href="#" target="_blank" itemprop="url" class="ignore-href">
-        <i class="fa fa-fw fa-skyatlas" aria-hidden="true"></i>
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_blank" itemprop="sameAs" class="ignore-href">
-        <i class="fa fa-fw fa-codepen" aria-hidden="true"></i>
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_blank" itemprop="sameAs" class="ignore-href">
-        <i class="fa fa-fw fa-github-alt" aria-hidden="true"></i>
-      </a>
-    </li>
+   {%- endfor %}
+    
   </div>
+  {%- endif %}
   <div class="copyright">
     {%- set copyright_year = date(null, 'YYYY') %}
   &copy; {% if theme.footer.since and theme.footer.since != copyright_year %}{{ theme.footer.since }} – {% endif %}

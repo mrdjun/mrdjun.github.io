@@ -145,6 +145,12 @@ sidebar:
   padding: 18
   # Sidebar offset from top menubar in pixels (only for Pisces | Gemini).
   offset: 12
+  display_links: true
+  links:
+    love: https://www.funpeak.cn/ || fa fa-diamond
+    gitee: https://www.gitee.com/mrdjun/ || fa fa-skyatlas
+    github: https://www.github.com/mrdjun/ || fa fa-github-alt
+    csdn: https://mrdjun.blog.csdn.net/ || fa fa-codepen
 
 # Sidebar Avatar
 avatar:
@@ -280,13 +286,15 @@ tag_icon: false
 # Front-matter variable (nonsupport animation).
 reward_settings:
   # If true, a donate button will be displayed in every article by default.
-  enable: false
+  enable: true
   animation: false
-  #comment: Buy me a coffee
+  comment: 请作者喝瓶肥宅水🥤
+  # 显示图片下面的支付方式名称
+  display_bottom_words: false
 
 reward:
-  #wechatpay: /images/wechatpay.png
-  #alipay: /images/alipay.png
+  wechatpay: /images/wechatpay.png
+  alipay: /images/alipay.png
   #paypal: /images/paypal.png
   #bitcoin: /images/bitcoin.png
 
@@ -912,7 +920,7 @@ vendors:
 
 # 鼠标点击爆炸特效
 mouse:
-  explode: false
+  explode: true
 
 # Assets
 # Accelerate delivery of static files using a CDN

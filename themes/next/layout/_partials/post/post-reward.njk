@@ -1,6 +1,6 @@
 <div class="reward-container">
-  <div>{{ page.reward_settings.comment }}</div>
-  <button>
+  <span class="reward-comment">{{ page.reward_settings.comment }}</span>
+  <button class="reward-btn">
     {{ __('reward.donate') }}
   </button>
   <div class="post-reward">
@@ -10,7 +10,7 @@
       {%- set translation = __('reward.' + name) if builtin.includes(name) else name %}
       <div>
         <img src="{{ url_for(image) }}" alt="{{ author }} {{ translation }}">
-        <span>{{ translation }}</span>
+        {%- if theme.reward_settings.display_bottom_words %}<span>{{ translation }}</span>{%- endif %}
       </div>
     {%- endfor %}
 

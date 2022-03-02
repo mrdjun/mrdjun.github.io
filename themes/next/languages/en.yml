@@ -89,7 +89,7 @@ symbol:
   colon: ": "
 
 reward:
-  donate: Donate
+  donate: ￥
   wechatpay: WeChat Pay
   alipay: Alipay
   paypal: PayPal
