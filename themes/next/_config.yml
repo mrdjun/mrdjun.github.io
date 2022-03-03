@@ -918,13 +918,13 @@ vendors:
   # custom_cdn_url: https://cdnjs.cloudflare.com/ajax/libs/${cdnjs_name}/${version}/${cdnjs_file}
   custom_cdn_url:
 
-# 鼠标点击爆炸特效
 mouse:
+  # 鼠标点击爆炸特效
   explode: true
 
 # 朋友页面的链接配置
 friends:
-  MrDJun'blog: https://www.github.com/mrdjun || fa fa-star
+  MrDJun'blog: https://mrdjun.blog.csdn.net || fa fa-star
 
 # Assets
 # Accelerate delivery of static files using a CDN

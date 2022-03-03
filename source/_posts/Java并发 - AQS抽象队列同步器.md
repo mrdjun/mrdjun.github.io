@@ -8,7 +8,7 @@ comments: false
 
 AQS全称为 AbstractQueuedSynchronizer。提供了对资源占用、释放，线程等待、唤醒等接口和具体实现。可以用在各种需要控制资源争用的场景，例如ReentrantLock、CountDownLatch、Semphore中。
 
-![image-20210513220313583](.\images\AQS-接口.png)
+![image-20210513220313583](/images/AQS-接口.png)
 
 acquire、acquireShared：定义了资源争用的逻辑，如果没拿到则等待。
 
@@ -244,5 +244,5 @@ private void unparkSuccessor(Node node) {
 
 资源占用流程
 
-![image-20210514131357784](.\images\AQS-资源占用流程.png)
+![image-20210514131357784](/images/AQS-资源占用流程.png)
 

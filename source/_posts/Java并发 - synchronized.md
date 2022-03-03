@@ -567,7 +567,7 @@ public void test(){
 
 synchronized关键字不仅实现同步，根据JMM规定还能保证可见性（读取最新主内存数据，结束后写入主内存）。
 
-![image-20210423124817593](.\images\synchronized关键字的原理.png)
+![image-20210423124817593](/images/synchronized关键字的原理.png)
 
 在HotSpot中，由Mark Word、Class Metadata Address、Array Length三部份组成。
 
@@ -579,9 +579,9 @@ synchronized关键字不仅实现同步，根据JMM规定还能保证可见性�
 
 偏向锁：本质就是无锁，如果没有发生任何多线程争抢锁的情况，JVM认为就是单线程，无需做同步。
 
-![image-20210429101554456](.\images\JVM-从偏向锁到重量级锁的过程.png)
+![image-20210429101554456](/images/JVM-从偏向锁到重量级锁的过程.png)
 
 重量级锁 - 监视器（monitor）
 
-![image-20210429101903740](.\images\重量级锁监视器(monitor)原理.png)
+![image-20210429101903740](/images/重量级锁监视器(monitor)原理.png)
 
