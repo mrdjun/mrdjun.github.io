@@ -1,6 +1,6 @@
 ---
 title: ArrayList
-date: 2021-05-31 15:05:00
+date: 2019-05-31 15:05:00
 tags:
 - JUC并发包
 comments: false

@@ -922,6 +922,10 @@ vendors:
 mouse:
   explode: true
 
+# 朋友页面的链接配置
+friends:
+  MrDJun'blog: https://www.github.com/mrdjun || fa fa-star
+
 # Assets
 # Accelerate delivery of static files using a CDN
 # The js option is only valid when vendors.internal is local.

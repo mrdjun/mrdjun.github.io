@@ -1,0 +1,13 @@
+<div class="friends-page">
+  <div class="friends-href">
+     {%- for name, value in theme.friends %}
+        {%- set link = value.split('||')[0] | trim %}
+        {%- set icon = value.split('||')[1] | trim if value.split('||')[1] else '' %}
+        <a target="_blank" class="ignore-href" href="{{ url_for(link) }}">
+          <span class="icon">
+            <i class="fa-fw {{ icon }}"></i>{{ name }}
+          </span>
+        </a>
+    {%- endfor %}
+  </div>
+</div>
