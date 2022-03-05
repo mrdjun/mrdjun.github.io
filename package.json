@@ -24,6 +24,7 @@
     "hexo-renderer-marked": "^4.1.0",
     "hexo-renderer-stylus": "^2.0.0",
     "hexo-server": "^2.0.0",
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.0",
+    "valine": "^1.4.16"
   }
 }

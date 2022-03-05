@@ -126,7 +126,7 @@ NexT.utils = {
     if(backToTop.innerText.search('%') != -1){
       percentSign = '%';
     }
-    
+
     const readingProgressBar = document.querySelector('.reading-progress-bar');
     // For init back to top in sidebar if page was scrolled after page refresh.
     window.addEventListener('scroll', () => {
@@ -330,75 +330,36 @@ NexT.utils = {
     });
   },
 
-  getScript: function (src, options = {}, legacyCondition) {
-    if (typeof options === 'function') {
-      return this.getScript(src, {
-        condition: legacyCondition
-      }).then(options);
-    }
-    const {
-      condition = false,
-      attributes: {
-        id = '',
-        async = false,
-        defer = false,
-        crossOrigin = '',
-        dataset = {},
-        ...otherAttributes
-      } = {},
-      parentNode = null
-    } = options;
-    return new Promise((resolve, reject) => {
-      if (condition) {
-        resolve();
-      } else {
-        const script = document.createElement('script');
-
-        if (id) script.id = id;
-        if (crossOrigin) script.crossOrigin = crossOrigin;
-        script.async = async;
-        script.defer = defer;
-        Object.assign(script.dataset, dataset);
-        Object.entries(otherAttributes).forEach(([name, value]) => {
-          script.setAttribute(name, String(value));
-        });
-
-        script.onload = resolve;
-        script.onerror = reject;
-
-        if (typeof src === 'object') {
-          const { url, integrity } = src;
-          script.src = url;
-          if (integrity) {
-            script.integrity = integrity;
-            script.crossOrigin = 'anonymous';
-          }
-        } else {
-          script.src = src;
+  getScript: function(url, callback, condition) {
+    if (condition) {
+      callback();
+    } else {
+      var script = document.createElement('script');
+      script.onload = script.onreadystatechange = function(_, isAbort) {
+        if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState)) {
+          script.onload = script.onreadystatechange = null;
+          script = undefined;
+          if (!isAbort && callback) setTimeout(callback, 0);
         }
-        (parentNode || document.head).appendChild(script);
-      }
-    });
+      };
+      script.src = url;
+      document.head.appendChild(script);
+    }
   },
 
-  loadComments: function (selector, legacyCallback) {
-    if (legacyCallback) {
-      return this.loadComments(selector).then(legacyCallback);
+  loadComments: function(element, callback) {
+    if (!CONFIG.comments.lazyload || !element) {
+      callback();
+      return;
     }
-    return new Promise(resolve => {
-      const element = document.querySelector(selector);
-      if (!CONFIG.comments.lazyload || !element) {
-        resolve();
-        return;
-      }
-      const intersectionObserver = new IntersectionObserver((entries, observer) => {
-        const entry = entries[0];
-        if (!entry.isIntersecting) return;
-
-        resolve();
+    let intersectionObserver = new IntersectionObserver((entries, observer) => {
+      let entry = entries[0];
+      if (entry.isIntersecting) {
+        callback();
         observer.disconnect();
-      });
-      intersectionObserver.observe(element);
+      }
     });
+    intersectionObserver.observe(element);
+    return intersectionObserver;
   }
 };

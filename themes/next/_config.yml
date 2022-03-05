@@ -483,6 +483,7 @@ font:
     external: true
     family: Josefin Sans
 
+
   # Font settings for <code> and code blocks.
   codes:
     external: true
@@ -598,12 +599,12 @@ comments:
   # Available values: tabs | buttons
   style: tabs
   # Choose a comment system to be displayed by default.
-  # Available values: disqus | disqusjs | changyan | livere | gitalk | utterances
-  active:
+  # Available values: disqus | disqusjs | changyan | livere | gitalk | utterances | valine
+  active: valine
   # Setting `true` means remembering the comment system selected by the visitor.
   storage: true
   # Lazyload all comment systems.
-  lazyload: false
+  lazyload: true
   # Modify texts or order for any naves, here are some examples.
   nav:
     #disqus:
@@ -638,6 +639,26 @@ changyan:
   appid:
   appkey:
 
+# Valine
+# For more information: https://valine.js.org, https://github.com/xCss/Valine
+valine:
+  enable: true
+  appid: OuThW2B2OadglooUXzqiFH1E-gzGzoHsz
+  appkey: mGKoWUyFnVWHyCA6sgJC3DEh
+  notify: false # Mail notifier
+  verify: false # Verification code
+  placeholder: Let it go # Comment box placeholder
+  avatar: mm # Gravatar style
+  guest_info: nick,mail,link # Custom comment header
+  pageSize: 10 # Pagination size
+  language: zh-cn # Language, available values: en, zh-cn
+  visitor: true # Article reading statistic
+  display_post_meta: false # display post meta the valine of comment count
+  comment_count: false # If false, comment count will only be displayed in post page, not in home page
+  recordIP: true # Whether to record the commenter IP
+  serverURLs:  # When the custom domain name is enabled, fill it in here (it will be detected automatically by default, no need to fill in)
+  #post_meta_order: 0
+
 # LiveRe comments system
 # You can get your uid from https://livere.com/insight/myCode (General web site)
 livere_uid: # <your_uid>
@@ -662,7 +683,7 @@ gitalk:
 # Utterances
 # For more information: https://utteranc.es
 utterances:
-  enable: false
+  enable: true
   repo: user-name/repo-name # Github repository owner and name
   # Available values: pathname | url | title | og:title
   issue_term: pathname
@@ -917,7 +938,10 @@ vendors:
   # custom_cdn_url: https://cdn.jsdelivr.net/npm/${npm_name}@${version}/${minified}
   # custom_cdn_url: https://cdnjs.cloudflare.com/ajax/libs/${cdnjs_name}/${version}/${cdnjs_file}
   custom_cdn_url:
-
+  # Valine
+  # valine: https://cdn.jsdelivr.net/npm/valine@1.4.16/dist/Valine.min.js
+  # valine: //cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js
+  valine:  /js/valine.min.js
 mouse:
   # 鼠标点击爆炸特效
   explode: true
@@ -932,3 +956,4 @@ friends:
 css: css
 js: js
 images: images
+

@@ -63,20 +63,21 @@
   .post-header {
     //border-bottom: 1px dashed $grey-light;
     // 2px is equal to half the width of .posts-collapse::before
-    margin: 12px 2px 0;
+    margin: 0 2px 10px;
     padding-left: 15px;
     position: relative;
     transition: border $transition-ease;
 
     &::before {
       background: $grey;
-      border: 1px solid white;
-      left: -6px;
+      left: -1px;
       position: absolute;
       top: $font-size-smallest;
       transition: background $transition-ease;
       round-icon(6px);
+      z-index: 1;
     }
+
 
     &:hover {
       border-bottom-color: $grey-dim;
@@ -91,6 +92,16 @@
     display: inline;
     font-size: $font-size-smallest;
     margin-right: 10px;
+
+    &::before {
+      background: $whitesmoke;
+      content: ' ';
+      height: 100%;
+      margin-left: -14px;
+      position: absolute;
+      top: 0;
+      width: 2px;
+    }
   }
 
   .post-title {
@@ -113,18 +124,5 @@
       font-size: $font-size-small;
       margin-left: 5px;
     }
-
-
-  }
-
-  &::before {
-    background: $whitesmoke;
-    content: ' ';
-    height: 100%;
-    margin-left: -2px;
-    position: absolute;
-    // To do: 1.25em is inaccurate when .collection-title has line breaks on mobile
-    top: 1.25em;
-    width: 2px;
   }
 }
