@@ -643,8 +643,8 @@ changyan:
 # For more information: https://valine.js.org, https://github.com/xCss/Valine
 valine:
   enable: true
-  appid: OuThW2B2OadglooUXzqiFH1E-gzGzoHsz
-  appkey: mGKoWUyFnVWHyCA6sgJC3DEh
+  appid: xKK1x17C1L3IjTbtVRsuQdDo-gzGzoHsz
+  appkey: C4rgGvNKMO0FjyqV9G69aglI
   notify: false # Mail notifier
   verify: false # Verification code
   placeholder: Let it go # Comment box placeholder
