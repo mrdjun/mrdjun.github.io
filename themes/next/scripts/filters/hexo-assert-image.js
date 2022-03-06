@@ -39,6 +39,12 @@ hexo.extend.filter.register('after_post_render', function (data) {
         decodeEntities: false
       });
 
+      // 自动截取hexo-abbrlink的前缀
+      let prefix;
+      if (config.permalink.search('/') > -1) {
+        prefix = config.permalink.split('/')[0] + "/"
+      }
+
       $('img').each(function () {
         if ($(this).attr('src')) {
           // For windows style path, we replace '\' to '/'.
@@ -63,7 +69,8 @@ hexo.extend.filter.register('after_post_render', function (data) {
             let folderFileName = src.split('%5C');
             // 去除文件夹名称
             src = folderFileName[1] ? folderFileName[1] : folderFileName[0];
-            $(this).attr('src', config.root + 'p/' + abbrlink + '/' + src);
+
+            $(this).attr('src', config.root + (prefix ? prefix : '') + abbrlink + '/' + src);
             console.info && console.info("update link as:-->" + config.root + link + src);
           }
         } else {
