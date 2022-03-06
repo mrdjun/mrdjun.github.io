@@ -8,11 +8,11 @@ description: ArrayList实现了List接口的所有方法，可以看成是“长
 
 本文记录ArrayList & LinkedList源码解析，基于JDK1.8。
 
-## 一、ArrayList
+## ArrayList
 
 ArrayList实现了List接口的所有方法，可以看成是“长度可调节的数组”，可以包含任何类型数据（包括null，可重复）。ArrayList大体和Vector一致，唯一区别是ArrayList非线程安全，Vector线程安全，但Vector线程安全的代价较大，推荐使用CopyOnWriteArrayList，后面文章再做记录。
 
-### 1、类结构
+### 类结构
 
 ArrayList类层级关系如下图所示：
 
@@ -49,9 +49,9 @@ public class ArrayList<E> extends AbstractList<E>
 }
 ```
 
-### 2、方法解析
+### 方法解析
 
-#### （1）知识储备
+#### 知识储备
 
 Arrays类的`copyOf(U[] original, int newLength, Class<? extends T[]> newType)`方法用于复制指定数组original到新数组，新数组的长度为newLength，新数组元素类型为newType。
 
@@ -100,7 +100,7 @@ array1[index] = 0L;
 System.out.println(Arrays.toString(array1)); // [1, 0, 2, 3, null, null]
 ```
 
-#### （2）构造函数
+#### 构造函数
 
 ```java
 public ArrayList(int initialCapacity) {
@@ -156,7 +156,7 @@ System.out.println(list2.toArray().getClass() == Object[].class); // true
 
 ```
 
-#### （3）add(E e)
+#### add(E e)
 
 `add(E e)`用于尾部添加元素：
 
@@ -241,7 +241,7 @@ private static int hugeCapacity(int minCapacity) {
 3. 数组容量最大为Integer.MAX_VALUE；
 4. 尾部添加元素不用移动任何元素，所以速度快。
 
-#### （4）add(int index, E element)
+#### add(int index, E element)
 
 `add(int index, E element)`用于在指定位置添加元素：
 
@@ -269,7 +269,7 @@ private void rangeCheckForAdd(int index) {
 
 这里涉及到元素移动，所以速度较慢。
 
-#### （5）get(int index)
+#### get(int index)
 
 `get(int index)`获取指定位置元素：
 
@@ -288,7 +288,7 @@ E elementData(int index) {
 
 `get`方法直接返回数组指定下标元素，速度非常快。
 
-#### （6）set(int index, E element)
+#### set(int index, E element)
 
 `set(int index, E element)`设置指定位置元素为指定值：
 
@@ -307,7 +307,7 @@ public E set(int index, E element) {
 
 `set`方法不涉及元素移动和遍历，所以速度快。
 
-#### （7）remove(int index)
+#### remove(int index)
 
 `remove(int index)`删除指定位置元素：
 
@@ -332,7 +332,7 @@ public E remove(int index) {
 
 上述方法涉及到元素移动，所以效率也不高。
 
-#### （8）remove(Object o)
+#### remove(Object o)
 
 `remove(Object o)`删除指定元素：
 
@@ -367,7 +367,7 @@ private void fastRemove(int index) {
 
 方法涉及到数组遍历和元素移动，效率也不高。
 
-#### （9）trimToSize()
+#### trimToSize()
 
 `trimToSize()`源码：
 
@@ -386,9 +386,9 @@ public void trimToSize() {
 
 > 其他方法可以自己阅读ArrayList源码，此外在涉及增删改的方法里，我们都看到了modCount++操作，和之前介绍HashMap源码时一致，用于快速失败。
 
-## 二、LinkedList
+## LinkedList
 
-### 1、类结构
+### 类结构
 
 LinkedList底层采用双向链表结构存储数据，允许重复数据和null值，长度没有限制：
 
@@ -431,9 +431,9 @@ transient Node<E> first;
 transient Node<E> last;
 ```
 
-### 2、方法解析
+### 方法解析
 
-#### （1）构造函数
+#### 构造函数
 
 `LinkedList()`：
 
@@ -498,7 +498,7 @@ public boolean addAll(int index, Collection<? extends E> c) {
 
 该构造函数用于创建LinkedList，并往里添加指定集合元素。
 
-#### （2）add(int index, E element)
+#### add(int index, E element)
 
 `add(int index, E element)`指定下标插入元素：
 
@@ -582,7 +582,7 @@ Node<E> node(int index) {
 
 代码较为简单，无非就是设置节点的prev和next关系。可以看到，除了头插和尾插外，在链表别的位置插入新节点，涉及到节点遍历操作，所以我们常说的链表插入速度快，指的是插入节点改变前后节点的引用过程很快。
 
-#### （3）get(int index)
+#### get(int index)
 
 `get(int index)`获取指定下标元素：
 
@@ -612,7 +612,7 @@ Node<E> node(int index) {
 
 代码较为简单，就是通过node函数查找指定index下标Node，然后获取其item属性值，节点查找需要遍历。
 
-#### （4）set(int index, E element)
+#### set(int index, E element)
 
 `set(int index, E element)`设置指定下标节点的item为指定值：
 
@@ -650,7 +650,7 @@ Node<E> node(int index) {
 
 可以看到，set方法也需要通过遍历查找目标节点。
 
-#### （5）remove(int index)
+#### remove(int index)
 
 `remove(int index)`删除指定下标节点：
 
@@ -691,7 +691,7 @@ E unlink(Node<E> x) {
 
 > 剩下的方法可以自己阅读源码。
 
-## 三、RandomAccess接口
+## RandomAccess接口
 
 RandomAccess接口是一个空接口，不包含任何方法，只是作为一个标识：
 

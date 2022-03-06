@@ -9,7 +9,7 @@ ForkJoinPool 是ExecutorService 接口的实现，它专为可以递归分解成
 
 ![forkJoin](JUC-ForkJoin\ForkJoin.png)
 
-## 具有高性能低冲突的原因
+## 高性能低冲突
 
 - 每个Worker线程都维护一个任务队列，即ForkJoinWorkerThread中的任务队列；
 

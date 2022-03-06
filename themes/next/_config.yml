@@ -948,7 +948,8 @@ mouse:
 
 # 朋友页面的链接配置
 friends:
-  MrDJun'blog: https://mrdjun.blog.csdn.net || fa fa-star
+#  MrDJun'blog: https://mrdjun.blog.csdn.net || fa fa-star
+  Ahri Love: https://javabullshit.github.io/ || fa fa-star
 
 # Assets
 # Accelerate delivery of static files using a CDN

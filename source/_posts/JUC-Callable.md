@@ -1,11 +1,13 @@
 ---
-title: Callable
+title: Callable接口
 date: 2022-03-04 14:28:34
 tags:
   - Juc并发包
 ---
 
-Callable是一个无入参，有返回值，可抛异常的一个接口，源码如下：
+Callable是一个无入参，有返回值，可抛异常的一个接口。
+
+源码如下：
 
 ```java
 @FunctionalInterface

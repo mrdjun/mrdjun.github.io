@@ -1,13 +1,13 @@
 ---
-title: AbstractQueuedSynchronizer
+title: AQS抽象队列同步器
 date: 2021‎-05‎-‎13‎ 11:54:34
 tags:
-  - Juc并发包
+- Juc并发包
 ---
 
 AQS全称为AbstractQueuedSynchronizer，提供了对资源占用、释放，线程等待、唤醒等接口和具体实现。可以用在各种需要控制资源争用的场景，例如ReentrantLock、CountDownLatch、Semphore中。
 
-## 一、AQS组成部分
+## AQS组成部分
 
 ![image-20210513220313583](JUC-AbstractQueuedSynchronizer\AQS-接口.png)
 
@@ -19,7 +19,7 @@ release、releaseShared：定义释放资源的逻辑，释放之后通知后续
 
 tryRelease、tryReleaseShared：实际执行资源释放的操作，具体由使用者去实现。
 
-## 二、简单应用AQS
+## 简单应用AQS
 
 通过这个实例加深对AQS的理解，为看懂源码打下一定的基础。
 
@@ -114,7 +114,7 @@ public class MyAqs {
 }
 ```
 
-## 三、AQS源码阅读
+## AQS源码阅读
 
 源码中等待队列维护的是一个链表，而不是我们上面使用的BlockingQueue。
 
@@ -241,7 +241,7 @@ private void unparkSuccessor(Node node) {
 }
 ```
 
-##  四、总结
+##  总结
 
 资源占用的完整流程
 

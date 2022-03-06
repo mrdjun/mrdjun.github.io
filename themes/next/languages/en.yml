@@ -5,8 +5,9 @@ title:
   category: Category
   tag: Tag
   schedule: Schedule
-
+  friend: Friend
 menu:
+  friends: Friends
   home: Home
   archives: Archives
   categories: Categories
