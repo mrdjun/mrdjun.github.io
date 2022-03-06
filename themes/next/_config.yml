@@ -946,10 +946,11 @@ mouse:
   # 鼠标点击爆炸特效
   explode: true
 
-# 朋友页面的链接配置
+# friends links
 friends:
 #  MrDJun'blog: https://mrdjun.blog.csdn.net || fa fa-star
   Ahri Love: https://javabullshit.github.io/ || fa fa-star
+  故人: https://imgod.me/ || fa fa-star
 
 # Assets
 # Accelerate delivery of static files using a CDN
