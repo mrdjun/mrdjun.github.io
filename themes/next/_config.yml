@@ -642,7 +642,7 @@ changyan:
 # Valine
 # For more information: https://valine.js.org, https://github.com/xCss/Valine
 valine:
-  enable: true
+  enable: false
   appid: xKK1x17C1L3IjTbtVRsuQdDo-gzGzoHsz
   appkey: C4rgGvNKMO0FjyqV9G69aglI
   notify: false # Mail notifier
