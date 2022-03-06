@@ -1,8 +1,9 @@
 ---
 title: ForkJoin
-date: 2021-08-22 12:49:54
 tags:
   - Juc并发包
+abbrlink: f6316a6c
+date: 2021-08-22 12:49:54
 ---
 
 ForkJoinPool 是ExecutorService 接口的实现，它专为可以递归分解成小块的工作而设计。Java 7开始引入了一种新的Fork/Join线程池，它可以执行一种特殊的任务（Runnable）：把一个大任务拆成多个小任务并行处理，最后将子任务结果合并成最后的计算结果。充分利用多线程处理器的优势，提高程序性能。

@@ -14,8 +14,15 @@ timezone: 'Asia/Shanghai'
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: https://mrdjun.gitee.io
-permalink: :year/:month/:day/:title/
-permalink_defaults:
+#permalink: :year/:month/:day/:title/
+# npm install hexo-abbrlink --save
+permalink: p/:abbrlink.html
+#permalink_defaults:
+abbrlink:
+  #算法： crc16(default) and crc32
+  alg: crc32
+  #进制： dec(default) and hex
+  rep: hex
 pretty_urls:
   trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
   trailing_html: true # Set to false to remove trailing '.html' from permalinks

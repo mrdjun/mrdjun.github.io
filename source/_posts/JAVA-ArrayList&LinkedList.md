@@ -1,9 +1,11 @@
 ---
 title: ArrayList & LinkedList
-date: 2020-08-08 13:02:18
 tags:
-- Java
-description: ArrayList实现了List接口的所有方法，可以看成是“长度可调节的数组”，可以包含任何类型数据（包括null，可重复）。ArrayList大体和Vector一致，唯一区别是ArrayList非线程安全，Vector线程安全，但Vector线程安全的代价较大，推荐使用CopyOnWriteArrayList，后面文章再做记录。
+  - Java
+description: >-
+  ArrayList实现了List接口的所有方法，可以看成是“长度可调节的数组”，可以包含任何类型数据（包括null，可重复）。ArrayList大体和Vector一致，唯一区别是ArrayList非线程安全，Vector线程安全，但Vector线程安全的代价较大，推荐使用CopyOnWriteArrayList，后面文章再做记录。
+abbrlink: f284337e
+date: 2020-08-08 13:02:18
 ---
 
 本文记录ArrayList & LinkedList源码解析，基于JDK1.8。
