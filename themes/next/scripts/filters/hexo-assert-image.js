@@ -57,8 +57,12 @@ hexo.extend.filter.register('after_post_render', function (data) {
             if (srcArray.length > 1)
               srcArray.shift();
             src = srcArray.join('/');
-            // 适配hexo-abbrlink图片显示的问题
+
             // $(this).attr('src', config.root + link + src);
+            // 适配hexo-abbrlink图片显示的问题
+            let folderFileName = src.split('%5C');
+            // 去除文件夹名称
+            src = folderFileName[1] ? folderFileName[1] : folderFileName[0];
             $(this).attr('src', config.root + 'p/' + abbrlink + '/' + src);
             console.info && console.info("update link as:-->" + config.root + link + src);
           }
