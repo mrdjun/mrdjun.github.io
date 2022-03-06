@@ -4,6 +4,8 @@ tags:
   - Juc并发包
 abbrlink: e38626a3
 date: 2021-08-22 12:12:55
+description: >-
+  其实在学Spring5源码的时候，就已经罗列了各种单例模式。在此，学习过 java.util.concurrent 包后，站在多线程的角度上分析比较经典的懒汉模式的双重锁校验（又称为DCL懒汉式（Double Check Lock））。
 ---
 
 其实在学Spring5源码的时候，就已经罗列了各种单例模式。在此，学习过 java.util.concurrent 包后，站在多线程的角度上分析比较经典的懒汉模式的双重锁校验（又称为DCL懒汉式（Double Check Lock））。

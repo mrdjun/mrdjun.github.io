@@ -4,6 +4,8 @@ tags:
   - Juc并发包
 abbrlink: b279e65c
 date: 2022-03-04 14:28:34
+description: >-
+  Callable是一个无入参，有返回值，可抛异常的一个接口。
 ---
 
 Callable是一个无入参，有返回值，可抛异常的一个接口。
