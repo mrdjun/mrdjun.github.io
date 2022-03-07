@@ -1,6 +1,7 @@
 <div class="post-meta">
   {%- set date_diff = date(post.date) != date(post.updated) %}
   {%- set time_diff = time(post.date) != time(post.updated) %}
+  {%- set encrypted = post.password != null %}
 
   {%- if theme.post_meta.created_at %}
     <span class="post-meta-item">
@@ -16,6 +17,13 @@
           {%- set create_title = __('post.created') + __('symbol.colon') + full_date(post.date) %}
         {%- endif %}
         <time title="{{ create_title }}" itemprop="dateCreated datePublished" datetime="{{ moment(post.date).format() }}">{{ date(post.date) }}</time>
+        {%- if encrypted %}
+          &nbsp;&nbsp;
+          <span class="post-meta-item-icon">
+            <i class="fa fa-eye-slash"></i>
+          </span>
+          <span class="post-meta-item-text">{{ __('post.encrypted') }}</span>
+        {%- endif %}
       </span>
     </span>
   {%- endif %}

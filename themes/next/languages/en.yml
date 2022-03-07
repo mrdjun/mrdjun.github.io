@@ -34,6 +34,7 @@ post:
   sticky: Sticky
   views: Visit count
   related_posts: Related Posts
+  encrypted: Encrypted
   copyright:
     author: Post author
     link: Post link
