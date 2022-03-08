@@ -1,3 +1,6 @@
+hexo clean
+hexo g
+hexo d
 git add .
-git commit -m update
+git commit -m 'Will be better'
 git push origin sourcecode
