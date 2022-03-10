@@ -1,5 +1,5 @@
 ---
-title: JUC-Synchronized-ReentrantLock
+title: Synchronized VS Lock
 tags:
   - Juc并发包
 description: >-
