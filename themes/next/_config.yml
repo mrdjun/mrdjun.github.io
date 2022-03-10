@@ -386,16 +386,16 @@ body_scrollbar:
 
 codeblock:
   # Code Highlight theme
-  # All available themes: https://theme-next.js.org/highlight/
+  # All available themes: https://github.com/highlightjs/highlight.js/tree/main/src/styles
   theme:
-    light: default
-    dark: stackoverflow-dark
+    light: github-dark-dimmed
+    dark: monokai-sublime
   prism:
     light: prism
     dark: prism-dark
   # Add copy button on codeblock
   copy_button:
-    enable: false
+    enable: true
     # Available values: default | flat | mac
     style:
 

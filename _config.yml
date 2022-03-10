@@ -53,6 +53,7 @@ marked:
   postAsset: true
 relative_link: false
 future: true
+# https://hexo.io/zh-cn/docs/syntax-highlight
 highlight:
   enable: true
   line_number: true
@@ -137,6 +138,6 @@ search:
 # 文章折叠
 excerpt:
   depth: 1
-  excerpt_excludes: []
-  more_excludes: []
+  excerpt_excludes: [ ]
+  more_excludes: [ ]
   hideWholePostExcerpts: true
