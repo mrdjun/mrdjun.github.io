@@ -258,7 +258,10 @@ footer:
 # Automatically excerpt description in homepage as preamble text.
 excerpt_description: true
 post:
+  # 在文章内部的title下面显示文章的描述内容
   display_description: false
+  # 点击文章图片放大
+  zoom_img: true
 
 # Read more button
 # If true, the read more button will be displayed in excerpt section.
