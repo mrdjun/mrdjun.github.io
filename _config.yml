@@ -141,3 +141,9 @@ excerpt:
   excerpt_excludes: [ ]
   more_excludes: [ ]
   hideWholePostExcerpts: true
+
+# hexo-admin authentification
+admin:
+  username: mrdjun
+  password_hash: $2a$10$dWzlGNIffBwQBzrLBM/pb.phJwNajlfjQbj/PNlzkHi9e4q6JUz0S
+  secret: hello

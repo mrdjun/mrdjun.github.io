@@ -111,11 +111,9 @@ abstract static class Sync extends AbstractQueuedSynchronizer {
  }
 ```
 
-
-
 独享锁、支持公平锁和非公平锁两种模式，可重入锁。
 
-![image-20210429135322710](JUC-ReetrantLock-ReadWriteLock/Lock - ReetrantLock锁执行原理.png)
+![image-20210429135322710](JUC-ReetrantLock-ReadWriteLock/Lock-ReetrantLock锁执行原理.png)
 
 初始时持有者为null，计数是当前调用lock()方法加锁的次数，unlock()会将计数减1，当计数为0时，则表示当前锁被释放。（获取当前锁的次数 getHoldCount()）
 
