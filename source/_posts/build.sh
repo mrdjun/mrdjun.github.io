@@ -1,4 +1,4 @@
-cd ../../
+pushd ../../
 echo 'cleaning...'
 hexo clean
 echo 'generating...'
@@ -12,3 +12,4 @@ git commit -m 'Will be better'
 echo 'Git push to sourcecode'
 git push origin sourcecode
 echo 'DONE'
+popd
