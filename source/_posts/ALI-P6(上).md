@@ -1,5 +1,5 @@
 ---
-title: Ali-P6一面(上)
+title: 阿里P6一面(上)
 description: Encrypted article.
 password: hellomrdjun
 theme: Up
@@ -7,116 +7,129 @@ message: "文章已加密，请输入密码 \U0001F61B："
 wrong_pass_message: "密码错误 \U0001F62D"
 wrong_hash_message: "当前文章不能校验\U0001F62D"
 abbrlink: fbd38884
-date: 2019-03-07 00:01:53
+date: 2020-08-25 00:01:53
 ---
 
 Java基础
 1. 实例方法和静态方法有什么不一样？
-2. Java中的异常有哪几类？分别怎么使用？
-3. 常用的集合类有哪些？比如List如何排序？
-4. ArrayList和LinkedList内部的实现大致是怎样的？他们之间的区别和各自适应的场景是什么？
-5. 内存溢出是怎么回事？
-6. ClassLoader有什么用？
-7. ==和equals的区别？
-8. hashCode方法的作用？
-9. Object类中有哪些方法？列举3个以上。
-10. NIO是什么？适用于何种场景？
-11. HashMap数据结构、扩展策略，Hash冲突攻击如何防范，如何实现线程安全的HashMap？
-12. JVM内存结构，GC算法，CMS、G1的原理
-13. NIO模型，select/epoll的区别，多路复用的原理
-14. Java中一个字符占多少个字节，扩展再问int, long, double占多少字节
-15. 创建一个类的实例都有哪些办法？
-16. final/finally/finalize的区别？
-17. LinkingBlockingQueue与ArrayBlockingQueue的区别，他们的适用场景？
-18. Session/Cookie的区别？
-19. String/StringBuffer/StringBuilder的区别，扩展再问他们的实现？
-20. Servlet的生命周期？
-21. 如何用Java分配一段连续的1G的内存空间？需要注意些什么？
-22. Java有自己的内存回收机制，但为什么还存在内存泄露的问题呢？
-23. Java里面用对象作为Key需要注意些什么？ 如何实现hashcode？
-JVM
-1. JVM堆的基本结构。
-2. JVM的垃圾算法有哪几种？CMS收集算法的流程？
-3. JVM有哪些常用启动参数可以调整？
-4. 如何查看JVM的内存使用情况？
-5. Java程序是否会内存溢出？
-6. 你常用的JVM配置和调优参数都有哪些？分别什么作用？
-7. Java内存分代模型，GC算法，JVM常见的启动参数；
-8. CMS算法的过程，CMS回收过程中JVM是否需要暂停（这块回答较好，也可以只是看毕玄的Java分布式开发或网上文章的学习， 可以结合JVM启动参数常见配置，jstat等命令，看下动手能力，意愿；以及实际线上问题排查）
-9. 什么情况下会出现OOM（堆内存，永久区，堆外区，方法栈）
-10. Java内存结构（堆结构，新生代[S0/S1/Elden]，年老代，持久代）
-11. 常用的GC策略，什么时候会触发YGC，什么时候触发FGC
-数据结构与算法基础
-1. 说一下几种常见的排序算法和分别的复杂度。
-2. 什么是跳表？
-3. 如何确认一个链表有环？进一步，确认环的位置。
-4. 如何遍历一棵二叉树？
-5. 倒排一个LinkedList。
-6. HashSet的实现方式
-多线程/并发
-1. Java中常见的锁，互斥锁，读写锁，信号量
-2. 原子Atomic类，如何保证原子性，CAS硬件指令
-3. volatile，可见性问题的原因，硬件架构，L3 Cache，QPI，乐观锁
-4. 如何实现一个线程安全的数据结构
-5. 如何避免死锁
-6. 如何解决ABA问题
-7. Synchronized关键字的作用？
-8. Volatile关键字的作用？
-9. Java内存模型是怎样的？
-10. HashMap在多线程环境下使用需要注意什么？为什么？
-11. Java程序中启动一个线程是用run()还是start()？
-12. 什么是守护线程？有什么用？
-13. 什么是死锁？如何避免
-14. 线程和进程的差别是什么？
-15. Java里面的Threadlocal是怎样实现的？
-16. ConcurrentHashMap的实现原理是？
-17. sleep和wait区别
-18. notify和notifyAll区别
-19. volatile关键字的作用
-20. ThreadLocal的作用与实现
-21. 两个线程如何串行执行
-22. 上下文切换是什么含义
-23. 可以运行时kill掉一个线程吗？
-24. 什么是条件锁、读写锁、自旋锁、可重入锁？
-25. 什么是协程（用户态线程，减少数据拷贝，降低CPU开销，无callback函数）？
-26. 线程池ThreadPoolExecutor的实现原理？
-27. J.U.C下的常见类的使用。lock, synchronized， ThreadPool的深入考察； BlockingQueue的使用。（take，poll的区别，put，offer的区别）；原子类的实现。
-28. 各种常见锁使用如果上面这些掌握很好，还可以看看更深一点的 False Sharing，Cache Line，可见性与原子性等；
-Linux使用与问题分析排查
-1. 硬链接和软链接的区别？
-2. inode是什么？
-3. Linux常用命令有哪些？
-4. 怎么看一个Java线程的资源耗用？
-5. Load过高的可能性有哪些？
-6. /etc/hosts 文件什么做用？
-7. /etc/resolv.conf文件什么作用？
-8. 如何快速的将一个文本中所有“abc”替换为“xyz”？
-9. 你常用的Linux下用来进行网络和磁盘IO分析的工具有哪些？
-10. 你常用的Linux下用来进行内存和CPU分析的工具有哪些？
-11. 发现磁盘空间不够，如何快速找出占用空间最大的文件？
-12. Java服务端问题排查（OOM，CPU高，Load高，类冲突）
-13. Java常用问题排查工具及用法（top, iostat, vmstat, sar, tcpdump, jvisualvm, jmap, jconsole）
-14. Thread dump文件如何分析（Runnable，锁，代码栈，操作系统线程ID关联）
-15. grep，awk，sed； 是否自己写过shell脚本；
-16. 常见的cpu load过高，us过高，一般是什么问题。引申出是否用过top，jstat，jstack等。
-17. 常见的内存问题一般有哪些。 引申出是否用过free，top， jmap等。
-框架使用
-1. Spring中Bean的生命周期。
-2. SpringMVC或Struts处理请求的流程。
-3. Spring AOP解决了什么问题？怎么实现的？aop与cglib，与asm的关系。
-4. Spring事务的传播属性是怎么回事？它会影响什么？
-5. Spring中BeanFactory和FactoryBean有什么区别？
-6. Spring框架中IOC的原理是什么？
-7. spring的依赖注入有哪几种方式
-8. struts工作流程
-9. 用Spring如何实现一个切面？
-10. Spring 如何实现数据库事务？
-11. Hibernate和Ibatis这类ORM框架的区别？什么是ORM，解决的痛点是什么？
-12. spriong ioc的生命周期，（init-method，intilizingbean接口方法afterPropertiesSet的先后顺序）等。
-13. Hibernate对一二级缓存的使用，Lazy-Load的理解；
-14. Spring IoC AOP自己用代码如何实现
-15. RPC的负载均衡、服务发现怎么做的
-16. 几种推送模型的区别，long polling，websocket
+
+| 区别              | 实例方法                            | 静态方法                      |
+| ----------------- | ----------------------------------- | ----------------------------- |
+| 调用方式          | 通过实例对象调用（"对象名.方法名"） | 通过类名调用（"类名.方法名"） |
+| super和this关键字 | 可使用                              | 不可使用                      |
+| 加载时机          | 执行时加载                          | 加载类时就加载                |
+
+> 误区：静态方法比实例方法执行快？
+
+一个方法的代码被加载到内存中，然后被cpu去执行，执行的速度快慢和是不是静态方法没有任何关系。但是有一个特殊的场景，那就是GC。实例化太多对象在java/c#这类带有GC的编程语言中会引发垃圾回收操作，当垃圾回收进行的时候会挂起所有的线程，所以在这个短暂的时间里，程序会卡顿。
+
+
+
+1. Java中的异常有哪几类？分别怎么使用？
+2. 常用的集合类有哪些？比如List如何排序？
+3. ArrayList和LinkedList内部的实现大致是怎样的？他们之间的区别和各自适应的场景是什么？
+4. 内存溢出是怎么回事？
+5. ClassLoader有什么用？
+6. ==和equals的区别？
+7. hashCode方法的作用？
+8. Object类中有哪些方法？列举3个以上。
+9. NIO是什么？适用于何种场景？
+10. HashMap数据结构、扩展策略，Hash冲突攻击如何防范，如何实现线程安全的HashMap？
+11. JVM内存结构，GC算法，CMS、G1的原理
+12. NIO模型，select/epoll的区别，多路复用的原理
+13. Java中一个字符占多少个字节，扩展再问int, long, double占多少字节
+14. 创建一个类的实例都有哪些办法？
+15. final/finally/finalize的区别？
+16. LinkingBlockingQueue与ArrayBlockingQueue的区别，他们的适用场景？
+17. Session/Cookie的区别？
+18. String/StringBuffer/StringBuilder的区别，扩展再问他们的实现？
+19. Servlet的生命周期？
+20. 如何用Java分配一段连续的1G的内存空间？需要注意些什么？
+21. Java有自己的内存回收机制，但为什么还存在内存泄露的问题呢？
+22. Java里面用对象作为Key需要注意些什么？ 如何实现hashcode？
+    JVM
+23. JVM堆的基本结构。
+24. JVM的垃圾算法有哪几种？CMS收集算法的流程？
+25. JVM有哪些常用启动参数可以调整？
+26. 如何查看JVM的内存使用情况？
+27. Java程序是否会内存溢出？
+28. 你常用的JVM配置和调优参数都有哪些？分别什么作用？
+29. Java内存分代模型，GC算法，JVM常见的启动参数；
+30. CMS算法的过程，CMS回收过程中JVM是否需要暂停（这块回答较好，也可以只是看毕玄的Java分布式开发或网上文章的学习， 可以结合JVM启动参数常见配置，jstat等命令，看下动手能力，意愿；以及实际线上问题排查）
+31. 什么情况下会出现OOM（堆内存，永久区，堆外区，方法栈）
+32. Java内存结构（堆结构，新生代[S0/S1/Elden]，年老代，持久代）
+33. 常用的GC策略，什么时候会触发YGC，什么时候触发FGC
+    数据结构与算法基础
+34. 说一下几种常见的排序算法和分别的复杂度。
+35. 什么是跳表？
+36. 如何确认一个链表有环？进一步，确认环的位置。
+37. 如何遍历一棵二叉树？
+38. 倒排一个LinkedList。
+39. HashSet的实现方式
+   多线程/并发
+40. Java中常见的锁，互斥锁，读写锁，信号量
+41. 原子Atomic类，如何保证原子性，CAS硬件指令
+42. volatile，可见性问题的原因，硬件架构，L3 Cache，QPI，乐观锁
+43. 如何实现一个线程安全的数据结构
+44. 如何避免死锁
+45. 如何解决ABA问题
+46. Synchronized关键字的作用？
+47. Volatile关键字的作用？
+48. Java内存模型是怎样的？
+49. HashMap在多线程环境下使用需要注意什么？为什么？
+50. Java程序中启动一个线程是用run()还是start()？
+51. 什么是守护线程？有什么用？
+52. 什么是死锁？如何避免
+53. 线程和进程的差别是什么？
+54. Java里面的Threadlocal是怎样实现的？
+55. ConcurrentHashMap的实现原理是？
+56. sleep和wait区别
+57. notify和notifyAll区别
+58. volatile关键字的作用
+59. ThreadLocal的作用与实现
+60. 两个线程如何串行执行
+61. 上下文切换是什么含义
+62. 可以运行时kill掉一个线程吗？
+63. 什么是条件锁、读写锁、自旋锁、可重入锁？
+64. 什么是协程（用户态线程，减少数据拷贝，降低CPU开销，无callback函数）？
+65. 线程池ThreadPoolExecutor的实现原理？
+66. J.U.C下的常见类的使用。lock, synchronized， ThreadPool的深入考察； BlockingQueue的使用。（take，poll的区别，put，offer的区别）；原子类的实现。
+67. 各种常见锁使用如果上面这些掌握很好，还可以看看更深一点的 False Sharing，Cache Line，可见性与原子性等；
+    Linux使用与问题分析排查
+68. 硬链接和软链接的区别？
+69. inode是什么？
+70. Linux常用命令有哪些？
+71. 怎么看一个Java线程的资源耗用？
+72. Load过高的可能性有哪些？
+73. /etc/hosts 文件什么做用？
+74. /etc/resolv.conf文件什么作用？
+75. 如何快速的将一个文本中所有“abc”替换为“xyz”？
+76. 你常用的Linux下用来进行网络和磁盘IO分析的工具有哪些？
+77. 你常用的Linux下用来进行内存和CPU分析的工具有哪些？
+78. 发现磁盘空间不够，如何快速找出占用空间最大的文件？
+79. Java服务端问题排查（OOM，CPU高，Load高，类冲突）
+80. Java常用问题排查工具及用法（top, iostat, vmstat, sar, tcpdump, jvisualvm, jmap, jconsole）
+81. Thread dump文件如何分析（Runnable，锁，代码栈，操作系统线程ID关联）
+82. grep，awk，sed； 是否自己写过shell脚本；
+83. 常见的cpu load过高，us过高，一般是什么问题。引申出是否用过top，jstat，jstack等。
+84. 常见的内存问题一般有哪些。 引申出是否用过free，top， jmap等。
+    框架使用
+85. Spring中Bean的生命周期。
+86. SpringMVC或Struts处理请求的流程。
+87. Spring AOP解决了什么问题？怎么实现的？aop与cglib，与asm的关系。
+88. Spring事务的传播属性是怎么回事？它会影响什么？
+89. Spring中BeanFactory和FactoryBean有什么区别？
+90. Spring框架中IOC的原理是什么？
+91. spring的依赖注入有哪几种方式
+92. struts工作流程
+93. 用Spring如何实现一个切面？
+94. Spring 如何实现数据库事务？
+95. Hibernate和Ibatis这类ORM框架的区别？什么是ORM，解决的痛点是什么？
+96. spriong ioc的生命周期，（init-method，intilizingbean接口方法afterPropertiesSet的先后顺序）等。
+97. Hibernate对一二级缓存的使用，Lazy-Load的理解；
+98. Spring IoC AOP自己用代码如何实现
+99. RPC的负载均衡、服务发现怎么做的
+100. 几种推送模型的区别，long polling，websocket
 
 数据库相关
 1. MySQL InnoDB的特点？

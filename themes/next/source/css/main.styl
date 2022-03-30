@@ -33,11 +33,14 @@ for $inject_mixin in hexo-config('injects.mixin')
 // Components
 @import '_common/components';
 
+// Zoomify
+if (hexo-config('post.zoomify_img')) {
+  @import "zoomify"
+}
 
 // Schemes Layer
 // --------------------------------------------------
 @import '_schemes/' + $scheme;
-
 
 // Custom Layer
 // --------------------------------------------------

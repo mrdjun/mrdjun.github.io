@@ -13,13 +13,14 @@
   {#################}
   <div class="post-block">
     <div class="post-content">
+      {%- if theme.tag_title %}
       <div class="collection-title">
         <h1 class="collection-header">
           {{- page.tag }}
           <small>{{ __('title.tag') }}</small>
         </h1>
       </div>
-
+      {%- endif %}
       {{ post_template.render(page.posts) }}
     </div>
   </div>

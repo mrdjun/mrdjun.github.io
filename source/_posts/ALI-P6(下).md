@@ -1,5 +1,5 @@
 ---
-title: Ali-P6一面(下)
+title: 阿里P6一面(下)
 description: Encrypted article.
 password: hellomrdjun
 theme: Up
@@ -7,7 +7,7 @@ message: "文章已加密，请输入密码 \U0001F61B："
 wrong_pass_message: "密码错误 \U0001F62D"
 wrong_hash_message: "当前文章不能校验\U0001F62D"
 abbrlink: e2c8b9c5
-date: 2019-03-07 00:01:53
+date: 2020-08-25 00:01:53
 ---
 
 1. 对岗位需要的人才画像有清晰的认识
@@ -33,7 +33,7 @@ Q&A
 java中垃圾收集的方法有哪些？
 
 1. XSS是指恶意攻击者利用网站没有对用户提交数据进行转义处理或者过滤不足的缺点，进而添加一些代码，嵌入到web页面中去。使别的用户访问都会执行相应的嵌入代码。防范XSS攻击要点：
-  什么是XSS？如何防范XSS攻击？
+    什么是XSS？如何防范XSS攻击？
     a. 特殊字符编码处理，如<>编码为&lt;&gt;
     b. 过滤危险关键字，如onclick、iframe、onerror、script等;
     c. 不引用外部资源，如必须引用图片资源，将图片下载到图库，替换成自己的域名。
