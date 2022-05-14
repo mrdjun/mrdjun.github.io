@@ -16,8 +16,6 @@ hexo.extend.filter.register('before_generate', () => {
 hexo.on('ready', () => {
   if (process.argv.includes('--next-disable-banner')) return;
   const { version } = require('../../package.json');
-  hexo.log.info(`==================================
-NEXT version ${version}
-Documentation: https://github.com/next-theme/hexo-theme-next
-========================================`);
+  hexo.log.info(`NEXT version ${version}`);
+  hexo.log.info('Documentation: https://github.com/next-theme/hexo-theme-next');
 });
