@@ -208,7 +208,7 @@ toc:
   # If true, all level of TOC in a post will be displayed, rather than the activated part of it.
   expand_all: true
   # Maximum heading depth of generated toc.
-  max_depth: 3
+  max_depth: 4
 
 
 # ---------------------------------------------------------------
