@@ -1,10 +1,10 @@
 ---
 title: JVM-TLAB
-date: 2021-11-02 23:33:13
 tags:
   - JVM
-description: >-
-  TLAB是JVM为每个线程在Eden区中分配的一个私有区域。使用TLAB可避免一些非线程安全问题，同时提升内存分配的吞吐量。
+description: TLAB是JVM为每个线程在Eden区中分配的一个私有区域。使用TLAB可避免一些非线程安全问题，同时提升内存分配的吞吐量。
+abbrlink: 5bb29d6f
+date: 2021-11-02 23:33:13
 ---
 
 ## 基本概念

@@ -1,10 +1,10 @@
 ---
 title: MYSQL事务
-date: 2021-02-21 18:20:54
 tags:
   - MySQL
-desciption: >-
-  事务的创建、4大特性、3大问题、4个隔离级别。
+desciption: 事务的创建、4大特性、3大问题、4个隔离级别。
+abbrlink: 40cc508f
+date: 2021-02-21 18:20:54
 ---
 
 ## 事务的4大特性（ACID）

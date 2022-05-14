@@ -1,10 +1,10 @@
 ---
 title: JVM对代码的优化
-date: 2022-01-25 22:50:25
 tags:
   - JVM
-description: >-
-  在Java中的Javac、JIT、AOT三种编译方式中会对开发者代码进行编译优化。
+description: 在Java中的Javac、JIT、AOT三种编译方式中会对开发者代码进行编译优化。
+abbrlink: c69e3549
+date: 2022-01-25 22:50:25
 ---
 
 JVM（HotSpot）在哪些阶段能对开发者写的代码进行优化？在Java中的三种编译方式中：前端编译（Javac）、即时编译（Just In Time）、提前编译（Ahead Of Time）。

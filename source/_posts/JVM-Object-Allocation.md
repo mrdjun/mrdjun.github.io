@@ -1,10 +1,10 @@
 ---
 title: JVM对象的分配过程
-date: 2021-11-02 00:28:36
 tags:
   - JVM
-description: >-
-  创建一个新的对象时，JVM会确定该对象存放于Eden区还是Old区，还是直接OOM。
+description: 创建一个新的对象时，JVM会确定该对象存放于Eden区还是Old区，还是直接OOM。
+abbrlink: baebd9bc
+date: 2021-11-02 00:28:36
 ---
 
 ## MinorGC、YoungGC、MajorGC、FullGC的区别

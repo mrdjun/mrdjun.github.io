@@ -1,10 +1,10 @@
 ---
 title: JVM年轻代与老年代
-date: 2021-10-08 23:16:01
 tags:
   - JVM
-description: >-
-  JVM堆区分为年轻代（Young Gen）与老年代（Old Gen）。年轻代由Eden、S0/S1区组成。
+description: JVM堆区分为年轻代（Young Gen）与老年代（Old Gen）。年轻代由Eden、S0/S1区组成。
+abbrlink: 5ecdfc3e
+date: 2021-10-08 23:16:01
 ---
 
 ## 堆区划分
