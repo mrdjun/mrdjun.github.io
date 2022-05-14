@@ -1,7 +1,7 @@
 ---
 title: 优雅的中断线程
 tags:
-  - Juc并发包
+  - JUC并发包
 abbrlink: 5f59eead
 date: 2021-04-12 16:20:43
 description: >-

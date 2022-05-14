@@ -1,5 +1,5 @@
 ---
-title: MQ-RabbitMQ-Lazy-Queue
+title: RabbitMQ惰性队列
 tags:
   - 消息中间件
   - RabbitMQ

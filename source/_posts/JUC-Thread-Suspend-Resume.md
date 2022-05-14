@@ -1,7 +1,7 @@
 ---
 title: 线程Suspend & Resume
 tags:
-  - Juc并发包
+  - JUC并发包
 description: suspend和resume方法已经遗弃了。suspend()用于线程挂起，被挂起的线程必须要等到调用resume()方法后才能继续执行。
 abbrlink: 64fda4e0
 date: 2021-06-07 21:15:16

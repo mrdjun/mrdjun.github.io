@@ -1,7 +1,7 @@
 ---
 title: CPU优化性能的手段
 tags:
-  - Juc并发包
+  - JUC并发包
 abbrlink: ffba6cb8
 date: 2021-08-22 12:51:12
 description: >-

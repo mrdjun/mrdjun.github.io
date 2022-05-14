@@ -1,7 +1,7 @@
 ---
 title: Callable接口
 tags:
-  - Juc并发包
+  - JUC并发包
 abbrlink: b279e65c
 date: 2022-03-04 14:28:34
 description: >-

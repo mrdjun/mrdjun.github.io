@@ -1,7 +1,7 @@
 ---
 title: ForkJoin
 tags:
-  - Juc并发包
+  - JUC并发包
 abbrlink: f6316a6c
 date: 2021-08-22 12:49:54
 description: >-

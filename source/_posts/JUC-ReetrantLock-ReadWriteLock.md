@@ -1,7 +1,7 @@
 ---
 title: ReetrantLock & ReadWriteLock
 tags:
-  - Juc并发包
+  - JUC并发包
 description: >-
   ReentrantLock实现了Lock接口，核心是AQS，独享锁、支持公平锁和非公平锁两种模式。ReadWriteLock维护一对关联锁，一个用于只读操作，一个用于写入。
 abbrlink: 5fd8877a

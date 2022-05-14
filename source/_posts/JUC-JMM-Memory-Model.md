@@ -1,7 +1,7 @@
 ---
 title: JMM内存模型
 tags:
-  - Juc并发包
+  - JUC并发包
 abbrlink: eb5989ef
 date: 2021-05-05 18:40:12
 description: >-

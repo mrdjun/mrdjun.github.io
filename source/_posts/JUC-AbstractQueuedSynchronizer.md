@@ -1,8 +1,8 @@
 ---
 title: AQS抽象队列同步器
-date: '2021-05-13 11:54:34'
+date: 2021-05-13 11:54:34
 tags:
-  - Juc并发包
+  - JUC并发包
 abbrlink: 290c6541
 description: >-
   AQS全称为AbstractQueuedSynchronizer，提供了对资源占用、释放，线程等待、唤醒等接口和具体实现。可以用在各种需要控制资源争用的场景，例如ReentrantLock、CountDownLatch、Semphore中。

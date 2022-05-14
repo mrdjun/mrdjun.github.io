@@ -1,7 +1,7 @@
 ---
 title: Semaphore信号量
 tags:
-  - Juc并发包
+  - JUC并发包
 description: Semaphore应用场景有多个共享资源互斥、并发限流（如Hystrix）等，核心接口是AQS，信号量是操作系统中，实现进程间资源的互斥与同步。
 abbrlink: f353d57c
 date: 2022-03-06 17:11:11

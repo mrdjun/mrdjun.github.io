@@ -1,7 +1,7 @@
 ---
 title: 四种单例模式
 tags:
-  - Juc并发包
+  - JUC并发包
 abbrlink: e38626a3
 date: 2021-08-22 12:12:55
 description: >-

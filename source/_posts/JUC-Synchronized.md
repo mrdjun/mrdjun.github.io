@@ -1,7 +1,7 @@
 ---
 title: Synchronized
 tags:
-  - Juc并发包
+  - JUC并发包
 abbrlink: 8360cd4
 date: 2021-06-01 17:01:18
 description: >-

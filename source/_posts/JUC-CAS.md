@@ -2,7 +2,7 @@
 title: CAS
 date: 2021-08-22 12:49:26
 tags:
-- Juc并发包
+  - JUC并发包
 abbrlink: 969d9481
 description: >-
   CAS全称Compare and swap（比较并替换），CAS虽然能很高效的解决原子操作，但CAS存在三大弊端：ABA问题、自旋时间长时浪费CPU、只能保证一个共享变量的原子操作。

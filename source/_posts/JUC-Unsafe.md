@@ -1,7 +1,7 @@
 ---
 title: Unsafe
 tags:
-  - Juc并发包
+  - JUC并发包
 abbrlink: f5630658
 date: 2021-08-22 16:49:26
 description: >-
