@@ -1,14 +1,15 @@
 ---
-title: MQ-Category
+title: 常见MQ
+tags:
+  - 消息中间件
+description: 'ActiveMQ,Kafka,RabbitMQ,RocketMQ,···'
+abbrlink: 3a45e88c
 date: 2021-06-20 23:10:25
-tags: 
- - 消息中间件
-description: >-
-   ActiveMQ、Kafka、RocketMQ、RabbitMQ,...
-  ActiveMQ、Kafka、RabbitMQ、RocketMQ，...
 ---
 
 ## ActiveMQ
+
+消息中间件接受并转发消息。你可以把它当做一个快递站点，当你要发送一个包裹时，你把你的包裹放到快递站，快递员最终会把你的快递送到收件人那里，按照这种逻辑消息中间件就是一个快递站，一个快递员帮你传递快件。它与快递站的主要区别在于，它不处理快件而是接收，存储和转发消息数据。
 
 **优点**
 

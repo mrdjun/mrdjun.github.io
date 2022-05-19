@@ -25,7 +25,6 @@ date: 2021-11-02 23:33:13
 
 一旦对象在TLAB空间分配失败时（例如空间不足），JVM就会尝试通过使用加锁机制来确保数据操作的原子性，从而直接在Eden空间中分配内存。
 
-![img](JVM-TLAB/JVM - TLAB.png)
+![JVM-TLAB](JVM-TLAB/JVM-TLAB.png)
 
 现在new一个对象，然后TLAB分配，如果TLAB空间够用，那么就对象实例化，如果不够用就只能用Eden公共的部分，如果还不够用，那么就会触发GC。
-
