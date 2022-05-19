@@ -5,7 +5,7 @@ tags:
 description: >-
   ReentrantLock实现了Lock接口，核心是AQS，独享锁、支持公平锁和非公平锁两种模式。ReadWriteLock维护一对关联锁，一个用于只读操作，一个用于写入。
 abbrlink: 5fd8877a
-date: 2022-03-06 16:58:42
+date: 2021-06-02 16:58:42
 ---
 
 主要有读写锁和可重入锁两个重要的实现。
