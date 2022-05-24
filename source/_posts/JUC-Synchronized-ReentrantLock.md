@@ -5,6 +5,7 @@ tags:
 description: >-
   两者都是可重入锁，synchronized依赖JVM(Monitor)实现；ReenTrantLock依赖JDK的API实现。自JDK1.6引入偏向锁的概念后，synchronized性能与ReentrantLock相差不大，甚至官方建议使用synchronized。
 abbrlink: ace4e0d0
+date: 2021-06-03 17:11:11
 ---
 
 [synchronized 文章阅读地址](https://mrdjun.gitee.io/p/8360cd4.html)
