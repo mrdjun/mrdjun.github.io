@@ -33,7 +33,8 @@ hexo.extend.helper.register('next_js', function(file, pjax = false) {
 });
 
 hexo.extend.helper.register('next_vendors', function(name) {
-  const { url, integrity } = this.theme.vendors[name];
+  const url = this.theme.vendors[name].url ? this.theme.vendors[name].url : this.theme.vendors[name];
+  const integrity = this.theme.vendors[name].integrity;
   const type = url.endsWith('css') ? 'css' : 'js';
   if (type === 'css') {
     if (integrity) return `<link rel="stylesheet" href="${url}" integrity="${integrity}" crossorigin="anonymous">`;

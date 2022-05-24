@@ -2,7 +2,7 @@
 {% import '_macro/post-collapse.njk' as post_template with context %}
 {% import '_macro/sidebar.njk' as sidebar_template with context %}
 
-{% block title %}{{ __('title.tag') }}: {{ page.tag }} | {{ title }}{% endblock %}
+{% block title %} {{ page.tag }} | {{ title }}{% endblock %}
 
 {% block class %}tag posts-collapse{% endblock %}
 

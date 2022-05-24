@@ -19,16 +19,16 @@ minify: false
 # Define custom file paths.
 # Create your custom files in site directory `source/_data` and uncomment needed files below.
 custom_file_path:
-  #head: source/_data/head.njk
-  #header: source/_data/header.njk
-  #sidebar: source/_data/sidebar.njk
-  #postMeta: source/_data/post-meta.njk
-  #postBodyEnd: source/_data/post-body-end.njk
-  #footer: source/_data/footer.njk
-  #bodyEnd: source/_data/body-end.njk
-  #variable: source/_data/variables.styl
-  #mixin: source/_data/mixins.styl
-  #style: source/_data/styles.styl
+#head: source/_data/head.njk
+#header: source/_data/header.njk
+#sidebar: source/_data/sidebar.njk
+#postMeta: source/_data/post-meta.njk
+#postBodyEnd: source/_data/post-body-end.njk
+#footer: source/_data/footer.njk
+#bodyEnd: source/_data/body-end.njk
+#variable: source/_data/variables.styl
+#mixin: source/_data/mixins.styl
+#style: source/_data/styles.styl
 
 
 # ---------------------------------------------------------------
@@ -171,16 +171,16 @@ tag_title: false
 # Key is the link label showing to end users.
 # Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
 social:
-  # GitHub: https://github.com/yourname || fab fa-github
-  # E-Mail: mailto:yourname@gmail.com || fa fa-envelope
-  # Weibo: https://weibo.com/yourname || fab fa-weibo
-  # Google: https://plus.google.com/yourname || fab fa-google
-  #Twitter: https://twitter.com/yourname || fab fa-twitter
-  #FB Page: https://www.facebook.com/yourname || fab fa-facebook
-  #StackOverflow: https://stackoverflow.com/yourname || fab fa-stack-overflow
-  #YouTube: https://youtube.com/yourname || fab fa-youtube
-  #Instagram: https://instagram.com/yourname || fab fa-instagram
-  #Skype: skype:yourname?call|chat || fab fa-skype
+# GitHub: https://github.com/yourname || fab fa-github
+# E-Mail: mailto:yourname@gmail.com || fa fa-envelope
+# Weibo: https://weibo.com/yourname || fab fa-weibo
+# Google: https://plus.google.com/yourname || fab fa-google
+#Twitter: https://twitter.com/yourname || fab fa-twitter
+#FB Page: https://www.facebook.com/yourname || fab fa-facebook
+#StackOverflow: https://stackoverflow.com/yourname || fab fa-stack-overflow
+#YouTube: https://youtube.com/yourname || fab fa-youtube
+#Instagram: https://instagram.com/yourname || fab fa-instagram
+#Skype: skype:yourname?call|chat || fab fa-skype
 
 social_icons:
   enable: true
@@ -195,7 +195,7 @@ links_settings:
   layout: block
 
 links:
-  #Title: https://example.com
+#Title: https://example.com
 
 # Table of Contents in the Sidebar
 # Front-matter variable (nonsupport wrap expand_all).
@@ -306,10 +306,10 @@ reward:
 # Subscribe through Telegram Channel, Twitter, etc.
 # Usage: `Key: permalink || icon` (Font Awesome)
 follow_me:
-  #Twitter: https://twitter.com/username || fab fa-twitter
-  #Telegram: https://t.me/channel_name || fab fa-telegram
-  #WeChat: /images/wechat_channel.jpg || fab fa-weixin
-  #RSS: /atom.xml || fa fa-rss
+#Twitter: https://twitter.com/username || fab fa-twitter
+#Telegram: https://t.me/channel_name || fab fa-telegram
+#WeChat: /images/wechat_channel.jpg || fab fa-weixin
+#RSS: /atom.xml || fa fa-rss
 
 # Related popular posts
 # Dependencies: https://github.com/sergeyzwezdin/hexo-related-posts
@@ -612,11 +612,11 @@ comments:
   lazyload: true
   # Modify texts or order for any naves, here are some examples.
   nav:
-    #disqus:
-    #  text: Load Disqus
-    #  order: -1
-    #gitalk:
-    #  order: -2
+  #disqus:
+  #  text: Load Disqus
+  #  order: -1
+  #gitalk:
+  #  order: -2
 
 # Disqus
 # For more information: https://disqus.com
@@ -710,7 +710,7 @@ isso: # <data_isso>
 rating:
   enable: false
   id:     # <app_id>
-  color:  "#fc6423"
+  color: "#fc6423"
 
 # AddThis Share. See: https://www.addthis.com
 # Go to https://www.addthis.com/dashboard to customize your tools.
@@ -941,19 +941,48 @@ vendors:
   # Custom CDN URL
   # For example:
   # custom_cdn_url: https://cdn.jsdelivr.net/npm/${npm_name}@${version}/${minified}
-  # custom_cdn_url: https://cdnjs.cloudflare.com/ajax/libs/${cdnjs_name}/${version}/${cdnjs_file}
-  custom_cdn_url:
-  # Valine
-  # valine: https://cdn.jsdelivr.net/npm/valine@1.4.16/dist/Valine.min.js
-  # valine: //cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js
-  valine:  /js/valine.min.js
+  custom_cdn_url: https://cdnjs.cloudflare.com/ajax/libs/${cdnjs_name}/${version}/${cdnjs_file}
+  # custom_cdn_url:
+  # 修改了NEXT-Theme的源码实现的：themes/next/scripts/helpers/engine.js
+  valine: /js/third-party/valine.min.js
+  anime: /js/third-party/anime.min.js
+  prism: /js/third-party/prism/prism-core.min.js
+  prism_autoloader: /js/third-party/prism/prism-autoloader.min.js
+  prism_line_numbers: /js/third-party/prism/prism-line-numbers.min.js
+  mathjax: /js/third-party/math/tex-mml-chtml.js
+  katex: /lib/katex/katex.min.css
+  copy_tex_js: /lib/katex/copy-tex.min.js
+  copy_tex_css: /lib/katex/copy-tex.min.css
+  pjax: /js/third-party/pjax.min.js
+  jquery: /js/third-party/jquery.min.js
+  fancybox_js: /lib/fancybox/jquery.fancybox.min.js
+  fancybox_css: /lib/fancybox/jquery.fancybox.min.css
+  mediumzoom: /js/third-party/medium-zoom.min.js
+  lazyload: /js/third-party/lozad.min.js
+  pangu: /js/third-party/pangu.min.js
+  quicklink: /js/third-party/quicklink.umd.js
+  disqusjs_js: /lib/disqus/disqus.js
+  disqusjs_css: /lib/disqus/disqus.css
+  gitalk_js: /lib/gitalk/gitalk.min.js
+  gitalk_css: /lib/gitalk/gitalk.css
+  firebase_app: /lib/firebase/firebase-app-compat.js
+  firebase_firestore: /lib/firebase/firebase-firestore-compat.js
+  algolia_search: /js/third-party/search/algoliasearch-lite.umd.js
+  local_search: /js/third-party/search/search.js
+  instant_search: /js/third-party/search/instantsearch.production.min.js
+  pdfobject: /js/third-party/pdfobject.min.js
+  mermaid: /js/third-party/mermaid.min.js
+  animate_css: /lib/animate/animate.min.css
+  canvas_ribbon: /js/third-party/ribbon.min.js
+  fontawesome: /lib/font-awesome/css/font-awesome.min.css
+
 mouse:
   # 鼠标点击爆炸特效
   explode: true
 
 # friends links
 friends:
-#  MrDJun'blog: https://mrdjun.blog.csdn.net || fa fa-star
+  # MrDJun'blog: https://mrdjun.blog.csdn.net || fa fa-star
   zzhack: https://zzhack.fun || fa fa-star
   Ahri Love: https://javabullshit.github.io/ || fa fa-star
   故人: https://imgod.me/ || fa fa-star
