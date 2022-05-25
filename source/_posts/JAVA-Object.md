@@ -3,7 +3,7 @@ title: Object类
 abbrlink: 7ace31b3
 date: 2021-02-05 14:33:47
 tags:
-  - JAVA
+  - Java
 description: >-
   Object 类是一个特殊的类，是所有类的父类。它主要提供了 11 个方法。
 ---

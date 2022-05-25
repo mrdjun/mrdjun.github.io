@@ -103,7 +103,7 @@ font-family-icons($icon = '') {
   if ($icon) {
     content: $icon;
   }
-  font-family: 'Font Awesome 5 Free';
+  font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;
   font-weight: 900;
 }
 
@@ -125,7 +125,7 @@ sidebar-toggle-alignment($reverse) {
   if (($scheme == 'Muse') or ($scheme == 'Mist')) {
     $condition = $condition == $reverse;
   }
-  return $condition ? ('left' 'right') : ('right' 'left');
+  return $condition ? ('left' 'right'):('right' 'left');
 }
 
 sidebar-toggle-position($reverse) {
@@ -135,6 +135,7 @@ sidebar-toggle-position($reverse) {
     {$alignment}: $b2t-position-right-mobile;
   }
 }
+
 if (hexo-config('sidebar.toggle')) {
   sidebar-toggle() {
     background: $b2t-bg-color;

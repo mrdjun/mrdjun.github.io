@@ -14,30 +14,57 @@
     text-align: unquote(hexo-config('text_align.mobile'));
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    // Supported plugins: hexo-renderer-markdown-it hexo-renderer-marked
-    .header-anchor, .headerlink {
-      border-bottom-style: none;
-      color: inherit;
-      float: right;
-      font-size: $font-size-small;
-      margin-left: 10px;
-      opacity: 0;
+  h2, h3, h4, h5, h6 {
+    padding-top: 1px;
+    font-weight: 700;
+    margin: 30px 0 15px;
+    line-height: 1.5;
+  }
 
-      &::before {
-        font-family-icons('\f0c1');
-      }
+  h2 {
+    position: relative;
+    margin-left: 19px;
+    font-weight: 600;
+    font-size: 1.1rem;
+
+    &:before {
+      content: "#";
+      color: #6db33f;
+      position: absolute;
+      left: -.9em;
+      top: -4px;
+      font-size: 1.4em
     }
+  }
 
-    &:hover {
-      .header-anchor, .headerlink {
-        opacity: .5;
+  h3 {
+    font-size: 1rem;
 
-        &:hover {
-          opacity: 1;
-        }
-      }
+    &:before {
+      font-family: FontAwesome;
+      content: "\f02e";
+      margin-right: .5rem;
+      color: rgba(255, 153, 102, .8)
     }
+  }
+
+  h4 {
+    font-size: .9rem;
+
+    &:before {
+      font-family: FontAwesome;
+      content: "\f06c";
+      margin-right: .5rem;
+      color: #88cc2a
+    }
+  }
+
+  h5 {
+    font-size: .8rem;
+  }
+
+  h6 {
+    font-size: .8rem;
   }
 
   .exturl .fa {
@@ -46,6 +73,7 @@
   }
 
   // For fancybox and pandoc
+
   .image-caption, img + figcaption, .fancybox + figcaption {
     color: $grey-dark;
     font-size: $font-size-small;
@@ -81,7 +109,7 @@
     color: $green-grass;
     border-bottom: 1px dashed $green-grass;
 
-    &:hover{
+    &:hover {
       color: $orange;
     }
   }

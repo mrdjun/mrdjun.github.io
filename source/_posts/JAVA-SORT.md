@@ -1,7 +1,7 @@
 ---
 title: 常用的排序方法
 tags:
-  - JAVA
+  - Java
 description: 几种常用的排序方法：冒泡、选择、插入、希尔排序。
 abbrlink: b07f48bf
 date: 2022-05-14 22:04:09

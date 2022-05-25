@@ -3,7 +3,7 @@ title: HashMap
 abbrlink: 9da5e46
 date: 2021-06-01 16:27:00
 tags:
-  - JAVA
+  - Java
 description: >-
   HashMap的源码解读，在日常开发中如果正确的使用HashMap。
 ---

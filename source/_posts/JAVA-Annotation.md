@@ -3,7 +3,7 @@ title: JAVA注解
 abbrlink: 6ba397bc
 date: 2021-04-16 10:33:03
 tags:
-  - JAVA
+  - Java
 description: >-
   注解是JDK5.0 引入的一种注释机制，核心包是 java.lang.annotation ，下面有一个 Annotation接口，是所有注解都默认继承的（Javap .class可以看到继承关系）。
 ---
