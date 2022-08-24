@@ -48,7 +48,7 @@ New 的对象先放在伊甸园区，当伊甸园区的空间填满时，程序�
 
 此次GC完成后，伊甸园区是空的。
 
-![image-20211018225038962](JVM-Object-Allocation/JVM - 第一次GC过程.png)
+![image-20211018225038962](JVM-Object-Allocation/JVM-第一次GC过程.png)
 
 S0区和S1区，也被叫做From区和To区，判断二者很简单，谁是空的谁是To区，则另外一个就是From区；
 
@@ -60,7 +60,7 @@ S0区和S1区，也被叫做From区和To区，判断二者很简单，谁是空�
 
 第二次GC完成后，S0区为空了，此时S0区为To区，S1区为From区；
 
-![image-20211018225544620](JVM-Object-Allocation/JVM - 第二次GC过程.png)
+![image-20211018225544620](JVM-Object-Allocation/JVM-第二次GC过程.png)
 
 ### 第N次GC
 
@@ -68,7 +68,7 @@ S0区和S1区，也被叫做From区和To区，判断二者很简单，谁是空�
 
 其中15为默认阈值，这个阈值是可以自己设置：`-XX:MaxTenuringThreshold=N`
 
-![image-20211018225827055](JVM-Object-Allocation/JVM - 第N次GC过程.png)
+![image-20211018225827055](JVM-Object-Allocation/JVM-第N次GC过程.png)
 
 ## 对象分配的特殊情况
 
@@ -82,5 +82,5 @@ S0区和S1区，也被叫做From区和To区，判断二者很简单，谁是空�
 
 在进行YGC的时候，幸存的对象会放入幸存区，此时判断是否能放下，如果幸存区放不下，就会直接放入Old区。
 
-![image-20211018230016194](JVM-Object-Allocation/JVM - 特殊的GC过程.png)
+![image-20211018230016194](JVM-Object-Allocation/JVM-特殊的GC过程.png)
 

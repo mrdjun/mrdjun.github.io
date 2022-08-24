@@ -28,7 +28,7 @@ channel.queueDeclare("queue_name", true, false, false, arguments);
 
 **在RabbitMQ的控制台添加优先级队列**
 
-![image-20210626201354937](MQ-RabbitMQ-Priority-Queue/RabbitMQ - 控制台新增优先级队列.png)
+![image-20210626201354937](MQ-RabbitMQ-Priority-Queue/RabbitMQ-控制台新增优先级队列.png)
 
 **代码示例**
 

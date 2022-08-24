@@ -10,11 +10,11 @@ date: 2021-06-21 13:07:25
 
 **生产者，交换机，队列，消费者**。四大核心类似于以下的协同关系。
 
-![image-20210619160155955](MQ-RabbitMQ-Four-Concept/RabbitMQ - 四大核心示例.png)
+![image-20210619160155955](MQ-RabbitMQ-Four-Concept/RabbitMQ-四大核心示例.png)
 
 四大核心的相互关联。
 
-![image-20210619160347762](MQ-RabbitMQ-Four-Concept/RabbitMQ - 四大核心关系.png)
+![image-20210619160347762](MQ-RabbitMQ-Four-Concept/RabbitMQ-四大核心关系.png)
 
 **生产者**
 
@@ -34,7 +34,7 @@ date: 2021-06-21 13:07:25
 
 **各个名词介绍**
 
-![image-20210619161230922](MQ-RabbitMQ-Four-Concept/RabbitMQ - 工作原理示意图.png)
+![image-20210619161230922](MQ-RabbitMQ-Four-Concept/RabbitMQ-工作原理示意图.png)
 
 **Broker**
 

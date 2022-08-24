@@ -12,11 +12,11 @@ date: 2021-08-24 22:57:39
 
 简单模式，work模式，Publish/Subscribe发布与订阅模式，Routing路由模式，Topics主题模式，RPC远程调用模式（远程调用，不太算MQ；不作介绍）；
 
-![image-20210619144630056](MQ-RabbitMQ-Six-Mode/RabbitMQ - 六种模式.png)
+![image-20210619144630056](MQ-RabbitMQ-Six-Mode/RabbitMQ-六种模式.png)
 
 ## 简单模式（Simple）
 
-![image-20210619172049952](MQ-RabbitMQ-Six-Mode/RabbitMQ - 简易模式.png)
+![image-20210619172049952](MQ-RabbitMQ-Six-Mode/RabbitMQ-简易模式.png)
 
 ```java
 public class SimpleProducer {
@@ -117,7 +117,7 @@ public class SimpleConsumer {
 
 ## 工作队列模式（Work Queues）
 
-![image-20210619172222080](MQ-RabbitMQ-Six-Mode/RabbitMQ - 工作队列模式.png)
+![image-20210619172222080](MQ-RabbitMQ-Six-Mode/RabbitMQ-工作队列模式.png)
 
 工作队列（Work Queues）与入门程序的简单模式相比，多了一个或一些消费端，多个消费端共同消费同一个队列中的消息。工作队列（又称为任务队列）的主要思想是避免立即执行资源密集型任务，而不得不等待它完成。相反我们安排任务在之后执行。我们把任务封装为消息并将其发送到队列。在后台运行的工作进程将弹出任务并最终执行作业。当有多个工作线程时，这些工作线程将一起处理这些任务。
 
@@ -127,7 +127,7 @@ public class SimpleConsumer {
 
 一个消息只能被处理一次，不可以被处理多次。
 
-![image-20210619173847176](MQ-RabbitMQ-Six-Mode/RabbitMQ - 工作队列模式的消息分发.png)
+![image-20210619173847176](MQ-RabbitMQ-Six-Mode/RabbitMQ-工作队列模式的消息分发.png)
 
 创建一个生产者，每一秒发送一次消息
 
@@ -185,7 +185,7 @@ public class WorkQueueConsumer1 {
 
 ## 发布订阅模式（Publish subscribe）
 
-![image-20210619175938554](MQ-RabbitMQ-Six-Mode/RabbitMQ - 发布订阅模式.png)
+![image-20210619175938554](MQ-RabbitMQ-Six-Mode/RabbitMQ-发布订阅模式.png)
 
 在发布订阅模型中，多了一个x(exchange)角色，而且过程略有变化。
 
@@ -205,7 +205,7 @@ public class WorkQueueConsumer1 {
 
 **Exchange（交换机）只负责转发消息，不具备存储消息的能力**，因此如果没有任何队列与Exchange**绑定**，或者没有符合路由规则的队列，那么消息会丢失！
 
-![image-20210619185256018](MQ-RabbitMQ-Six-Mode/RabbitMQ - Exchange交换机.png)
+![image-20210619185256018](MQ-RabbitMQ-Six-Mode/RabbitMQ-Exchange交换机.png)
 
 ### **代码实现**
 
@@ -282,7 +282,7 @@ public class FanoutConsumer1 {
 
 3.Exchange不再把消息交给每一个绑定的队列，而是根据消息的Routing Key进行判断，只有队列的Routingkey与消息的 Routing key完全一致，才会接收到消息。
 
-![image-20210619201413347](MQ-RabbitMQ-Six-Mode/RabbitMQ - 路由模式.png)
+![image-20210619201413347](MQ-RabbitMQ-Six-Mode/RabbitMQ-路由模式.png)
 
 P：生产者，向Exchange发送消息，发送消息时，会指定一个routing key。
 
@@ -386,7 +386,7 @@ public class RoutingConsumer1 {
 
 Topic类型与Direct相比，都是可以根据RoutingKey把消息路由到不同的队列。只不过Topic类型Exchange可以让队列在绑定Routing key的时候使用通配符。
 
-![image-20210619214503441](MQ-RabbitMQ-Six-Mode/RabbitMQ - Topics通配符模式.png)
+![image-20210619214503441](MQ-RabbitMQ-Six-Mode/RabbitMQ-Topics通配符模式.png)
 
 Routingkey 一般都是有一个或多个单词组成，多个单词之间以“ . ”分割，例如： item.insert、item.insert.abc。
 
@@ -402,7 +402,7 @@ item.#：能够匹配 item.insert.abc 或者 item.insert
 
 item.*：只能匹配 item.insert
 
-<img src="MQ-RabbitMQ-Six-Mode/RabbitMQ - Topic Exchange路由键匹配规则.png" alt="image-20210619215508877" style="zoom:150%;" />
+<img src="source/_posts/MQ-RabbitMQ-Six-Mode/RabbitMQ-TopicExchange路由键匹配规则.png" alt="image-20210619215508877" style="zoom:150%;" />
 
 红色Queue：绑定的是usa.# ，因此凡是以 usa.开头的routing key 都会被匹配到。
 

@@ -7,9 +7,7 @@ abbrlink: 3eb3d776
 date: 2018-03-07 11:27:06
 ---
 
-## 2. 集合类
-
-#### 2.1 Java中有哪些容器（集合类）？
+### Java中有哪些容器（集合类）？
 
 Java中的集合类主要由Collection和Map这两个接口派生而出，其中Collection接口又派生出三个子接口，分别是Set、List、Queue。所有的Java集合类，都是Set、List、Queue、Map这四个接口的实现类，这四个接口将集合分成了四大类，其中
 
@@ -32,7 +30,7 @@ Map体系的继承树：
 
 *注：紫色框体代表接口，其中加粗的是代表四类集合的接口。蓝色框体代表实现类，其中有阴影的是常用实现类。*
 
-#### 2.2 Java中的容器，线程安全和线程不安全的分别有哪些？
+### Java中的容器，线程安全和线程不安全的分别有哪些？
 
 java.util包下的集合类大部分都是线程不安全的，例如我们常用的HashSet、TreeSet、ArrayList、LinkedList、ArrayDeque、HashMap、TreeMap，这些都是线程不安全的集合类，但是它们的优点是性能好。如果需要使用线程安全的集合类，则可以使用Collections工具类提供的synchronizedXxx()方法，将这些集合类包装成线程安全的集合类。
 
@@ -54,7 +52,7 @@ java.util.concurrent包下线程安全的集合类的体系结构：
 
 ![img](JAVA-BASE4/53AA859E1B3A9CD7709DF9366999B88D.jpeg)
 
-#### 2.3 Map接口有哪些实现类？
+### Map接口有哪些实现类？
 
 Map接口有很多实现类，其中比较常用的有HashMap、LinkedHashMap、TreeMap、ConcurrentHashMap。
 
@@ -62,7 +60,7 @@ Map接口有很多实现类，其中比较常用的有HashMap、LinkedHashMap、
 
 对于需要排序的场景，如果需要按插入顺序排序则可以使用LinkedHashMap，如果需要将key按自然顺序排列甚至是自定义顺序排列，则可以选择TreeMap。如果需要保证线程安全，则可以使用Collections工具类将上述实现类包装成线程安全的Map。
 
-#### 2.4 描述一下Map put的过程
+### 描述一下Map put的过程
 
 HashMap是最经典的Map实现，下面以它的视角介绍put的过程：
 
@@ -91,18 +89,18 @@ HashMap添加数据的详细过程，如下图：
 
 ![img](JAVA-BASE4/18330EB2310CB83A25FA317E65ED60EB.png)
 
-#### 2.5 如何得到一个线程安全的Map？
+### 如何得到一个线程安全的Map？
 
 1. 使用Collections工具类，将线程不安全的Map包装成线程安全的Map；
 2. 使用java.util.concurrent包下的Map，如ConcurrentHashMap；
 3. 不建议使用Hashtable，虽然Hashtable是线程安全的，但是性能较差。
 
-#### 2.6 HashMap有什么特点？
+### HashMap有什么特点？
 
 1. HashMap是线程不安全的实现；
 2. HashMap可以使用null作为key或value。
 
-#### 2.7 JDK7和JDK8中的HashMap有什么区别？
+### JDK7和JDK8中的HashMap有什么区别？
 
 JDK7中的HashMap，是基于数组+链表来实现的，它的底层维护一个Entry数组。它会根据计算的hashCode将对应的KV键值对存储到该数组中，一旦发生hashCode冲突，那么就会将该KV键值对放到对应的已有元素的后面， 此时便形成了一个链表式的存储结构。
 
@@ -110,7 +108,7 @@ JDK7中HashMap的实现方案有一个明显的缺点，即当Hash冲突严重�
 
 JDK8中的HashMap，是基于数组+链表+红黑树来实现的，它的底层维护一个Node数组。当链表的存储的数据个数大于等于8的时候，不再采用链表存储，而采用了红黑树存储结构。这么做主要是在查询的时间复杂度上进行优化，链表为O(N)，而红黑树一直是O(logN)，可以大大的提高查找性能。
 
-#### 2.8 介绍一下HashMap底层的实现原理
+### 介绍一下HashMap底层的实现原理
 
 它基于hash算法，通过put方法和get方法存储和获取对象。
 
@@ -118,7 +116,7 @@ JDK8中的HashMap，是基于数组+链表+红黑树来实现的，它的底层�
 
 如果发生碰撞的时候，HashMap通过链表将产生碰撞冲突的元素组织起来。在Java 8中，如果一个bucket中碰撞冲突的元素超过某个限制(默认是8)，则使用红黑树来替换链表，从而提高速度。
 
-#### 2.9 介绍一下HashMap的扩容机制
+### 介绍一下HashMap的扩容机制
 
 1. 数组的初始容量为16，而容量是以2的次方扩充的，一是为了提高性能使用足够大的数组，二是为了能使用位运算代替取模预算(据说提升了5~8倍)。
 2. 数组是否需要扩充是通过负载因子判断的，如果当前元素个数为数组容量的0.75时，就会扩充数组。这个0.75就是默认的负载因子，可由构造器传入。我们也可以设置大于1的负载因子，这样数组就不会扩充，牺牲性能，节省内存。
@@ -141,31 +139,31 @@ JDK8中的HashMap，是基于数组+链表+红黑树来实现的，它的底层�
 
 这个设计确实非常的巧妙，既省去了重新计算hash值的时间，而且同时，由于新增的1bit是0还是1可以认为是随机的，因此resize的过程，均匀的把之前的冲突的节点分散到新的bucket了。
 
-#### 2.10 HashMap中的循环链表是如何产生的？
+### HashMap中的循环链表是如何产生的？
 
 在多线程的情况下，当重新调整HashMap大小的时候，就会存在条件竞争，因为如果两个线程都发现HashMap需要重新调整大小了，它们会同时试着调整大小。在调整大小的过程中，存储在链表中的元素的次序会反过来，因为移动到新的bucket位置的时候，HashMap并不会将元素放在链表的尾部，而是放在头部，这是为了避免尾部遍历。如果条件竞争发生了，那么就会产生死循环了。
 
-#### 2.11 HashMap为什么用红黑树而不用B树？
+### HashMap为什么用红黑树而不用B树？
 
 B/B+树多用于外存上时，B/B+也被成为一个磁盘友好的数据结构。
 
 HashMap本来是数组+链表的形式，链表由于其查找慢的特点，所以需要被查找效率更高的树结构来替换。如果用B/B+树的话，在数据量不是很多的情况下，数据都会“挤在”一个结点里面，这个时候遍历效率就退化成了链表。
 
-#### 2.12 HashMap为什么线程不安全？
+### HashMap为什么线程不安全？
 
 HashMap在并发执行put操作时，可能会导致形成循环链表，从而引起死循环。
 
-#### 2.13 HashMap如何实现线程安全？
+### HashMap如何实现线程安全？
 
 1. 直接使用Hashtable类；
 2. 直接使用ConcurrentHashMap；
 3. 使用Collections将HashMap包装成线程安全的Map。
 
-#### 2.14 HashMap是如何解决哈希冲突的？
+### HashMap是如何解决哈希冲突的？
 
 为了解决碰撞，数组中的元素是单向链表类型。当链表长度到达一个阈值时，会将链表转换成红黑树提高性能。而当链表长度缩小到另一个阈值时，又会将红黑树转换回单向链表提高性能。
 
-#### 2.15 说一说HashMap和HashTable的区别
+### 说一说HashMap和HashTable的区别
 
 1. Hashtable是一个线程安全的Map实现，但HashMap是线程不安全的实现，所以HashMap比Hashtable的性能高一点。
 2. Hashtable不允许使用null作为key和value，如果试图把null值放进Hashtable中，将会引发空指针异常，但HashMap可以使用null作为key或value。
@@ -176,7 +174,7 @@ HashMap在并发执行put操作时，可能会导致形成循环链表，从而�
 
 与Vector类似的是，尽量少用Hashtable实现类，即使需要创建线程安全的Map实现类，也无须使用Hashtable实现类，可以通过Collections工具类把HashMap变成线程安全的Map。
 
-#### 2.16 HashMap与ConcurrentHashMap有什么区别？
+### HashMap与ConcurrentHashMap有什么区别？
 
 HashMap是非线程安全的，这意味着不应该在多线程中对这些Map进行修改操作，否则会产生数据不一致的问题，甚至还会因为并发插入元素而导致链表成环，这样在查找时就会发生死循环，影响到整个应用程序。
 
@@ -184,7 +182,7 @@ Collections工具类可以将一个Map转换成线程安全的实现，其实也
 
 ConcurrentHashMap的实现细节远没有这么简单，因此性能也要高上许多。它没有使用一个全局锁来锁住自己，而是采用了减少锁粒度的方法，尽量减少因为竞争锁而导致的阻塞与冲突，而且ConcurrentHashMap的检索操作是不需要锁的。
 
-#### 2.17 介绍一下ConcurrentHashMap是怎么实现的？
+### 介绍一下ConcurrentHashMap是怎么实现的？
 
 JDK 1.7中的实现：
 
@@ -198,7 +196,7 @@ JDK1.8 的实现已经摒弃了 Segment 的概念，而是直接用 Node 数组+
 
 ![img](JAVA-BASE4/9C8ABF1CD3475339A49DE3B9E1696FE7.png)
 
-#### 2.18 ConcurrentHashMap是怎么分段分组的？
+### ConcurrentHashMap是怎么分段分组的？
 
 get操作：
 
@@ -213,7 +211,7 @@ put操作：
 
 插入过程会进行第一次 key 的 hash 来定位 Segment 的位置，如果该 Segment 还没有初始化，即通过 CAS 操作进行赋值，然后进行第二次 hash 操作，找到相应的 HashEntry 的位置，这里会利用继承过来的锁的特性，在将数据插入指定的 HashEntry 位置时（尾插法），会通过继承 ReentrantLock 的 tryLock() 方法尝试去获取锁，如果获取成功就直接插入相应的位置，如果已经有线程获取该Segment的锁，那当前线程会以自旋的方式去继续的调用 tryLock() 方法去获取锁，超过指定次数就挂起，等待唤醒。
 
-#### 2.19 说一说你对LinkedHashMap的理解
+### 说一说你对LinkedHashMap的理解
 
 LinkedHashMap使用双向链表来维护key-value对的顺序（其实只需要考虑key的顺序），该链表负责维护Map的迭代顺序，迭代顺序与key-value对的插入顺序保持一致。
 
@@ -221,7 +219,7 @@ LinkedHashMap可以避免对HashMap、Hashtable里的key-value对进行排序（
 
 LinkedHashMap需要维护元素的插入顺序，因此性能略低于HashMap的性能。但因为它以链表来维护内部顺序，所以在迭代访问Map里的全部元素时将有较好的性能。
 
-#### 2.20 请介绍LinkedHashMap的底层原理
+### 请介绍LinkedHashMap的底层原理
 
 **LinkedHashMap继承于HashMap，它在HashMap的基础上，通过维护一条双向链表，解决了HashMap不能随时保持遍历顺序和插入顺序一致的问题。在实现上，LinkedHashMap很多方法直接继承自HashMap，仅为维护双向链表重写了部分方法。
 

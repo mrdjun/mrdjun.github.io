@@ -24,7 +24,7 @@ allowustouseit.||Consumerreceivedfatal=falseexceptiononstartup:
 
 结合下面的一种确认机制方案再一起分析一下消息丢失应该如何处理：
 
-![image-20210625201209218](MQ-RabbitMQ-Msg-Confirm2/RabbitMQ - 发布确认机制方案-高级篇.png)
+![image-20210625201209218](MQ-RabbitMQ-Msg-Confirm2/RabbitMQ-发布确认机制方案-高级篇.png)
 
 ​		通过两个异常来看能够确定 RabbitMQ 服务器已经宕机了。生产者将消息发送到RabbitMQ 中的交换机X，随后转发给绑定了该路由键的队列，此时当RabbitMQ宕机了，无论此时的交换机是否存在，那么消息都将直接丢失了。无论交换机是否存在，只要消息没发出去，就可以存放在缓存中，但是存在一个问题，生产者发送消息到交换机或者交换机投递消息到队列，都是不知道消息有没有发送成功的，交换机投递失败的消息是不能确定的，所以无法使用缓存，但生产者有发布确认的机制。
 
@@ -32,7 +32,7 @@ allowustouseit.||Consumerreceivedfatal=falseexceptiononstartup:
 
 先写一个简单实现下面这个确认发布的场景：
 
-![image-20210625220807639](MQ-RabbitMQ-Msg-Confirm2/RabbitMQ - 发布确认简单实现逻辑-高级篇.png)
+![image-20210625220807639](MQ-RabbitMQ-Msg-Confirm2/RabbitMQ-发布确认简单实现逻辑-高级篇.png)
 
 结合SpringBoot对这些组件进行注册和绑定：
 

@@ -3,36 +3,36 @@ title: Java基础(五)
 tags:
   - Java
 description: JAVA基础
-abbrlink: 3eb3d776
+abbrlink: 3818800b
 date: 2018-03-11 09:30:06
 ---
 
-#### 2.21 请介绍TreeMap的底层原理
+### 请介绍TreeMap的底层原理
 
 TreeMap基于红黑树（Red-Black tree）实现。映射根据其键的自然顺序进行排序，或者根据创建映射时提供的 Comparator 进行排序，具体取决于使用的构造方法。TreeMap的基本操作containsKey、get、put、remove方法，它的时间复杂度是log(N)。
 
 TreeMap包含几个重要的成员变量：root、size、comparator。其中root是红黑树的根节点。它是Entry类型，Entry是红黑树的节点，它包含了红黑树的6个基本组成：key、value、left、right、parent和color。Entry节点根据根据Key排序，包含的内容是value。Entry中key比较大小是根据比较器comparator来进行判断的。size是红黑树的节点个数。
 
-#### 2.22 Map和Set有什么区别？
+### Map和Set有什么区别？
 
 Set代表无序的，元素不可重复的集合；
 
 Map代表具有映射关系（key-value）的集合，其所有的key是一个Set集合，即key无序且不能重复。
 
-#### 2.23 List和Set有什么区别？
+### List和Set有什么区别？
 
 Set代表无序的，元素不可重复的集合；
 
 List代表有序的，元素可以重复的集合。
 
-#### 2.24 ArrayList和LinkedList有什么区别？
+### ArrayList和LinkedList有什么区别？
 
 1. ArrayList的实现是基于数组，LinkedList的实现是基于双向链表；
 2. 对于随机访问ArrayList要优于LinkedList，ArrayList可以根据下标以O(1)时间复杂度对元素进行随机访问，而LinkedList的每一个元素都依靠地址指针和它后一个元素连接在一起，查找某个元素的时间复杂度是O(N)；
 3. 对于插入和删除操作，LinkedList要优于ArrayList，因为当元素被添加到LinkedList任意位置的时候，不需要像ArrayList那样重新计算大小或者是更新索引；
 4. LinkedList比ArrayList更占内存，因为LinkedList的节点除了存储数据，还存储了两个引用，一个指向前一个元素，一个指向后一个元素。
 
-#### 2.25 有哪些线程安全的List？
+### 有哪些线程安全的List？
 
 1. Vector
 
@@ -46,13 +46,13 @@ List代表有序的，元素可以重复的集合。
 
    CopyOnWriteArrayList是Java 1.5在java.util.concurrent包下增加的类，它采用复制底层数组的方式来实现写操作。当线程对此类集合执行读取操作时，线程将会直接读取集合本身，无须加锁与阻塞。当线程对此类集合执行写入操作时，集合会在底层复制一份新的数组，接下来对新的数组执行写入操作。由于对集合的写入操作都是对数组的副本执行操作，因此它是线程安全的。在所有线程安全的List中，它是性能最优的方案。
 
-#### 2.26 介绍一下ArrayList的数据结构？
+### 介绍一下ArrayList的数据结构？
 
 ArrayList的底层是用数组来实现的，默认第一次插入元素时创建大小为10的数组，超出限制时会增加50%的容量，并且数据以 System.arraycopy() 复制到新的数组，因此最好能给出数组大小的预估值。
 
 按数组下标访问元素的性能很高，这是数组的基本优势。直接在数组末尾加入元素的性能也高，但如果按下标插入、删除元素，则要用 System.arraycopy() 来移动部分受影响的元素，性能就变差了，这是基本劣势。
 
-#### 2.27 谈谈CopyOnWriteArrayList的原理
+### 谈谈CopyOnWriteArrayList的原理
 
 CopyOnWriteArrayList是Java并发包里提供的并发类，简单来说它就是一个线程安全且读操作无锁的ArrayList。正如其名字一样，在写操作时会复制一份新的List，在新的List上完成写操作，然后再将原引用指向新的List。这样就保证了写操作的线程安全。
 
@@ -61,7 +61,7 @@ CopyOnWriteArrayList允许线程并发访问读操作，这个时候是没有加
 - 优点：读操作性能很高，因为无需任何同步措施，比较适用于读多写少的并发场景。在遍历传统的List时，若中途有别的线程对其进行修改，则会抛出ConcurrentModificationException异常。而CopyOnWriteArrayList由于其"读写分离"的思想，遍历和修改操作分别作用在不同的List容器，所以在使用迭代器进行遍历时候，也就不会抛出ConcurrentModificationException异常了。
 - 缺点：一是内存占用问题，毕竟每次执行写操作都要将原容器拷贝一份，数据量大时，对内存压力较大，可能会引起频繁GC。二是无法保证实时性，Vector对于读写操作均加锁同步，可以保证读和写的强一致性。而CopyOnWriteArrayList由于其实现策略的原因，写和读分别作用在新老不同容器上，在写操作执行过程中，读不会阻塞但读取到的却是老容器的数据。
 
-#### 2.28 说一说TreeSet和HashSet的区别
+### 说一说TreeSet和HashSet的区别
 
 HashSet、TreeSet中的元素都是不能重复的，并且它们都是线程不安全的，二者的区别是：
 
@@ -69,11 +69,11 @@ HashSet、TreeSet中的元素都是不能重复的，并且它们都是线程不
 2. HashSet不能保证元素的排列顺序，而TreeSet支持自然排序、定制排序两种排序的方式；
 3. HashSet底层是采用哈希表实现的，而TreeSet底层是采用红黑树实现的。
 
-#### 2.29 说一说HashSet的底层结构
+### 说一说HashSet的底层结构
 
 HashSet是基于HashMap实现的，默认构造函数是构建一个初始容量为16，负载因子为0.75 的HashMap。它封装了一个 HashMap 对象来存储所有的集合元素，所有放入 HashSet 中的集合元素实际上由 HashMap 的 key 来保存，而 HashMap 的 value 则存储了一个 PRESENT，它是一个静态的 Object 对象。
 
-#### 2.30 BlockingQueue中有哪些方法，为什么这样设计？
+### BlockingQueue中有哪些方法，为什么这样设计？
 
 为了应对不同的业务场景，BlockingQueue 提供了4 组不同的方法用于插入、移除以及对队列中的元素进行检查。如果请求的操作不能得到立即执行的话，每组方法的表现是不同的。这些方法如下：
 
@@ -90,7 +90,7 @@ HashSet是基于HashMap实现的，默认构造函数是构建一个初始容量
 - 阻塞：如果操作无法立即执行，则该方法调用将会发生阻塞，直到能够执行；
 - 超时：如果操作无法立即执行，则该方法调用将会发生阻塞，直到能够执行。但等待时间不会超过给定值，并返回一个特定值以告知该操作是否成功(典型的是true / false)。
 
-#### 2.31 BlockingQueue是怎么实现的？
+### BlockingQueue是怎么实现的？
 
 BlockingQueue是一个接口，它的实现类有ArrayBlockingQueue、DelayQueue、 LinkedBlockingQueue、PriorityBlockingQueue、SynchronousQueue等。它们的区别主要体现在存储结构上或对元素操作上的不同，但是对于put与take操作的原理是类似的。下面以ArrayBlockingQueue为例，来说明BlockingQueue的实现原理。
 
@@ -162,7 +162,7 @@ signal函数的示意图如下所示。
 
 ![img](JAVA-BASE5/61A52D5795794D763D6F8D37D13AFE07.png)
 
-#### 2.32 Stream（不是IOStream）有哪些方法？
+### Stream（不是IOStream）有哪些方法？
 
 Stream提供了大量的方法进行聚集操作，这些方法既可以是“中间的”，也可以是“末端的”。
 

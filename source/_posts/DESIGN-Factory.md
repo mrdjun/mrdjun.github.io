@@ -26,7 +26,7 @@ date: 2021-04-07 21:40:36
 - 缺点：创建逻辑复杂或创建的对象过多造成代码臃肿
 - 缺点：新增、删除子类都违反开闭原则。
 
-![img](DESIGN-Factory/工厂模式 - 简单工厂结构.png)
+![img](DESIGN-Factory/工厂模式-简单工厂结构.png)
 
 **Phone类**：手机标准规范类(AbstractProduct)
 
@@ -92,7 +92,7 @@ public class PhoneFactory {
 - 缺点：增加的类比较多，增加了系统的复杂度。
 - 缺点：只支持同一类产品的创建。
 
-![img](DESIGN-Factory/工厂模式 - 方法工厂结构.png)
+![img](DESIGN-Factory/工厂模式-方法工厂结构.png)
 
 **AbstractFactory类**：生产不同产品的工厂的抽象类
 
@@ -138,7 +138,7 @@ public class HuaweiFactory implements AbstractFactory{
 
 每一个品牌就是每一个具体的工厂，也就是说一个品牌要生产一个产品族需要对应产品等级结构的工厂的来完成。
 
-![img](DESIGN-Factory/工厂模式 - 抽象工厂结构.png)
+![img](DESIGN-Factory/工厂模式-抽象工厂结构.png)
 
 **电脑(PC)类**：定义PC产品的接口(AbstractPC)
 

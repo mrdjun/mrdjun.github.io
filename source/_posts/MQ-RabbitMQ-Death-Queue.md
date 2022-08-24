@@ -30,7 +30,7 @@ date: 2021-06-23 23:46:08
 
 ​		消费者2只负责消费死信队列。
 
-![image-20210621230631642](MQ-RabbitMQ-Death-Queue/RabbitMQ - 消息转为死信流程.png)
+![image-20210621230631642](MQ-RabbitMQ-Death-Queue/RabbitMQ-消息转为死信流程.png)
 
 ### 情况1：消息TTL过期
 

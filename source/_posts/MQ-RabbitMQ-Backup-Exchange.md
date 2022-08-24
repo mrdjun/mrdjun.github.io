@@ -24,7 +24,7 @@ date: 2021-06-26 17:34:15
 
 ​		新增一个备份交换机，绑定在 confirm.exchange 上，当 confirm.exchange 投递消息到队列失败后，将交给备份交换机来投递消息，设置交换机类型为 fanout，有两个队列 backup.queue，还有一个报警队列用来告知我们存在异常情况。
 
-![image-20210626155027879](MQ-RabbitMQ-Backup-Exchange/RabbitMQ - 交换机备份方案.png)
+![image-20210626155027879](MQ-RabbitMQ-Backup-Exchange/RabbitMQ-交换机备份方案.png)
 
 ConfirmConfig 新增配置
 

@@ -18,7 +18,7 @@ docker run -d --restart=always -p 5672:5672 -p 15672:15672 --name rabbitmq -v ${
 
 访问 ip:15672（如 127.0.0.1:15672）
 
-![image-20210619153907851](MQ-RabbitMQ-Install/RabbitMQ - 用户管理.png)
+![image-20210619153907851](MQ-RabbitMQ-Install/RabbitMQ-用户管理.png)
 
 ### 超级管理员(administrator)
 
@@ -46,7 +46,7 @@ docker run -d --restart=always -p 5672:5672 -p 15672:15672 --name rabbitmq -v ${
 
 ### 创建Virtual Hosts
 
-![image-20210619154832923](MQ-RabbitMQ-Install/RabbitMQ - 创建VirtualHosts.png)
+![image-20210619154832923](MQ-RabbitMQ-Install/RabbitMQ-创建VirtualHosts.png)
 
 ### 设置Virtual Hosts权限
 

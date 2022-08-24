@@ -11,7 +11,7 @@ date: 2021-12-28 23:18:19
 
 类加载子系统将 *.class 文件加载到内存中，类的加载分为加载阶段、链接阶段、初始化阶段三个阶段。
 
-![JVM - 类加载子系统](JVM-ClassLoader/JVM - 类加载子系统.png)
+![JVM-类加载子系统](JVM-ClassLoader/JVM-类加载子系统.png)
 
 - 类加载器子系统负责从文件系统或者网络中加载Class文件，class文件在文件开头有特定的文件标识。
 
@@ -107,7 +107,7 @@ ClassLoader的继承关系如下，sun.misc.Launcher 是一个Java虚拟机的�
 
 ## 类的生命周期
 
-![image-20210719225706738](JVM-ClassLoader/JVM - 类生命周期.png)
+![image-20210719225706738](JVM-ClassLoader/JVM-类生命周期.png)
 
 > Java如何知道我们的类在哪里？
 

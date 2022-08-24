@@ -2,20 +2,20 @@
 title: JVM对代码的优化
 tags:
   - JVM
-description: 在Java中的Javac、JIT、AOT三种编译方式中会对开发者代码进行编译优化。
+description: JVM（HotSpot）在哪些阶段能对开发者写的代码进行优化？在Java中的三种编译方式中：前端编译（Javac）、即时编译（Just In Time）、提前编译（Ahead Of Time）。
 abbrlink: c69e3549
 date: 2022-01-25 22:50:25
 ---
 
 JVM（HotSpot）在哪些阶段能对开发者写的代码进行优化？在Java中的三种编译方式中：前端编译（Javac）、即时编译（Just In Time）、提前编译（Ahead Of Time）。
 
-Java的执行过程整体可以分为两个部分，第一步由javac将源码编译成字节码，在这个过程中会进行词法分析、语法分析、语义分析，编译原理中这部分的编译称为前端编译。说白了，就是.java成功编译为.class的过程。
+Java的执行过程整体可以分为两个部分，在第一步步中由javac将源码编译成字节码，在这个过程中会进行词法分析、语法分析、语义分析，编译原理中这部分的编译称为前端编译。即.java成功编译为.class的过程。
 
 ## 前端编译
 
 前端编译器 Javac（是Java语言写的） ，编译过程如下图。前期编译优化代码主要分为**编译过程**和**语法糖**的优化。
 
-![Javac的编译过程](JVM-Optimizing-Code/JVM - Javac编译过程.png)
+![Javac的编译过程](JVM-Optimizing-Code/JVM-Javac编译过程.png)
 
 ### 解析与填充符号表
 
@@ -147,7 +147,7 @@ JVM中集成了两种编译器：Client Compiler、Server Compiler，通常将�
 
 JVM中会设置一个阈值，当方法或者代码块的在一定时间内的调用次数超过这个阈值时就会被编译，存入codeCache中。当下次执行时，再遇到这段代码，就会从codeCache中读取机器码，直接执行，以此来提升程序运行的性能。整体的执行过程大致如下图所示：
 
-![img](JVM-Optimizing-Code/JVM - 热点代码的判定过程.png)
+![img](JVM-Optimizing-Code/JVM-热点代码的判定过程.png)
 
 ### 逃逸分析
 
@@ -176,7 +176,7 @@ public void build(){
 
 对象分配流程如下图所示：
 
-![img](JVM-Optimizing-Code/JVM - 对象的分配流程.png)
+![img](JVM-Optimizing-Code/JVM-对象的分配流程.png)
 
 #### 标量替换
 

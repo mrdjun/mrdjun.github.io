@@ -51,7 +51,7 @@ JDK1.8在方法区中有较大的改动：
 
 ![image-20210411225956114](JVM-Complie-And-Run-Principle/字节码文件访问标志-16465568468573.png)
 
-![image-20210411230118748](JVM-Complie-And-Run-Principle/字节码内容 - 常量池-16465568468574.png)
+![image-20210411230118748](JVM-Complie-And-Run-Principle/字节码内容-常量池-16465568468574.png)
 
 将 Demo1 类使用Java.exe编译成字节码文件（class）
 

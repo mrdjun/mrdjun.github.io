@@ -174,9 +174,9 @@ B树和B+树最主要的区别主要有两点：
 
 可以从非常经典的两张图看看它们的区别(图片来源于网络)：
 
-![图片](MYSQL-Interview1/MySQL - MyISAM索引.png)
+![图片](MYSQL-Interview1/MySQL-MyISAM索引.png)
 
-![图片](MYSQL-Interview1/MySQL - MyISAM非聚簇索引.png)
+![图片](MYSQL-Interview1/MySQL-MyISAM非聚簇索引.png)
 
 ### 非聚簇索引一定会进行回表查询吗？
 
