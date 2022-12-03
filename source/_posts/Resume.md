@@ -56,7 +56,7 @@ date: 2022-12-02 23:00:00
 6. 熟练使用安全框架Spring Security、Shiro、Spring OAuth2.0；
 7. 熟练使用Guava、Apach-Reflections、Apache-BCEL、JWT等开源工具包；
 8. 熟练使用Redis、MySQL及其SQL优化，有SQL Server、Oracle、Hadoop基础；
-9. 其它平台对接经验：各大平台的支付(支付宝/微信/百度)、百度/高德地图API。
+9. 其它平台对接经验：各大平台的支付(支付宝/微信/百度)、百度/高德地图API、融云SDK。
 
 ## 项目经历
 

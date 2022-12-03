@@ -25,23 +25,25 @@ JDK1.8在方法区中有较大的改动：
 
 ![image-20220306165242400](JVM-Complie-And-Run-Principle/image-20220306165242400.png)
 
-堆内存
+### 堆内存
 
 ![image-20220306165302672](JVM-Complie-And-Run-Principle/image-20220306165302672.png)
 
-虚拟机栈
+### 虚拟机栈
 
 <img src="JVM-Complie-And-Run-Principle/JVM虚拟机栈区.png" alt="image-20210411134428910" style="zoom:110%;" />
 
-本地方法栈
+### 本地方法栈
 
 <img src="JVM-Complie-And-Run-Principle/JVM本地方法栈.png" alt="image-20210411135011461" style="zoom:110%;" />
 
-程序计数器
+### 程序计数器
 
 <img src="JVM-Complie-And-Run-Principle/JVM程序计数器-16465568468561.png" alt="image-20210411134803099" style="zoom:110%;" />
 
 <img src="JVM-Complie-And-Run-Principle/Java程序编译原理（1）-16465568468572.png" alt="image-20210411141220263" style="zoom:110%;" />
+
+## JVM层面——程序运行完整分析
 
 查看字节码文件内容（.class）：
 
