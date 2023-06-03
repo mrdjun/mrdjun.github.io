@@ -17,11 +17,11 @@ Java堆区分为年轻代（Young Gen）与老年代（Old Gen）。存储在JVM
 
 其中年轻代又可以划分为Eden区、Survivor0区（from区）、Survivor1区（to区）。
 
-![image-20211008224055196](JVM-Eden-Old-Region/JVM-年轻代与老年代.png)
+![image-20211008224055196](JVM-Young-Old-Region/JVM-年轻代与老年代.png)
 
 ## 参数调配
 
-![img](JVM-Eden-Old-Region/JVM-堆区参数调配.png)
+![img](JVM-Young-Old-Region/JVM-堆区参数调配.png)
 
 配置新生代与老年代在堆结构的占比：
 

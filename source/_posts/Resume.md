@@ -1,5 +1,5 @@
 ---
-title: RESUME
+title: An Java programmer resume
 description: Encrypted article.
 password: hellomrdjun
 theme: Up
@@ -9,14 +9,14 @@ wrong_hash_message: "当前简历无法查询\U0001F62D"
 tags:
   - Java
 abbrlink: '90391726'
-date: 2022-12-02 23:00:00
+date: 1997-11-08 23:00:00
 ---
 
 # 邓俊（外包勿扰）
 
-男 | 26岁｜ Java开发工程师 ｜ 3年经验 ｜ 大专 ｜ 18683827876 ｜ mr.djun@qq.com
+男 | 27岁｜ Java开发工程师 ｜ 4年经验 ｜ 大专 ｜ 18683827876 ｜ mr.djun@qq.com
 
-博客地址: https://mrdjun.blog.csdn.net ｜ GITEE: https://mrdjun.gitee.io ｜ GITHUB: https://github.com/mrdjun
+博客: https://mrdjun.blog.csdn.net ｜ GITEE: https://mrdjun.gitee.io ｜ GITHUB: https://github.com/mrdjun
 
 ## 求职意向
 
@@ -32,6 +32,18 @@ date: 2022-12-02 23:00:00
 
 - 西南科技大学,计算机科学与技术,本科,2021/09 - 2024/01
 
+## 专业技能
+
+1. 熟练掌握Java核心编程/基本数据结构/JUC并发包、具备良好编程习惯；
+2. 熟练使用GIT和SVN团队合作项目版本的管理工具；
+3. 熟练使用ORM框架ibatis/MyBatis、JPA；
+4. 熟练使用SpringCloud、Nacos等常用组件；
+5. 熟练使用RabbitMQ、RocketMQ、Nginx、Sentinel中间件；
+6. 熟练使用安全框架Spring Security、Shiro、Spring OAuth2.0；
+7. 熟练使用Guava、Apach-Reflections、Apache-BCEL、JWT等开源工具包；
+8. 熟练使用Redis、MySQL及其SQL优化，有SQL Server、Oracle、Hadoop基础；
+9. 其它平台对接经验：各大平台的支付(支付宝/微信/百度)、百度/高德地图API、融云SDK。
+
 ## 工作经历
 
 ### (在校)四川省装备制造业机器人应用技术工程实验室(2017/10 - 2019/06)
@@ -45,18 +57,6 @@ date: 2022-12-02 23:00:00
 ### 深圳法本信息技术股份有限公司(2021/07 - 至今)
 
 外派于成都蚂蚁金服，2021/7-2022/7承担“数据血缘”的研发工作，主要负责上层建模层、调度层、视觉层的模块；2022/8至今承担“大促活动保障平台”的开发工作，主要负责了平台的大版本迭代，得以应用于双十一、双十二等大型促销活动。
-
-## 专业技能
-
-1. 熟练掌握Java核心编程/基本数据结构/JUC并发包、具备良好编程习惯；
-2. 熟练使用GIT和SVN团队合作项目版本的管理工具；
-3. 熟练使用ORM框架ibatis/MyBatis、JPA；
-4. 熟练使用SpringCloud、Nacos等常用组件；
-5. 熟练使用RabbitMQ、RocketMQ、Nginx、Sentinel中间件；
-6. 熟练使用安全框架Spring Security、Shiro、Spring OAuth2.0；
-7. 熟练使用Guava、Apach-Reflections、Apache-BCEL、JWT等开源工具包；
-8. 熟练使用Redis、MySQL及其SQL优化，有SQL Server、Oracle、Hadoop基础；
-9. 其它平台对接经验：各大平台的支付(支付宝/微信/百度)、百度/高德地图API、融云SDK。
 
 ## 项目经历
 

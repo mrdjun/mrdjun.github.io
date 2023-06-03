@@ -7,4 +7,4 @@ public/
 .deploy*/
 package-lock.json
 yarn.lock
-.idea
+.idea/

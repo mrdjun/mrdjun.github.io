@@ -1,5 +1,5 @@
 ---
-title: JVM-TLAB
+title: TLAB(Thread Local Allocation Buffer)
 tags:
   - JVM
 description: TLAB是JVM为每个线程在Eden区中分配的一个私有区域。使用TLAB可避免一些非线程安全问题，同时提升内存分配的吞吐量。

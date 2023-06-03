@@ -1,5 +1,5 @@
 ---
-title: MQ-RabbitMQ-Death-Queue
+title: MQ-RabbitMQ死信队列
 tags:
   - 消息中间件
   - RabbitMQ
