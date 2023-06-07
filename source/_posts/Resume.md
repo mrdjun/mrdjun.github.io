@@ -1,3 +1,17 @@
+---
+title: An Java programmer resume
+description: Encrypted article.
+password: hellomrdjun
+theme: Up
+message: "当前文章已加密，请输入密码查看 \U0001F61B："
+wrong_pass_message: "密码错误 \U0001F62D"
+wrong_hash_message: "当前简历无法查询\U0001F62D"
+tags:
+  - Java
+abbrlink: '90391726'
+date: 1997-11-08 02:00:00
+---
+
 # 邓俊
 
 男 ｜27岁 ｜成都 ｜Java ｜4年经验 ｜大专 ｜ 本科在读 ｜党员 ｜18683827876 ｜mr.djun@qq.com
