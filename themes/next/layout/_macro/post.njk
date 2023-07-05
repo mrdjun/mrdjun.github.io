@@ -4,6 +4,7 @@
 <div class="post-block">
   {# Gallery support #}
   {{ post_gallery(post.photos) }}
+  {%- set clearMode = post.clear_mode != null and post.clear_mode == true %}
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="{{ post.lang or config.language }}">
     <link itemprop="mainEntityOfPage" href="{{ post.permalink }}">
@@ -103,19 +104,19 @@
       {% else %}
         {{- next_inject('postBodyEnd') }}
 
-        {%- if post.reward_settings.enable %}
+        {%- if clearMode == false and post.reward_settings.enable %}
           {{ partial('_partials/post/post-reward.njk') }}
         {%- endif %}
 
-        {%- if theme.creative_commons.license and theme.creative_commons.post and post.copyright !== false %}
+        {%- if clearMode == false and theme.creative_commons.license and theme.creative_commons.post and post.copyright !== false %}
           {{ partial('_partials/post/post-copyright.njk') }}
         {%- endif %}
 
-        {%- if theme.follow_me %}
+        {%- if clearMode == false and theme.follow_me %}
           {{ partial('_partials/post/post-followme.njk', {}, {cache: theme.cache.enable}) }}
         {%- endif %}
 
-        {%- if post.tags and post.tags.length %}
+        {%- if clearMode == false and post.tags and post.tags.length %}
           {%- set tag_indicate = '<i class="fa fa-tag"></i>' if theme.tag_icon else '#' %}
           <div class="post-tags">
             {%- for tag in post.tags.toArray() %}
@@ -126,7 +127,7 @@
 
         {{ partial('_partials/post/post-footer.njk', {}, {cache: theme.cache.enable}) }}
 
-        {%- if theme.post_navigation and (post.prev or post.next) %}
+        {%- if clearMode == false and theme.post_navigation and (post.prev or post.next) %}
           {%- set prev = post.prev if theme.post_navigation === 'right' else post.next %}
           {%- set next = post.next if theme.post_navigation === 'right' else post.prev %}
           <div class="post-nav">
