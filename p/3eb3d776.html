@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.gitee.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="JAVA基础">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Java基础(四)">
+<meta property="og:url" content="https://mrdjun.gitee.io/p/3eb3d776.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="JAVA基础">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/3eb3d776/74C2C3389688C6364FF2DE8AA768A039.jpeg">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/3eb3d776/E26BABF74692B006DA33C112A6FD5EEC.jpeg">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/3eb3d776/53AA859E1B3A9CD7709DF9366999B88D.jpeg">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/3eb3d776/18330EB2310CB83A25FA317E65ED60EB.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/3eb3d776/B7A9F3ADBA028FE6FDE22C94D566B4F1.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/3eb3d776/FB03BC4205AD26DC0210B12412AAC145.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/3eb3d776/C2928A93915A4AEF2709862EBAC8515C.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/3eb3d776/A064CF0DD49D1B3694548913C28728DB.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/3eb3d776/9C8ABF1CD3475339A49DE3B9E1696FE7.png">
+<meta property="article:published_time" content="2018-03-07T03:27:06.000Z">
+<meta property="article:modified_time" content="2023-06-06T13:27:08.415Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrdjun.gitee.io/p/3eb3d776/74C2C3389688C6364FF2DE8AA768A039.jpeg">
+
+
+<link rel="canonical" href="https://mrdjun.gitee.io/p/3eb3d776.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.gitee.io/p/3eb3d776.html","path":"p/3eb3d776.html","title":"Java基础(四)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      Java基础(四) | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E4%B8%AD%E6%9C%89%E5%93%AA%E4%BA%9B%E5%AE%B9%E5%99%A8%EF%BC%88%E9%9B%86%E5%90%88%E7%B1%BB%EF%BC%89%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">Java中有哪些容器（集合类）？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E4%B8%AD%E7%9A%84%E5%AE%B9%E5%99%A8%EF%BC%8C%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E5%92%8C%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8%E7%9A%84%E5%88%86%E5%88%AB%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">Java中的容器，线程安全和线程不安全的分别有哪些？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map%E6%8E%A5%E5%8F%A3%E6%9C%89%E5%93%AA%E4%BA%9B%E5%AE%9E%E7%8E%B0%E7%B1%BB%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">Map接口有哪些实现类？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0%E4%B8%80%E4%B8%8BMap-put%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">描述一下Map put的过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%BE%97%E5%88%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84Map%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">如何得到一个线程安全的Map？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap%E6%9C%89%E4%BB%80%E4%B9%88%E7%89%B9%E7%82%B9%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">HashMap有什么特点？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JDK7%E5%92%8CJDK8%E4%B8%AD%E7%9A%84HashMap%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">7.</span> <span class="nav-text">JDK7和JDK8中的HashMap有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8BHashMap%E5%BA%95%E5%B1%82%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">8.</span> <span class="nav-text">介绍一下HashMap底层的实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8BHashMap%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="nav-number">9.</span> <span class="nav-text">介绍一下HashMap的扩容机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap%E4%B8%AD%E7%9A%84%E5%BE%AA%E7%8E%AF%E9%93%BE%E8%A1%A8%E6%98%AF%E5%A6%82%E4%BD%95%E4%BA%A7%E7%94%9F%E7%9A%84%EF%BC%9F"><span class="nav-number">10.</span> <span class="nav-text">HashMap中的循环链表是如何产生的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8%E7%BA%A2%E9%BB%91%E6%A0%91%E8%80%8C%E4%B8%8D%E7%94%A8B%E6%A0%91%EF%BC%9F"><span class="nav-number">11.</span> <span class="nav-text">HashMap为什么用红黑树而不用B树？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8%EF%BC%9F"><span class="nav-number">12.</span> <span class="nav-text">HashMap为什么线程不安全？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%EF%BC%9F"><span class="nav-number">13.</span> <span class="nav-text">HashMap如何实现线程安全？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap%E6%98%AF%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%93%88%E5%B8%8C%E5%86%B2%E7%AA%81%E7%9A%84%EF%BC%9F"><span class="nav-number">14.</span> <span class="nav-text">HashMap是如何解决哈希冲突的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B4%E4%B8%80%E8%AF%B4HashMap%E5%92%8CHashTable%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">15.</span> <span class="nav-text">说一说HashMap和HashTable的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap%E4%B8%8EConcurrentHashMap%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">16.</span> <span class="nav-text">HashMap与ConcurrentHashMap有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8BConcurrentHashMap%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%9F"><span class="nav-number">17.</span> <span class="nav-text">介绍一下ConcurrentHashMap是怎么实现的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap%E6%98%AF%E6%80%8E%E4%B9%88%E5%88%86%E6%AE%B5%E5%88%86%E7%BB%84%E7%9A%84%EF%BC%9F"><span class="nav-number">18.</span> <span class="nav-text">ConcurrentHashMap是怎么分段分组的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B4%E4%B8%80%E8%AF%B4%E4%BD%A0%E5%AF%B9LinkedHashMap%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-number">19.</span> <span class="nav-text">说一说你对LinkedHashMap的理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E4%BB%8B%E7%BB%8DLinkedHashMap%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="nav-number">20.</span> <span class="nav-text">请介绍LinkedHashMap的底层原理</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.gitee.io/p/3eb3d776.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java基础(四)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2018-03-07 11:27:06" itemprop="dateCreated datePublished" datetime="2018-03-07T11:27:06+08:00">2018-03-07</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><h3 id="Java中有哪些容器（集合类）？"><a href="#Java中有哪些容器（集合类）？" class="headerlink" title="Java中有哪些容器（集合类）？"></a>Java中有哪些容器（集合类）？</h3><p>Java中的集合类主要由Collection和Map这两个接口派生而出，其中Collection接口又派生出三个子接口，分别是Set、List、Queue。所有的Java集合类，都是Set、List、Queue、Map这四个接口的实现类，这四个接口将集合分成了四大类，其中</p>
+<ul>
+<li>Set代表无序的，元素不可重复的集合；</li>
+<li>List代表有序的，元素可以重复的集合；</li>
+<li>Queue代表先进先出（FIFO）的队列；</li>
+<li>Map代表具有映射关系（key-value）的集合。</li>
+</ul>
+<p>这些接口拥有众多的实现类，其中最常用的实现类有HashSet、TreeSet、ArrayList、LinkedList、ArrayDeque、HashMap、TreeMap等。</p>
+<p><strong>扩展阅读</strong></p>
+<p>Collection体系的继承树：</p>
+<p><img src="/p/3eb3d776/74C2C3389688C6364FF2DE8AA768A039.jpeg" alt="img"></p>
+<p>Map体系的继承树：</p>
+<p><img src="/p/3eb3d776/E26BABF74692B006DA33C112A6FD5EEC.jpeg" alt="img"></p>
+<p><em>注：紫色框体代表接口，其中加粗的是代表四类集合的接口。蓝色框体代表实现类，其中有阴影的是常用实现类。</em></p>
+<h3 id="Java中的容器，线程安全和线程不安全的分别有哪些？"><a href="#Java中的容器，线程安全和线程不安全的分别有哪些？" class="headerlink" title="Java中的容器，线程安全和线程不安全的分别有哪些？"></a>Java中的容器，线程安全和线程不安全的分别有哪些？</h3><p>java.util包下的集合类大部分都是线程不安全的，例如我们常用的HashSet、TreeSet、ArrayList、LinkedList、ArrayDeque、HashMap、TreeMap，这些都是线程不安全的集合类，但是它们的优点是性能好。如果需要使用线程安全的集合类，则可以使用Collections工具类提供的synchronizedXxx()方法，将这些集合类包装成线程安全的集合类。</p>
+<p>java.util包下也有线程安全的集合类，例如Vector、Hashtable。这些集合类都是比较古老的API，虽然实现了线程安全，但是性能很差。所以即便是需要使用线程安全的集合类，也建议将线程不安全的集合类包装成线程安全集合类的方式，而不是直接使用这些古老的API。</p>
+<p>从Java5开始，Java在java.util.concurrent包下提供了大量支持高效并发访问的集合类，它们既能包装良好的访问性能，有能包装线程安全。这些集合类可以分为两部分，它们的特征如下：</p>
+<ul>
+<li><p>以Concurrent开头的集合类：</p>
+<p>以Concurrent开头的集合类代表了支持并发访问的集合，它们可以支持多个线程并发写入访问，这些写入线程的所有操作都是线程安全的，但读取操作不必锁定。以Concurrent开头的集合类采用了更复杂的算法来保证永远不会锁住整个集合，因此在并发写入时有较好的性能。</p>
+</li>
+<li><p>以CopyOnWrite开头的集合类：</p>
+<p>以CopyOnWrite开头的集合类采用复制底层数组的方式来实现写操作。当线程对此类集合执行读取操作时，线程将会直接读取集合本身，无须加锁与阻塞。当线程对此类集合执行写入操作时，集合会在底层复制一份新的数组，接下来对新的数组执行写入操作。由于对集合的写入操作都是对数组的副本执行操作，因此它是线程安全的。</p>
+</li>
+</ul>
+<p><strong>扩展阅读</strong></p>
+<p>java.util.concurrent包下线程安全的集合类的体系结构：</p>
+<p><img src="/p/3eb3d776/53AA859E1B3A9CD7709DF9366999B88D.jpeg" alt="img"></p>
+<h3 id="Map接口有哪些实现类？"><a href="#Map接口有哪些实现类？" class="headerlink" title="Map接口有哪些实现类？"></a>Map接口有哪些实现类？</h3><p>Map接口有很多实现类，其中比较常用的有HashMap、LinkedHashMap、TreeMap、ConcurrentHashMap。</p>
+<p>对于不需要排序的场景，优先考虑使用HashMap，因为它是性能最好的Map实现。如果需要保证线程安全，则可以使用ConcurrentHashMap。它的性能好于Hashtable，因为它在put时采用分段锁/CAS的加锁机制，而不是像Hashtable那样，无论是put还是get都做同步处理。</p>
+<p>对于需要排序的场景，如果需要按插入顺序排序则可以使用LinkedHashMap，如果需要将key按自然顺序排列甚至是自定义顺序排列，则可以选择TreeMap。如果需要保证线程安全，则可以使用Collections工具类将上述实现类包装成线程安全的Map。</p>
+<h3 id="描述一下Map-put的过程"><a href="#描述一下Map-put的过程" class="headerlink" title="描述一下Map put的过程"></a>描述一下Map put的过程</h3><p>HashMap是最经典的Map实现，下面以它的视角介绍put的过程：</p>
+<ol>
+<li><p>首次扩容：</p>
+<p>先判断数组是否为空，若数组为空则进行第一次扩容（resize）；</p>
+</li>
+<li><p>计算索引：</p>
+<p>通过hash算法，计算键值对在数组中的索引；</p>
+</li>
+<li><p>插入数据：</p>
+<ul>
+<li>如果当前位置元素为空，则直接插入数据；</li>
+<li>如果当前位置元素非空，且key已存在，则直接覆盖其value；</li>
+<li>如果当前位置元素非空，且key不存在，则将数据链到链表末端；</li>
+<li>若链表长度达到8，则将链表转换成红黑树，并将数据插入树中；</li>
+</ul>
+</li>
+<li><p>再次扩容</p>
+<p>如果数组中元素个数（size）超过threshold，则再次进行扩容操作。</p>
+</li>
+</ol>
+<p><strong>扩展阅读</strong></p>
+<p>HashMap添加数据的详细过程，如下图：</p>
+<p><img src="/p/3eb3d776/18330EB2310CB83A25FA317E65ED60EB.png" alt="img"></p>
+<h3 id="如何得到一个线程安全的Map？"><a href="#如何得到一个线程安全的Map？" class="headerlink" title="如何得到一个线程安全的Map？"></a>如何得到一个线程安全的Map？</h3><ol>
+<li>使用Collections工具类，将线程不安全的Map包装成线程安全的Map；</li>
+<li>使用java.util.concurrent包下的Map，如ConcurrentHashMap；</li>
+<li>不建议使用Hashtable，虽然Hashtable是线程安全的，但是性能较差。</li>
+</ol>
+<h3 id="HashMap有什么特点？"><a href="#HashMap有什么特点？" class="headerlink" title="HashMap有什么特点？"></a>HashMap有什么特点？</h3><ol>
+<li>HashMap是线程不安全的实现；</li>
+<li>HashMap可以使用null作为key或value。</li>
+</ol>
+<h3 id="JDK7和JDK8中的HashMap有什么区别？"><a href="#JDK7和JDK8中的HashMap有什么区别？" class="headerlink" title="JDK7和JDK8中的HashMap有什么区别？"></a>JDK7和JDK8中的HashMap有什么区别？</h3><p>JDK7中的HashMap，是基于数组+链表来实现的，它的底层维护一个Entry数组。它会根据计算的hashCode将对应的KV键值对存储到该数组中，一旦发生hashCode冲突，那么就会将该KV键值对放到对应的已有元素的后面， 此时便形成了一个链表式的存储结构。</p>
+<p>JDK7中HashMap的实现方案有一个明显的缺点，即当Hash冲突严重时，在桶上形成的链表会变得越来越长，这样在查询时的效率就会越来越低，其时间复杂度为O(N)。</p>
+<p>JDK8中的HashMap，是基于数组+链表+红黑树来实现的，它的底层维护一个Node数组。当链表的存储的数据个数大于等于8的时候，不再采用链表存储，而采用了红黑树存储结构。这么做主要是在查询的时间复杂度上进行优化，链表为O(N)，而红黑树一直是O(logN)，可以大大的提高查找性能。</p>
+<h3 id="介绍一下HashMap底层的实现原理"><a href="#介绍一下HashMap底层的实现原理" class="headerlink" title="介绍一下HashMap底层的实现原理"></a>介绍一下HashMap底层的实现原理</h3><p>它基于hash算法，通过put方法和get方法存储和获取对象。</p>
+<p>存储对象时，我们将K/V传给put方法时，它调用K的hashCode计算hash从而得到bucket位置，进一步存储，HashMap会根据当前bucket的占用情况自动调整容量(超过Load Facotr则resize为原来的2倍)。获取对象时，我们将K传给get，它调用hashCode计算hash从而得到bucket位置，并进一步调用equals()方法确定键值对。</p>
+<p>如果发生碰撞的时候，HashMap通过链表将产生碰撞冲突的元素组织起来。在Java 8中，如果一个bucket中碰撞冲突的元素超过某个限制(默认是8)，则使用红黑树来替换链表，从而提高速度。</p>
+<h3 id="介绍一下HashMap的扩容机制"><a href="#介绍一下HashMap的扩容机制" class="headerlink" title="介绍一下HashMap的扩容机制"></a>介绍一下HashMap的扩容机制</h3><ol>
+<li>数组的初始容量为16，而容量是以2的次方扩充的，一是为了提高性能使用足够大的数组，二是为了能使用位运算代替取模预算(据说提升了5~8倍)。</li>
+<li>数组是否需要扩充是通过负载因子判断的，如果当前元素个数为数组容量的0.75时，就会扩充数组。这个0.75就是默认的负载因子，可由构造器传入。我们也可以设置大于1的负载因子，这样数组就不会扩充，牺牲性能，节省内存。</li>
+<li>为了解决碰撞，数组中的元素是单向链表类型。当链表长度到达一个阈值时（7或8），会将链表转换成红黑树提高性能。而当链表长度缩小到另一个阈值时（6），又会将红黑树转换回单向链表提高性能。</li>
+<li>对于第三点补充说明，检查链表长度转换成红黑树之前，还会先检测当前数组数组是否到达一个阈值（64），如果没有到达这个容量，会放弃转换，先去扩充数组。所以上面也说了链表长度的阈值是7或8，因为会有一次放弃转换的操作。</li>
+</ol>
+<p><strong>扩展阅读</strong></p>
+<p>例如我们从16扩展为32时，具体的变化如下所示：</p>
+<p><img src="/p/3eb3d776/B7A9F3ADBA028FE6FDE22C94D566B4F1.png" alt="img"></p>
+<p>因此元素在重新计算hash之后，因为n变为2倍，那么n-1的mask范围在高位多1bit(红色)，因此新的index就会发生这样的变化：</p>
+<p><img src="/p/3eb3d776/FB03BC4205AD26DC0210B12412AAC145.png" alt="img"></p>
+<p>因此，我们在扩充HashMap的时候，不需要重新计算hash，只需要看看原来的hash值新增的那个bit是1还是0就好了，是0的话索引没变，是1的话索引变成“原索引+oldCap”。可以看看下图为16扩充为32的resize示意图：</p>
+<p><img src="/p/3eb3d776/C2928A93915A4AEF2709862EBAC8515C.png" alt="img"></p>
+<p>这个设计确实非常的巧妙，既省去了重新计算hash值的时间，而且同时，由于新增的1bit是0还是1可以认为是随机的，因此resize的过程，均匀的把之前的冲突的节点分散到新的bucket了。</p>
+<h3 id="HashMap中的循环链表是如何产生的？"><a href="#HashMap中的循环链表是如何产生的？" class="headerlink" title="HashMap中的循环链表是如何产生的？"></a>HashMap中的循环链表是如何产生的？</h3><p>在多线程的情况下，当重新调整HashMap大小的时候，就会存在条件竞争，因为如果两个线程都发现HashMap需要重新调整大小了，它们会同时试着调整大小。在调整大小的过程中，存储在链表中的元素的次序会反过来，因为移动到新的bucket位置的时候，HashMap并不会将元素放在链表的尾部，而是放在头部，这是为了避免尾部遍历。如果条件竞争发生了，那么就会产生死循环了。</p>
+<h3 id="HashMap为什么用红黑树而不用B树？"><a href="#HashMap为什么用红黑树而不用B树？" class="headerlink" title="HashMap为什么用红黑树而不用B树？"></a>HashMap为什么用红黑树而不用B树？</h3><p>B/B+树多用于外存上时，B/B+也被成为一个磁盘友好的数据结构。</p>
+<p>HashMap本来是数组+链表的形式，链表由于其查找慢的特点，所以需要被查找效率更高的树结构来替换。如果用B/B+树的话，在数据量不是很多的情况下，数据都会“挤在”一个结点里面，这个时候遍历效率就退化成了链表。</p>
+<h3 id="HashMap为什么线程不安全？"><a href="#HashMap为什么线程不安全？" class="headerlink" title="HashMap为什么线程不安全？"></a>HashMap为什么线程不安全？</h3><p>HashMap在并发执行put操作时，可能会导致形成循环链表，从而引起死循环。</p>
+<h3 id="HashMap如何实现线程安全？"><a href="#HashMap如何实现线程安全？" class="headerlink" title="HashMap如何实现线程安全？"></a>HashMap如何实现线程安全？</h3><ol>
+<li>直接使用Hashtable类；</li>
+<li>直接使用ConcurrentHashMap；</li>
+<li>使用Collections将HashMap包装成线程安全的Map。</li>
+</ol>
+<h3 id="HashMap是如何解决哈希冲突的？"><a href="#HashMap是如何解决哈希冲突的？" class="headerlink" title="HashMap是如何解决哈希冲突的？"></a>HashMap是如何解决哈希冲突的？</h3><p>为了解决碰撞，数组中的元素是单向链表类型。当链表长度到达一个阈值时，会将链表转换成红黑树提高性能。而当链表长度缩小到另一个阈值时，又会将红黑树转换回单向链表提高性能。</p>
+<h3 id="说一说HashMap和HashTable的区别"><a href="#说一说HashMap和HashTable的区别" class="headerlink" title="说一说HashMap和HashTable的区别"></a>说一说HashMap和HashTable的区别</h3><ol>
+<li>Hashtable是一个线程安全的Map实现，但HashMap是线程不安全的实现，所以HashMap比Hashtable的性能高一点。</li>
+<li>Hashtable不允许使用null作为key和value，如果试图把null值放进Hashtable中，将会引发空指针异常，但HashMap可以使用null作为key或value。</li>
+</ol>
+<p><strong>扩展阅读</strong></p>
+<p>从Hashtable的类名上就可以看出它是一个古老的类，它的命名甚至没有遵守Java的命名规范：每个单词的首字母都应该大写。也许当初开发Hashtable的工程师也没有注意到这一点，后来大量Java程序中使用了Hashtable类，所以这个类名也就不能改为HashTable了，否则将导致大量程序需要改写。</p>
+<p>与Vector类似的是，尽量少用Hashtable实现类，即使需要创建线程安全的Map实现类，也无须使用Hashtable实现类，可以通过Collections工具类把HashMap变成线程安全的Map。</p>
+<h3 id="HashMap与ConcurrentHashMap有什么区别？"><a href="#HashMap与ConcurrentHashMap有什么区别？" class="headerlink" title="HashMap与ConcurrentHashMap有什么区别？"></a>HashMap与ConcurrentHashMap有什么区别？</h3><p>HashMap是非线程安全的，这意味着不应该在多线程中对这些Map进行修改操作，否则会产生数据不一致的问题，甚至还会因为并发插入元素而导致链表成环，这样在查找时就会发生死循环，影响到整个应用程序。</p>
+<p>Collections工具类可以将一个Map转换成线程安全的实现，其实也就是通过一个包装类，然后把所有功能都委托给传入的Map，而包装类是基于synchronized关键字来保证线程安全的（Hashtable也是基于synchronized关键字），底层使用的是互斥锁，性能与吞吐量比较低。</p>
+<p>ConcurrentHashMap的实现细节远没有这么简单，因此性能也要高上许多。它没有使用一个全局锁来锁住自己，而是采用了减少锁粒度的方法，尽量减少因为竞争锁而导致的阻塞与冲突，而且ConcurrentHashMap的检索操作是不需要锁的。</p>
+<h3 id="介绍一下ConcurrentHashMap是怎么实现的？"><a href="#介绍一下ConcurrentHashMap是怎么实现的？" class="headerlink" title="介绍一下ConcurrentHashMap是怎么实现的？"></a>介绍一下ConcurrentHashMap是怎么实现的？</h3><p>JDK 1.7中的实现：</p>
+<p>在 jdk 1.7 中，ConcurrentHashMap 是由 Segment 数据结构和 HashEntry 数组结构构成，采取分段锁来保证安全性。Segment 是 ReentrantLock 重入锁，在 ConcurrentHashMap 中扮演锁的角色，HashEntry 则用于存储键值对数据。一个 ConcurrentHashMap 里包含一个 Segment 数组，一个 Segment 里包含一个 HashEntry 数组，Segment 的结构和 HashMap 类似，是一个数组和链表结构。</p>
+<p><img src="/p/3eb3d776/A064CF0DD49D1B3694548913C28728DB.png" alt="img"></p>
+<p>JDK 1.8中的实现：</p>
+<p>JDK1.8 的实现已经摒弃了 Segment 的概念，而是直接用 Node 数组+链表+红黑树的数据结构来实现，并发控制使用 Synchronized 和 CAS 来操作，整个看起来就像是优化过且线程安全的 HashMap，虽然在 JDK1.8 中还能看到 Segment 的数据结构，但是已经简化了属性，只是为了兼容旧版本。</p>
+<p><img src="/p/3eb3d776/9C8ABF1CD3475339A49DE3B9E1696FE7.png" alt="img"></p>
+<h3 id="ConcurrentHashMap是怎么分段分组的？"><a href="#ConcurrentHashMap是怎么分段分组的？" class="headerlink" title="ConcurrentHashMap是怎么分段分组的？"></a>ConcurrentHashMap是怎么分段分组的？</h3><p>get操作：</p>
+<p>Segment的get操作实现非常简单和高效，先经过一次再散列，然后使用这个散列值通过散列运算定位到 Segment，再通过散列算法定位到元素。get操作的高效之处在于整个get过程都不需要加锁，除非读到空的值才会加锁重读。原因就是将使用的共享变量定义成 volatile 类型。</p>
+<p>put操作：</p>
+<p>当执行put操作时，会经历两个步骤：</p>
+<ol>
+<li>判断是否需要扩容；</li>
+<li>定位到添加元素的位置，将其放入 HashEntry 数组中。</li>
+</ol>
+<p>插入过程会进行第一次 key 的 hash 来定位 Segment 的位置，如果该 Segment 还没有初始化，即通过 CAS 操作进行赋值，然后进行第二次 hash 操作，找到相应的 HashEntry 的位置，这里会利用继承过来的锁的特性，在将数据插入指定的 HashEntry 位置时（尾插法），会通过继承 ReentrantLock 的 tryLock() 方法尝试去获取锁，如果获取成功就直接插入相应的位置，如果已经有线程获取该Segment的锁，那当前线程会以自旋的方式去继续的调用 tryLock() 方法去获取锁，超过指定次数就挂起，等待唤醒。</p>
+<h3 id="说一说你对LinkedHashMap的理解"><a href="#说一说你对LinkedHashMap的理解" class="headerlink" title="说一说你对LinkedHashMap的理解"></a>说一说你对LinkedHashMap的理解</h3><p>LinkedHashMap使用双向链表来维护key-value对的顺序（其实只需要考虑key的顺序），该链表负责维护Map的迭代顺序，迭代顺序与key-value对的插入顺序保持一致。</p>
+<p>LinkedHashMap可以避免对HashMap、Hashtable里的key-value对进行排序（只要插入key-value对时保持顺序即可），同时又可避免使用TreeMap所增加的成本。</p>
+<p>LinkedHashMap需要维护元素的插入顺序，因此性能略低于HashMap的性能。但因为它以链表来维护内部顺序，所以在迭代访问Map里的全部元素时将有较好的性能。</p>
+<h3 id="请介绍LinkedHashMap的底层原理"><a href="#请介绍LinkedHashMap的底层原理" class="headerlink" title="请介绍LinkedHashMap的底层原理"></a>请介绍LinkedHashMap的底层原理</h3><p>**LinkedHashMap继承于HashMap，它在HashMap的基础上，通过维护一条双向链表，解决了HashMap不能随时保持遍历顺序和插入顺序一致的问题。在实现上，LinkedHashMap很多方法直接继承自HashMap，仅为维护双向链表重写了部分方法。</p>
+<p>如下图，淡蓝色的箭头表示前驱引用，红色箭头表示后继引用。每当有新的键值对节点插入时，新节点最终会接在tail引用指向的节点后面。而tail引用则会移动到新的节点上，这样一个双向链表就建立起来了。</p>
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.gitee.io/p/3eb3d776.html" title="Java基础(四)">https://mrdjun.gitee.io/p/3eb3d776.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/c4f03879.html" rel="prev" title="Java基础(三)">
+                  <i class="fa fa-chevron-left"></i> Java基础(三)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/p/3818800b.html" rel="next" title="Java基础(五)">
+                  Java基础(五) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>

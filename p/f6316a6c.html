@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.gitee.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="ForkJoinPool 是ExecutorService 接口的实现，它专为可以递归分解成小块的工作而设计。Java 7开始引入了一种新的Fork&#x2F;Join线程池，它可以执行一种特殊的任务（Runnable）：把一个大任务拆成多个小任务并行处理，最后将子任务结果合并成最后的计算结果。充分利用多线程处理器的优势，提高程序性能。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ForkJoin">
+<meta property="og:url" content="https://mrdjun.gitee.io/p/f6316a6c.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="ForkJoinPool 是ExecutorService 接口的实现，它专为可以递归分解成小块的工作而设计。Java 7开始引入了一种新的Fork&#x2F;Join线程池，它可以执行一种特殊的任务（Runnable）：把一个大任务拆成多个小任务并行处理，最后将子任务结果合并成最后的计算结果。充分利用多线程处理器的优势，提高程序性能。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/f6316a6c/ForkJoin.png">
+<meta property="article:published_time" content="2021-08-22T04:49:54.000Z">
+<meta property="article:modified_time" content="2023-06-06T13:27:08.436Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="JUC并发包">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrdjun.gitee.io/p/f6316a6c/ForkJoin.png">
+
+
+<link rel="canonical" href="https://mrdjun.gitee.io/p/f6316a6c.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.gitee.io/p/f6316a6c.html","path":"p/f6316a6c.html","title":"ForkJoin"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      ForkJoin | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E6%80%A7%E8%83%BD%E4%BD%8E%E5%86%B2%E7%AA%81"><span class="nav-number">1.</span> <span class="nav-text">高性能低冲突</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">3.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">4.</span> <span class="nav-text">应用示例</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.gitee.io/p/f6316a6c.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ForkJoin
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2021-08-22 12:49:54" itemprop="dateCreated datePublished" datetime="2021-08-22T12:49:54+08:00">2021-08-22</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><p>ForkJoinPool 是ExecutorService 接口的实现，它专为可以递归分解成小块的工作而设计。Java 7开始引入了一种新的Fork/Join线程池，它可以执行一种特殊的任务（Runnable）：把一个大任务拆成多个小任务并行处理，最后将子任务结果合并成最后的计算结果。充分利用多线程处理器的优势，提高程序性能。</p>
+<p><img src="/p/f6316a6c/ForkJoin.png" alt="forkJoin"></p>
+<h2 id="高性能低冲突"><a href="#高性能低冲突" class="headerlink" title="高性能低冲突"></a>高性能低冲突</h2><ul>
+<li><p>每个Worker线程都维护一个任务队列，即ForkJoinWorkerThread中的任务队列；</p>
+</li>
+<li><p>ForkJoin维护的任务队列是双端队列（DeQueue），可以同时支持LIFO（先进后出）和FIFO（先进先出）；</p>
+</li>
+<li><p>子任务会被加入到原先任务所在 Worker 线程的任务队列；</p>
+</li>
+<li><p>当任务队列为空时，线程会随机从其他的 Worker 的队列中拿走一个任务执行（工作窃取：steal work），工作窃取带来的性能提升偏理论，API的复杂性较高，实际研发中可控性来说不如其他API。</p>
+</li>
+</ul>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><ul>
+<li><p>如果一个 Worker 线程遇到了 join 操作，而这时候正在处理其他任务，会等到这个任务结束。否则直接返回；</p>
+</li>
+<li><p>如果一个 Worker 线程窃取任务失败，它会调用 yield 或者 sleep 之类的方法休息一会儿，再尝试（如果所有线程都是空闲状态，即没有任务执行，那么该线程也会进入阻塞状态等待新任务的到来）；</p>
+</li>
+</ul>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li><p>使用尽可能少的线程池，在大多数情况下，最好的决定是为每个应用程序或系统使用一个线程池；</p>
+</li>
+<li><p>如果不需要特定调整，请使用默认的公共线程池；</p>
+</li>
+<li><p>使用合理的阈值将ForkJoinTask拆分为子任务；</p>
+</li>
+<li><p><strong>避免在ForkJoinTask中出现任何阻塞（例如耗时IO，大量查询数据库、网络请求等）；</strong></p>
+</li>
+<li><p>适合数据处理、结果汇总、统计等场景；</p>
+</li>
+</ul>
+<p>java8实例：java.utilArrays类用于其 parallelSort() 方法；</p>
+<h2 id="应用示例"><a href="#应用示例" class="headerlink" title="应用示例"></a>应用示例</h2><p>例如，下面将从 0 加到 10_0000_0000：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test1</span><span class="params">()</span> {</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">long</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10_0000_0000L</span>; i++) {</span><br><span class="line">        sum += i;</span><br><span class="line">    }</span><br><span class="line">    System.out.println(sum + <span class="string">",耗时："</span> + (System.currentTimeMillis() - start) + <span class="string">"ms"</span>);<span class="comment">// 耗时：361ms</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>使用 ForkJoinPool 执行该任务：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test2</span><span class="params">()</span> <span class="keyword">throws</span> ExecutionException, InterruptedException {</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line"></span><br><span class="line">    <span class="type">ForkJoinPool</span> <span class="variable">pool</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ForkJoinPool</span>();</span><br><span class="line">    ForkJoinTask&lt;Long&gt; task = <span class="keyword">new</span> <span class="title class_">Task04051</span>(<span class="number">0L</span>, <span class="number">10_0000_0000L</span>);</span><br><span class="line">    ForkJoinTask&lt;Long&gt; submit = pool.submit(task);</span><br><span class="line">    <span class="type">Long</span> <span class="variable">result</span> <span class="operator">=</span> submit.get();</span><br><span class="line"></span><br><span class="line">    System.out.println(result + <span class="string">",耗时："</span> + (System.currentTimeMillis() - start) + <span class="string">"ms"</span>); <span class="comment">// 耗时：186ms</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>使用  stream 并行执行任务：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test3</span><span class="params">()</span> {</span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">	<span class="comment">// 与 LongStream 类似的有DoubleStream、IntegerStream 等</span></span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> LongStream.rangeClosed(<span class="number">0L</span>, num).parallel().reduce(<span class="number">0</span>, Long::sum);</span><br><span class="line"></span><br><span class="line">    System.out.println(sum + <span class="string">",耗时："</span> + (System.currentTimeMillis() - start) + <span class="string">"ms"</span>);<span class="comment">// 耗时：126ms</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.gitee.io/p/f6316a6c.html" title="ForkJoin">https://mrdjun.gitee.io/p/f6316a6c.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/JUC%E5%B9%B6%E5%8F%91%E5%8C%85/" rel="tag"># JUC并发包</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/969d9481.html" rel="prev" title="CAS">
+                  <i class="fa fa-chevron-left"></i> CAS
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/p/ffba6cb8.html" rel="next" title="CPU优化性能的手段">
+                  CPU优化性能的手段 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>

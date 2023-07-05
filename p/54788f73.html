@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.gitee.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="工厂模式只关心结果，不关心过程，分为简单工厂模式、工厂方法模式、抽象工厂模式。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="工厂模式">
+<meta property="og:url" content="https://mrdjun.gitee.io/p/54788f73.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="工厂模式只关心结果，不关心过程，分为简单工厂模式、工厂方法模式、抽象工厂模式。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/54788f73/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/54788f73/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-%E6%96%B9%E6%B3%95%E5%B7%A5%E5%8E%82%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/54788f73/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E7%BB%93%E6%9E%84.png">
+<meta property="article:published_time" content="2021-04-07T13:40:36.000Z">
+<meta property="article:modified_time" content="2023-06-06T13:27:08.413Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="设计模式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrdjun.gitee.io/p/54788f73/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E7%BB%93%E6%9E%84.png">
+
+
+<link rel="canonical" href="https://mrdjun.gitee.io/p/54788f73.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.gitee.io/p/54788f73.html","path":"p/54788f73.html","title":"工厂模式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      工厂模式 | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">简单工厂模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">工厂方法模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">抽象工厂模式</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.gitee.io/p/54788f73.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          工厂模式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2021-04-07 21:40:36" itemprop="dateCreated datePublished" datetime="2021-04-07T21:40:36+08:00">2021-04-07</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><p>工厂模式只关心结果，不关心过程；定义一个创建对象的接口，让其子类自己决定实例化哪一个工厂类，工厂模式使其创建过程延迟到子类进行；</p>
+<p>以生产手机为例，制造手机有一套标准，现在市面的手机品牌会找代工厂按照这个标准生产手机。</p>
+<h2 id="简单工厂模式"><a href="#简单工厂模式" class="headerlink" title="简单工厂模式"></a>简单工厂模式</h2><p>定义一个工厂类，根据传入的参数值的不同返回不同的实例。特点：被创建的实例具有共同的父类或接口。</p>
+<p>使用场景：</p>
+<ul>
+<li>需要创建的对象比较少</li>
+<li>客户端不关心对象的创建过程</li>
+</ul>
+<p>优缺点：</p>
+<ul>
+<li>优点：可以对创建对象进行“加工”，对客户端隐藏相关细节</li>
+<li>缺点：创建逻辑复杂或创建的对象过多造成代码臃肿</li>
+<li>缺点：新增、删除子类都违反开闭原则。</li>
+</ul>
+<p><img src="/p/54788f73/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E7%BB%93%E6%9E%84.png" alt="img"></p>
+<p><strong>Phone类</strong>：手机标准规范类(AbstractProduct)</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Phone</span> {</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">make</span><span class="params">()</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>MiPhone类</strong>：制造小米手机</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MiPhone</span> <span class="keyword">implements</span> <span class="title class_">Phone</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MiPhone</span><span class="params">()</span> {</span><br><span class="line">        make();</span><br><span class="line">    }</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">make</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"生产小米手机"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>HuaweiPhone类</strong>：制造华为手机</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HuaweiPhone</span> <span class="keyword">implements</span> <span class="title class_">Phone</span> {</span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">HuaweiPhone</span><span class="params">()</span>{</span><br><span class="line">		make();</span><br><span class="line">	}</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">make</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"生产华为手机"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>PhoneFactory类</strong>：手机代工厂（Factory）</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PhoneFactory</span> {</span><br><span class="line">    <span class="keyword">public</span> Phone <span class="title function_">makePhone</span><span class="params">(String phoneType)</span> {</span><br><span class="line">        <span class="keyword">if</span>(phoneType.equalsIgnoreCase(<span class="string">"XIAOMI"</span>)){</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">MiPhone</span>();</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(phoneType.equalsIgnoreCase(<span class="string">"HUAWEI"</span>)) {</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">HuaweiPhone</span>();</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h2><p>定义一个用于创建对象的接口，让子类决定实例化哪一个类。</p>
+<p>优缺点：</p>
+<ul>
+<li>优点：遵循开闭原则</li>
+<li>优点：对客户端隐藏对象的创建细节</li>
+<li>优点：遵循单一职责</li>
+<li>缺点：增加的类比较多，增加了系统的复杂度。</li>
+<li>缺点：只支持同一类产品的创建。</li>
+</ul>
+<p><img src="/p/54788f73/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-%E6%96%B9%E6%B3%95%E5%B7%A5%E5%8E%82%E7%BB%93%E6%9E%84.png" alt="img"></p>
+<p><strong>AbstractFactory类</strong>：生产不同产品的工厂的抽象类</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">AbstractFactory</span> {</span><br><span class="line">    Phone <span class="title function_">makePhone</span><span class="params">()</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>XiaoMiFactory类</strong>：生产小米手机的工厂</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">XiaoMiFactory</span> <span class="keyword">implements</span> <span class="title class_">AbstractFactory</span>{</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Phone <span class="title function_">makePhone</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">MiPhone</span>();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>HuaweiFactory类</strong>：生产华为手机的工厂</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HuaweiFactory</span> <span class="keyword">implements</span> <span class="title class_">AbstractFactory</span>{</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Phone <span class="title function_">makePhone</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">HuaweiPhone</span>();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h2><p>解决了方法工厂模式只生产一种产品的弊端：</p>
+<ul>
+<li>新增一个产品族，只需要增加一个具体工厂，不需要修改之前的代码</li>
+</ul>
+<p>抽象工厂中有两个概念：</p>
+<p>1、产品族：一个品牌旗下的多种产品</p>
+<p>2、产品等级结构：不同品牌下的同一种产品</p>
+<p>每一个品牌就是每一个具体的工厂，也就是说一个品牌要生产一个产品族需要对应产品等级结构的工厂的来完成。</p>
+<p><img src="/p/54788f73/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E7%BB%93%E6%9E%84.png" alt="img"></p>
+<p><strong>电脑(PC)类</strong>：定义PC产品的接口(AbstractPC)</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">PC</span> {</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">make</span><span class="params">()</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>MiPC类</strong>：定义小米电脑产品(MIPC)</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MiPC</span> <span class="keyword">implements</span> <span class="title class_">PC</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MiPC</span><span class="params">()</span> {</span><br><span class="line">        <span class="built_in">this</span>.make();</span><br><span class="line">    }</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">make</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"生产小米电脑"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>HuaweiPC类</strong>：定义华为电脑产品(HuaweiPC)</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HuaweiPC</span> <span class="keyword">implements</span> <span class="title class_">PC</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">HuaweiPC</span><span class="params">()</span> {</span><br><span class="line">        <span class="built_in">this</span>.make();</span><br><span class="line">    }</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">make</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"生产华为电脑"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>AbstractFactory类</strong>：增加PC产品制造接口</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">AbstractFactory</span> {</span><br><span class="line">    Phone <span class="title function_">makePhone</span><span class="params">()</span>;</span><br><span class="line">    PC <span class="title function_">makePC</span><span class="params">()</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>XiaoMiFactory类</strong>：增加小米PC的制造（ConcreteFactory1）</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">XiaoMiFactory</span> <span class="keyword">implements</span> <span class="title class_">AbstractFactory</span>{</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Phone <span class="title function_">makePhone</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">MiPhone</span>();</span><br><span class="line">    }</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> PC <span class="title function_">makePC</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">MiPC</span>();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>HuaweiFactory类</strong>：增加苹果PC的制造（ConcreteFactory2）</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HuaweiFactory</span> <span class="keyword">implements</span> <span class="title class_">AbstractFactory</span> {</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Phone <span class="title function_">makePhone</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">HuaweiPhone</span>();</span><br><span class="line">    }</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> PC <span class="title function_">makePC</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">HuaweiPC</span>();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.gitee.io/p/54788f73.html" title="工厂模式">https://mrdjun.gitee.io/p/54788f73.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"># 设计模式</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/7b510e10.html" rel="prev" title="代理模式">
+                  <i class="fa fa-chevron-left"></i> 代理模式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/p/9a246216.html" rel="next" title="观察者模式">
+                  观察者模式 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>

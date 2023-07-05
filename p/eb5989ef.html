@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.gitee.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="JMM全称Java Memory Model，Java内存模型是JSR133里指出了JMM是用来定义一个协议，用于屏蔽各种硬件和操作系统的内存访问差异，让Java程序在各种平台下都能达到一致的并发效果。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="JMM内存模型">
+<meta property="og:url" content="https://mrdjun.gitee.io/p/eb5989ef.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="JMM全称Java Memory Model，Java内存模型是JSR133里指出了JMM是用来定义一个协议，用于屏蔽各种硬件和操作系统的内存访问差异，让Java程序在各种平台下都能达到一致的并发效果。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/eb5989ef/webp.webp">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/eb5989ef/image-20220305205222083.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/eb5989ef/image-20220306162004447.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/eb5989ef/image-20220306162227282.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/eb5989ef/image-20220306162316303.png">
+<meta property="article:published_time" content="2021-05-05T10:40:12.000Z">
+<meta property="article:modified_time" content="2023-06-06T13:27:08.437Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="JUC并发包">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrdjun.gitee.io/p/eb5989ef/webp.webp">
+
+
+<link rel="canonical" href="https://mrdjun.gitee.io/p/eb5989ef.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.gitee.io/p/eb5989ef.html","path":"p/eb5989ef.html","title":"JMM内存模型"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      JMM内存模型 | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%BA%E5%88%86%E5%BC%80%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">区分开内存结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">什么是内存模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E4%B8%AD%E7%9A%84%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">Java中的内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="nav-number">3.1.</span> <span class="nav-text">内存可见性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E8%AE%BF%E9%97%AE%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%AF%E8%A7%81%E6%80%A7%E9%97%AE%E9%A2%98"><span class="nav-number">3.2.</span> <span class="nav-text">线程访问数据的可见性问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E5%AD%97-final-%E5%9C%A8JMM%E4%B8%AD%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">3.3.</span> <span class="nav-text">关键字 final 在JMM中的处理</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.gitee.io/p/eb5989ef.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JMM内存模型
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2021-05-05 18:40:12" itemprop="dateCreated datePublished" datetime="2021-05-05T18:40:12+08:00">2021-05-05</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><p>JMM全称Java Memory Model，Java内存模型是JSR133里指出了JMM是用来定义一个<strong>一致的、跨平台</strong>的内存模型，是缓存一致性协议，用于屏蔽掉各种硬件和操作系统的内存访问差异，让Java程序在各种平台下都能达到一致的并发效果。</p>
+<h2 id="区分开内存结构"><a href="#区分开内存结构" class="headerlink" title="区分开内存结构"></a>区分开内存结构</h2><p>内存结构和内存模型完全是两个东西，内存结构是下图中的这些</p>
+<p><img src="/p/eb5989ef/webp.webp" alt="img"></p>
+<h2 id="什么是内存模型"><a href="#什么是内存模型" class="headerlink" title="什么是内存模型"></a>什么是内存模型</h2><p>在多CPU的系统中，每个CPU都有多级缓存，一般分为L1、L2、L3缓存。因为这些缓存的存在，提升了吞吐量，减轻了数据总线上数据传输的压力，同时也带来了很多新的挑战，比如两个CPU同时去操作同一个内存地址，会发生什么？在什么条件下，它们可以看到相同的结果？这些都是需要解决的。</p>
+<p>所以在CPU的层面，内存模型定义了一个充分必要条件，保证其它CPU的写入动作对该CPU是可见的，而且该CPU的写入动作对其它CPU也是可见的，那这种可见性，应该如何实现呢？</p>
+<p>有些处理器提供了强内存模型，从硬件层面上支持所有CPU在任何时候都能看到内存中任意位置相同的值。大多数处理器提供的是弱内存模型，需要执行一些特殊指令（<code>Memory Barriers</code>内存屏障），刷新CPU缓存的数据到内存中，保证这个写操作能够被其它CPU可见，或者将CPU缓存的数据设置为无效状态，保证其它CPU的写操作对当前CPU可见。</p>
+<p>内存屏障除了实现CPU之前的数据可见性之外，还有一个重要的职责是<strong>禁止指令的重排序</strong>。重排序可以发生在好几个地方：编译器、运行时、JIT等，通过内存屏障的功能，可以禁止一些不必要、或者会带来负面影响的重排序优化，在内存模型的范围内，实现更高的性能，同时保证程序的正确性。</p>
+<h2 id="Java中的内存模型"><a href="#Java中的内存模型" class="headerlink" title="Java中的内存模型"></a>Java中的内存模型</h2><ul>
+<li>在Java内存模型（JMM）中，描述了在多线程代码中哪些行为是规范正确的，以及多线程之间如何进行通信，代码中变量的读写行为如何反应到内存、CPU缓存的底层细节。Java内存模型中定义了它们的行为，确保正确同步的Java代码在所有的处理器架构上都能正确执行。</li>
+<li>在Java中包含了几个关键字：volatile、final 和 synchronized，帮助程序员把代码中的并发需求描述给编译器、解释器，再转成机器指令下达给处理器。</li>
+</ul>
+<h3 id="内存可见性"><a href="#内存可见性" class="headerlink" title="内存可见性"></a>内存可见性</h3><p>不同线程拥有各自的私有<strong>工作内存</strong>，当线程需要读取或修改某个变量时，不能直接去操作<strong>主内存</strong>中的变量，而是需要将这个变量读取到线程的<strong>工作内存</strong>的<strong>变量副本</strong>中，当该线程修改其变量副本的值后，<strong>其它线程并不能立刻读取到新值</strong>，需要将修改后的值<strong>刷新到主内存中</strong>，其它线程才能<strong>从主内存读取到修改后的值</strong>。</p>
+<p><img src="/p/eb5989ef/image-20220305205222083.png" alt="image-20220305205222083"></p>
+<p>线程A从主存中读到值flag=true，加载到自己的工作内存中（堆区），由执行引擎处理后将值再赋值给工作内存，写入存储过程（存储过程就是把store操作从工作内存中得到的变量放入主存中的操作）。</p>
+<p>lock 作用于主内存的变量，把一个变量标识为线程独占状态，unlock 也是作用于主内存的变量，将被锁定的变量释放出来，释放后才能被其它线程锁定。</p>
+<blockquote>
+<p>多线程操作线程共享的变量时，变量被其中一个线程修改后，并不能去实时修改其它线程正在使用该变量的值，怎么解决这个问题？</p>
+</blockquote>
+<p>在下面这个实例中，线程A从主内存中读取到n=0，加载到自己的工作内存，一秒钟后，main线程把n的值改为1后写回主内存，此时A还没有拿到最新的值。所以线程A是不会停止执行的。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException {</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; {</span><br><span class="line">        <span class="keyword">while</span> (n == <span class="number">0</span>) {</span><br><span class="line">        }</span><br><span class="line">    }, <span class="string">"A"</span>).start();</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 休眠 1s 后修改n=1，能否停止线程A？</span></span><br><span class="line">    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">    n = <span class="number">1</span>;</span><br><span class="line">    System.out.println(<span class="string">"线程停止了吗？"</span>);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>解决：当主存中的值发生修改后，应该通知所有操作主存变量的线程。在Java中我们可以使用 volatile 关键字来解决这个问题。</p>
+<p>下面继续对线程可见性问题进行剖析。</p>
+<h3 id="线程访问数据的可见性问题"><a href="#线程访问数据的可见性问题" class="headerlink" title="线程访问数据的可见性问题"></a>线程访问数据的可见性问题</h3><p>缓存引起的可见性问题。当主存中的data发生改变后，其他线程栈中的使用的 data 是不能够及时修改的。</p>
+<p><img src="/p/eb5989ef/image-20220306162004447.png" alt="image-20220306162004447"></p>
+<h4 id="指令重排序引起的可见性问题"><a href="#指令重排序引起的可见性问题" class="headerlink" title="指令重排序引起的可见性问题"></a>指令重排序引起的可见性问题</h4><p>在Java层面，指令重排序不能够通过 javap 查看出class文件中的重排序，而是发生在运行时的编译器（JIT - Just In Time），将字节码进行重排序编译机器语言（汇编）。</p>
+<blockquote>
+<p>什么是Just In Time编译器?</p>
+</blockquote>
+<p>Java程序一开始是通过解释器（Interpreter）进行解释执行的。当JVM发现某个方法或代码块运行特别频繁时，就会把这些代码认定为“热点代码（Hot Spot Code）”，然后JVM会把这些代码编译成与本地平台相关的机器码，并进行各种层次的优化，完成这个任务的编译器称为：即时编译器（Just In Time Compiler，JIT）。<br>JIT编译器是“动态编译器”的一种，相对的“静态编译器”则是指的比如：C/C++的编译器。<br>注意：<br>JIT并不是JVM的必须部分，JVM规范并没有规定JIT必须存在，更没有限定和指导JIT。但是，JIT性能的好坏、代码优化程度的高低却是衡量一款JVM是否优秀的最关键指标之一，也是虚拟机中最核心且最能体现虚拟机技术水平的部分。</p>
+<p><img src="/p/eb5989ef/image-20220306162227282.png" alt="image-20220306162227282"></p>
+<p>还可能发生等效替换。</p>
+<p><img src="/p/eb5989ef/image-20220306162316303.png" alt="image-20220306162316303"></p>
+<p>将上面这些代码java.exe 编译成class字节码加载到JVM之后，通过运行时编译器JIT将class字节码转成汇编指令后进行重排序或等效替换。 </p>
+<p>在运行时，JVM会根据代码的调用情况进行判断：如果 n=0，那么while(n==0) 就相当于是一个死循环成为热点代码，那么JIT就会认为可以执行成为 if(n==0){while(true){}} 这样的优化，就不会再回去读取 n 的值，相当于执行了一次Java层面的重排序。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (n == <span class="number">0</span>) {}  被JIT编译器指令重排序为 <span class="keyword">if</span>(n==<span class="number">0</span>){<span class="keyword">while</span>(<span class="literal">true</span>){}}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>如果代码改为加锁的方式，虚拟机对于这种关键的代码段就不会进行优化处理了。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; {</span><br><span class="line">    <span class="keyword">while</span> (n == <span class="number">0</span>) {</span><br><span class="line">        <span class="keyword">synchronized</span>(<span class="built_in">this</span>){</span><br><span class="line">            add();</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}, <span class="string">"A"</span>).start();</span><br></pre></td></tr></tbody></table></figure>
+
+<p>JMM 可以通过 happens-before 模型向程序员提供跨线程的内存可见性保证。</p>
+<h4 id="happen-before原则"><a href="#happen-before原则" class="headerlink" title="happen-before原则"></a>happen-before原则</h4><p>从JDK1.5开始，引入了一个 happens-before 的概念来阐述多个线程操作共享变量的可见性问题。所以可以认为在JMM中，如果一个操作执行的结果需要对另一个操作可见，那么这两个操作必须满足 happens-before 原则。</p>
+<ol>
+<li><p>程序顺序规则：一个线程内，按照程序代码顺序，书写在前面的操作先行发生与书写在后面的操作。</p>
+</li>
+<li><p>监视器锁规则：一个unlock操作先行发生与后面对同一个锁的lock操作者，这里必须指同一个锁，后面指的是时间上的先后顺序。</p>
+</li>
+<li><p>volatile变量规则：对一个volatile变量的写操作先行发生于后面对这个变量的读操作，这里的后面同样指时间上的先后顺序。</p>
+</li>
+<li><p>线程启动规则：Thread 对象的 start() 方法先行发生于此线程的任意动作。</p>
+</li>
+<li><p>线程终止规则：线程中的所有操作都先行发生于对此线程的终止检测，我们可以通过thread.join方法结束，thread.isAlive的返回值等手段检测到线程已经终止执行。</p>
+</li>
+<li><p>线程中断规则：对线程interrupt方法的调用先行发生于被中断线程的代码监测到中断时间的发生，可以通过interrupt方法检测到是否又中断发生。</p>
+</li>
+<li><p>对象终结规则：一个对象的初始化完成，先行发生于它的finalize方法的开始。</p>
+</li>
+<li><p>传递性：如果A先行发生于B，B先行发生于C，则A先行发生于C。</p>
+</li>
+</ol>
+<h3 id="关键字-final-在JMM中的处理"><a href="#关键字-final-在JMM中的处理" class="headerlink" title="关键字 final 在JMM中的处理"></a>关键字 <code>final</code> 在JMM中的处理</h3><p>在下面这个实例中，在read() 方法中，一个变量加了final修饰，一个没加。</p>
+<p>在多线程的情况下未加final修饰符变量的值，有可能为0，不保证值为构造函数中的赋值。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> {</span><br><span class="line">    <span class="keyword">final</span> <span class="type">int</span> x;</span><br><span class="line">    <span class="type">int</span> y;</span><br><span class="line">    <span class="keyword">static</span> A a;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">A</span><span class="params">()</span> {</span><br><span class="line">        x=<span class="number">3</span>;</span><br><span class="line">        y=<span class="number">4</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">write</span><span class="params">()</span>{</span><br><span class="line">        a = <span class="keyword">new</span> <span class="title class_">A</span>();</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">read</span><span class="params">()</span>{</span><br><span class="line">        <span class="keyword">if</span>(f!=<span class="literal">null</span>){</span><br><span class="line">            <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> a.x; <span class="comment">// 肯定是3</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> a.y; <span class="comment">// 可能是0</span></span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>读取该共享对象的final成员变量之前，先要读取共享的对象。伪代码示例：r = new A()；k = r.a 这两个操作不能重排序。</p>
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.gitee.io/p/eb5989ef.html" title="JMM内存模型">https://mrdjun.gitee.io/p/eb5989ef.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/JUC%E5%B9%B6%E5%8F%91%E5%8C%85/" rel="tag"># JUC并发包</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/6ba397bc.html" rel="prev" title="JAVA注解">
+                  <i class="fa fa-chevron-left"></i> JAVA注解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/p/290c6541.html" rel="next" title="AQS抽象队列同步器">
+                  AQS抽象队列同步器 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>

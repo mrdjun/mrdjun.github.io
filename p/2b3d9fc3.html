@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.gitee.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="四种类加载器，类的生命周期。类的加载分为loading、linking、initialization三个阶段。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="JVM类加载子系统">
+<meta property="og:url" content="https://mrdjun.gitee.io/p/2b3d9fc3.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="四种类加载器，类的生命周期。类的加载分为loading、linking、initialization三个阶段。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/2b3d9fc3/JVM-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/2b3d9fc3/JVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/2b3d9fc3/ClassLoader%E7%B1%BB%E7%9A%84%E6%96%B9%E6%B3%95.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/2b3d9fc3/ClassLoader%E7%9A%84%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/2b3d9fc3/JVM-%E7%B1%BB%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/2b3d9fc3/Java%E4%B8%AD%E5%9F%BA%E6%9C%AC%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%80%BC.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/2b3d9fc3/JVM%E7%B1%BB%E4%B8%8D%E4%BC%9A%E9%87%8D%E5%A4%8D%E5%8A%A0%E8%BD%BD.png">
+<meta property="article:published_time" content="2021-12-28T15:18:19.000Z">
+<meta property="article:modified_time" content="2023-06-06T13:27:08.454Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrdjun.gitee.io/p/2b3d9fc3/JVM-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F.png">
+
+
+<link rel="canonical" href="https://mrdjun.gitee.io/p/2b3d9fc3.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.gitee.io/p/2b3d9fc3.html","path":"p/2b3d9fc3.html","title":"JVM类加载子系统"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      JVM类加载子系统 | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">类加载器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">类加载器的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bootstrap-ClassLoader"><span class="nav-number">2.1.</span> <span class="nav-text">Bootstrap ClassLoader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Extension-ClassLoader"><span class="nav-number">2.2.</span> <span class="nav-text">Extension ClassLoader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Application-ClassLoader"><span class="nav-number">2.3.</span> <span class="nav-text">Application ClassLoader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="nav-number">2.4.</span> <span class="nav-text">用户自定义类加载器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8EClassLoader"><span class="nav-number">3.</span> <span class="nav-text">关于ClassLoader</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ClassLoader%E7%B1%BB%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">3.1.</span> <span class="nav-text">ClassLoader类的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB"><span class="nav-number">3.2.</span> <span class="nav-text">继承关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96ClassLoader%E7%9A%84%E9%80%94%E5%BE%84"><span class="nav-number">3.3.</span> <span class="nav-text">获取ClassLoader的途径</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">4.</span> <span class="nav-text">类的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Loading%EF%BC%88%E5%8A%A0%E8%BD%BD%E9%98%B6%E6%AE%B5%EF%BC%89"><span class="nav-number">4.1.</span> <span class="nav-text">Loading（加载阶段）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linking%EF%BC%88%E9%93%BE%E6%8E%A5%E9%98%B6%E6%AE%B5%EF%BC%89"><span class="nav-number">4.2.</span> <span class="nav-text">Linking（链接阶段）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Initialization%EF%BC%88%E5%88%9D%E5%A7%8B%E5%8C%96%E9%98%B6%E6%AE%B5%EF%BC%89"><span class="nav-number">4.3.</span> <span class="nav-text">Initialization（初始化阶段）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E4%B8%8D%E4%BC%9A%E9%87%8D%E5%A4%8D%E5%8A%A0%E8%BD%BD"><span class="nav-number">5.</span> <span class="nav-text">类不会重复加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E7%9A%84%E5%8D%B8%E8%BD%BD"><span class="nav-number">6.</span> <span class="nav-text">类的卸载</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.gitee.io/p/2b3d9fc3.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JVM类加载子系统
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2021-12-28 23:18:19" itemprop="dateCreated datePublished" datetime="2021-12-28T23:18:19+08:00">2021-12-28</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><p>类加载子系统将 *.class 文件加载到内存中，类的加载分为加载阶段、链接阶段、初始化阶段三个阶段。</p>
+<p><img src="/p/2b3d9fc3/JVM-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F.png" alt="JVM-类加载子系统"></p>
+<ul>
+<li><p>类加载器子系统负责从文件系统或者网络中加载Class文件，class文件在文件开头有特定的文件标识。</p>
+</li>
+<li><p>ClassLoader只负责class文件的加载，至于它是否可以运行，则由Execution Engine决定。</p>
+</li>
+<li><p>加载的类信息存放于一块称为方法区的内存空间。除了类的信息外，方法区中还会存放运行时常量池信息，可能还包括字符串字面量和数字常量(这部分常量信息是Class文件中常量池部分的内存映射)</p>
+</li>
+</ul>
+<p><img src="/p/2b3d9fc3/JVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8.png" alt="image-20210725220740473"></p>
+<h2 id="类加载器的分类"><a href="#类加载器的分类" class="headerlink" title="类加载器的分类"></a>类加载器的分类</h2><ul>
+<li><p>JVM支持两种类型的类加载器，分别为引导类加载器（Bootstrap ClassLoader）和自定义类加载器（User-Defined ClassLoader）。</p>
+</li>
+<li><p>在Java虚拟机中，将所有派生于抽象类的ClassLoader的类加载器都划分为自定义类加载器。</p>
+</li>
+<li><p>无论类加载器的类型如何划分，在程序中我们最常见的类加载器始终只有3个。</p>
+</li>
+</ul>
+<p>在 sun.misc.Launcher类中，有AppClassLoader、ExtClassLoader 两个内部类，都间接的继承了ClassLoader，所以都属于自定义类加载器。</p>
+<h3 id="Bootstrap-ClassLoader"><a href="#Bootstrap-ClassLoader" class="headerlink" title="Bootstrap ClassLoader"></a>Bootstrap ClassLoader</h3><p>启动类加载器、引导类加载器。</p>
+<p>（1）BootstrapClassLoader是使用C++实现的，嵌套在JVM的内部，所以其并不继承自 java.lang.ClassLoader，没有父加载器。</p>
+<p>（2）它用来加载Java的核心库（\jre\lib\rt.jar、resources.jar或sun.boot.class.path路径下的内容），用于提供JVM自身需要的类。</p>
+<p>（3）加载扩展类和应用程序类加载器，并指定他们的父类加载器。</p>
+<p>（4）出于安全考虑，Bootstrap启动类加载器只加载包名为 java、javax、sun等开头的类。</p>
+<h3 id="Extension-ClassLoader"><a href="#Extension-ClassLoader" class="headerlink" title="Extension ClassLoader"></a>Extension ClassLoader</h3><p>扩展类加载器。</p>
+<p>（1）Java语言编写，由sun. misc. LauncherSExtClassLoader实现。</p>
+<p>（2）派生于ClassLoader类。</p>
+<p>（3）父类加载器是Bootstrap ClassLoader。</p>
+<p>（4）从java.ext.dirs系统属性所指定的目录中加载类库，或从JDK的安装目录的 jre/lib/ext 子目录（扩展目录）加载类库。如果用户创建的 JAR 放在此目录下，也会自动由扩展类加载器加载。</p>
+<h3 id="Application-ClassLoader"><a href="#Application-ClassLoader" class="headerlink" title="Application ClassLoader"></a>Application ClassLoader</h3><p>应用程序类加载器、系统类加载器。</p>
+<p>（1）Java 语言编写，由 sun. misc . Launcher$AppClassLoader 实现。</p>
+<p>（2）派生于 ClassLoader 类。</p>
+<p>（3）它负责加载环境变量classpath或系统属性 java. class.path 指定路径下的类库。</p>
+<p>（4）该类加载是程序中默认的类加载器，一 般来说，Java应用的类都是由它来完成加载。</p>
+<p>（5）通过ClassLoader #getSystemClassLoader ()方法可以获取到该类加载器。</p>
+<h3 id="用户自定义类加载器"><a href="#用户自定义类加载器" class="headerlink" title="用户自定义类加载器"></a>用户自定义类加载器</h3><p>在Java的日常应用程序开发中，类的加载几乎是由上述3种类加载器相互配合执行的，在必要时，我们还可以自定义类加载器，来定制类的加载方式。</p>
+<p>自定义类加载器可以实现以下功能：</p>
+<p>（1）隔离类加载器。例如，引入多个jar包时，可能会出现包名类名完全一致的情况，导致冲突。</p>
+<p>（2）修改类加载的方式。例如，在需要某个类的时候，才主动加载这个类。</p>
+<p>（3）扩展加载源。例如，从数据库加载。</p>
+<p>（4）防止源码泄露。例如，对进行加密的字节码文件，使用自定义的类加载器进行解密后再加载到JVM。</p>
+<h2 id="关于ClassLoader"><a href="#关于ClassLoader" class="headerlink" title="关于ClassLoader"></a>关于ClassLoader</h2><h3 id="ClassLoader类的定义"><a href="#ClassLoader类的定义" class="headerlink" title="ClassLoader类的定义"></a>ClassLoader类的定义</h3><p>Classloader类，它是一个抽象类，其后所有的类加载器都继承自ClassLoader（不包括启动类加载器）。</p>
+<p><img src="/p/2b3d9fc3/ClassLoader%E7%B1%BB%E7%9A%84%E6%96%B9%E6%B3%95.png" alt="img"></p>
+<h3 id="继承关系"><a href="#继承关系" class="headerlink" title="继承关系"></a>继承关系</h3><p>ClassLoader的继承关系如下，sun.misc.Launcher 是一个Java虚拟机的入口应用。</p>
+<p><img src="/p/2b3d9fc3/ClassLoader%E7%9A%84%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB.png" alt="img"></p>
+<h3 id="获取ClassLoader的途径"><a href="#获取ClassLoader的途径" class="headerlink" title="获取ClassLoader的途径"></a>获取ClassLoader的途径</h3><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>调用方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>获取当前类的classLoader</td>
+<td>Clazz.getClassLoader()</td>
+</tr>
+<tr>
+<td>获取当前线程上下文的classLoader</td>
+<td>Thread.currentThread().getContextClassLoader()</td>
+</tr>
+<tr>
+<td>获取系统的classLoader</td>
+<td>ClassLoader.getSystemClassloader()</td>
+</tr>
+<tr>
+<td>获取调用者的classLoader</td>
+<td>DriverManager.getCallerClassLoader()</td>
+</tr>
+</tbody></table>
+<h2 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h2><p><img src="/p/2b3d9fc3/JVM-%E7%B1%BB%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png" alt="image-20210719225706738"></p>
+<blockquote>
+<p>Java如何知道我们的类在哪里？</p>
+</blockquote>
+<p>在JDK\bin目录有jps、jcmd两个命令，jps用于查看当前的Java进程的一些简单情况，jcmd可用于查看堆分析、系统properties内容、堆外内存信息等。</p>
+<p>通过jcmd查看VM.system.properties即可查看到当前Java类的所在位置。</p>
+<h3 id="Loading（加载阶段）"><a href="#Loading（加载阶段）" class="headerlink" title="Loading（加载阶段）"></a>Loading（加载阶段）</h3><p>加载”阶段是“类加载”生命周期的第一个阶段，在加载阶段，JVM要完成下面三件事：</p>
+<p>①、通过一个类的全限定名来获取定义此类的二进制字节流。</p>
+<p>②、将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构。</p>
+<p>③、在Java堆中生成一个代表这个类的java.lang.Class对象，作为方法区这些数据的访问入口。</p>
+<p>PS：加载 *.class 的方式有哪些？</p>
+<ul>
+<li>从本地系统中直接加载</li>
+<li>通过网络获取，如Web Applet</li>
+<li>从 ZIP 包中读取，成为日后的 JAR、EAR、WAR 格式的基础</li>
+<li>运行时计算生成，使用最多的是动态代理技术</li>
+<li>从专有数据库中提取.class文件，比较少见</li>
+<li>从加密文件中获取，典型的防class文件被反编译的保护措施</li>
+</ul>
+<h3 id="Linking（链接阶段）"><a href="#Linking（链接阶段）" class="headerlink" title="Linking（链接阶段）"></a>Linking（链接阶段）</h3><h4 id="（1）Verify（验证）"><a href="#（1）Verify（验证）" class="headerlink" title="（1）Verify（验证）"></a>（1）Verify（验证）</h4><ul>
+<li><p>目的在于确保 Class 文件的字节流中包含的信息符合当前虚拟机的要求，保证被加载类的正确性，并且不会危害虚拟机自身的安全。</p>
+</li>
+<li><p>主要包括四个方面的检查：文件格式验证、元数据验证、字节码验证、符号引用验证。</p>
+</li>
+</ul>
+<h5 id="①、文件格式验证"><a href="#①、文件格式验证" class="headerlink" title="①、文件格式验证"></a>①、文件格式验证</h5><p>　　校验字节流是否符合Class文件格式的规范，并且能够被当前版本的虚拟机处理。</p>
+<p>　　一、是否以魔数 0xCAFEBABE 开头。</p>
+<p>　　二、主、次版本号是否是当前虚拟机处理范围之内。</p>
+<p>　　三、常量池的常量中是否有不被支持的常量类型（检查常量tag标志）</p>
+<p>　　四、指向常量的各种索引值中是否有指向不存在的常量或不符合类型的常量。</p>
+<p>　　五、CONSTANT_Utf8_info 型的常量中是否有不符合 UTF8 编码的数据。</p>
+<p>　　六、Class 文件中各个部分及文件本身是否有被删除的或附加的其他信息。</p>
+<p>　　以上是一部分校验内容，当然远不止这些。经过这些校验后，字节流才会进入内存的方法区中存储，接下来后面的三个阶段校验都是基于方法区的存储结构进行的。</p>
+<h5 id="②、元数据验证"><a href="#②、元数据验证" class="headerlink" title="②、元数据验证"></a>②、元数据验证</h5><p>　　第二个阶段主要是对字节码描述的信息进行语义分析，以保证其描述的信息符合Java语言规范要求。</p>
+<p>　　一、这个类是否有父类（除了java.lang.Object 类之外，所有的类都应当有父类）。</p>
+<p>　　二、这个类的父类是否继承了不允许被继承的类（被final修饰的类）。</p>
+<p>　　三、如果这个类不是抽象类，是否实现了其父类或接口之中要求实现的所有普通方法。</p>
+<p>　　四、类中的字段、方法是否与父类产生了矛盾（例如覆盖了父类的final字段、或者出现不符合规则的重载）</p>
+<h5 id="③、字节码验证"><a href="#③、字节码验证" class="headerlink" title="③、字节码验证"></a>③、字节码验证</h5><p>　　第三个阶段字节码验证是整个验证阶段中最复杂的，主要是进行数据流和控制流分析。该阶段将对类的方法进行分析，保证被校验的方法在运行时不会做出危害虚拟机安全的行为。</p>
+<p>　　一、保证任意时刻操作数栈中的数据类型与指令代码序列都能配合工作。例如不会出现在操作数栈中放置了一个 int 类型的数据，使用时却按照 long 类型来加载到本地变量表中。</p>
+<p>　　二、保证跳转指令不会跳转到方法体以外的字节码指令中。</p>
+<p>　　三、保证方法体中的类型转换是有效的。比如把一个子类对象赋值给父类数据类型，这是安全的。但是把父类对象赋值给子类数据类型，甚至赋值给完全不相干的类型，这就是不合法的。</p>
+<h5 id="④、符号引用验证"><a href="#④、符号引用验证" class="headerlink" title="④、符号引用验证"></a>④、符号引用验证</h5><p>　　符号引用验证主要是对类自身以外（常量池中的各种符号引用）的信息进行匹配性的校验，通常需要校验如下内容：</p>
+<p>　　一、符号引用中通过字符串描述的全限定名是否能够找到相应的类。</p>
+<p>　　二、在指定类中是否存在符合方法的字段描述符及简单名称所描述的方法和字段。</p>
+<p>　　三、符号引用中的类、字段和方法的访问性（private、protected、public、default）是否可以被当前类访问。</p>
+<h4 id="（2）Prepare（准备）"><a href="#（2）Prepare（准备）" class="headerlink" title="（2）Prepare（准备）"></a>（2）Prepare（准备）</h4><ul>
+<li>准备阶段是正式为<strong>类变量</strong>分配内存并设置<strong>类变量</strong>初始值的阶段，这些内存是在方法区中进行分配。</li>
+</ul>
+<p><img src="/p/2b3d9fc3/Java%E4%B8%AD%E5%9F%BA%E6%9C%AC%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%80%BC.png" alt="Java中基本的数据类型初始值"></p>
+<ul>
+<li>这里不包含用 final 修饰的static，因为 final 在编译的时候就会分配了，准备阶段会显式初始化。</li>
+<li>这里不会为实例变量分配初始化，类变量会分配在方法区中，而实例变量是会随着对象一起分配到Java堆中。</li>
+</ul>
+<h4 id="（3）Resolve（解析）"><a href="#（3）Resolve（解析）" class="headerlink" title="（3）Resolve（解析）"></a>（3）Resolve（解析）</h4><ul>
+<li>将常量池中的符号引用替换为直接引用的过程。</li>
+<li>事实上，解析操作往往会伴随着JVM在执行完初始化之后在执行。</li>
+<li>符号引用（Symbolic References）：符号引用以一组符号来描述所引用的目标，符号可以是任何形式的字面量，只要使用时能无歧义的定位到目标即可。符号引用与虚拟机实现的内存布局无关，引用的目标不一定已经加载到内存中。</li>
+<li>直接引用（Direct References）：直接引用可以是直接指向目标的指针、相对偏移量或是一个能间接定位到目标的句柄。直接引用是与虚拟机实现内存布局相关的，同一个符号引用在不同虚拟机实例上翻译出来的直接引用一般不会相同。如果有了直接引用，那么引用的目标必定已经在内存中存在。</li>
+<li>解析动作主要针对类或接口、字段、类方法、接口方法四类符号引用，分别对应于常量池的 CONSTANT_Class_info、CONSTANT_Fieldref_info、CONSTANT_Methodref_info、CONSTANTS_InterfaceMethodref_info 四种类型常量。</li>
+</ul>
+<h3 id="Initialization（初始化阶段）"><a href="#Initialization（初始化阶段）" class="headerlink" title="Initialization（初始化阶段）"></a>Initialization（初始化阶段）</h3><p>初始化阶段是类加载阶段的最后一步，到了初始化阶段，类变量已经被赋值过初始值了，开始真正执行类中定义的Java程序代码（或者说是字节码），换句话来说，<strong>初始化阶段是执行类构造器&lt;clinit&gt;() 方法的过程</strong>。</p>
+<ul>
+<li>此方法不需定义，是javac编译器自动收集类中的所有类变量的赋值动作和静态代码块中的语句合并而来。</li>
+<li>构造器方法中指令按语句在源文件中出现的顺序执行。</li>
+<li>&lt;clinit&gt;() 不同于类的构造器。它不需要显式的调用父类构造器，虚拟机会保证在子类的&lt;init&gt;()方法执行之前，父类的&lt;init&gt;()方法已经执行完毕。因此虚拟机中第一个被执行的&lt;init&gt;()方法的类肯定是 java.lang.Object。</li>
+<li>虚拟机必须保证一个类的  &lt;clinit&gt;()  方法在多线程下被同步加锁。如果多个线程同时去初始化一个类，那么只会有一个线程去执行这个类的&lt;clinit&gt;() 方法，其他的线程都需要阻塞等待，直到活动线程执行&lt;clinit&gt;() 方法完毕。如果在一个类的&lt;clinit&gt;() 方法中有很耗时的操作，那么可能造成多个进程的阻塞。</li>
+</ul>
+<h2 id="类不会重复加载"><a href="#类不会重复加载" class="headerlink" title="类不会重复加载"></a>类不会重复加载</h2><p><img src="/p/2b3d9fc3/JVM%E7%B1%BB%E4%B8%8D%E4%BC%9A%E9%87%8D%E5%A4%8D%E5%8A%A0%E8%BD%BD.png" alt="image-20210725224111099"></p>
+<h2 id="类的卸载"><a href="#类的卸载" class="headerlink" title="类的卸载"></a>类的卸载</h2><p>满足两个条件就会被卸载：</p>
+<p>1、该Class所有的实例都已经被GC；</p>
+<p>2、加载该类的ClassLoader实例已经被GC；</p>
+<p>验证方式：JVM启动中增加 <code>-verbose:class</code>参数，输出类加载和卸载的日志信息。</p>
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.gitee.io/p/2b3d9fc3.html" title="JVM类加载子系统">https://mrdjun.gitee.io/p/2b3d9fc3.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/JVM/" rel="tag"># JVM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/5bb29d6f.html" rel="prev" title="TLAB(Thread Local Allocation Buffer)">
+                  <i class="fa fa-chevron-left"></i> TLAB(Thread Local Allocation Buffer)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/p/c69e3549.html" rel="next" title="JVM对代码的优化">
+                  JVM对代码的优化 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>

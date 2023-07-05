@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.gitee.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="策略模式定义了算法的家族，并将每一个算法封装起来，使他们可以相互替换。策略模式多用在算法决策系统中，外部用户只需要决定用哪个算法即可。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="策略模式">
+<meta property="og:url" content="https://mrdjun.gitee.io/p/72e3b671.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="策略模式定义了算法的家族，并将每一个算法封装起来，使他们可以相互替换。策略模式多用在算法决策系统中，外部用户只需要决定用哪个算法即可。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/72e3b671/image-20220413232601362.png">
+<meta property="article:published_time" content="2021-04-06T15:05:18.000Z">
+<meta property="article:modified_time" content="2023-06-06T13:27:08.415Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="设计模式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrdjun.gitee.io/p/72e3b671/image-20220413232601362.png">
+
+
+<link rel="canonical" href="https://mrdjun.gitee.io/p/72e3b671.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.gitee.io/p/72e3b671.html","path":"p/72e3b671.html","title":"策略模式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      策略模式 | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F%E5%AE%9E%E7%8E%B0%E9%80%89%E6%8B%A9%E6%94%AF%E4%BB%98%E6%96%B9%E5%BC%8F%E7%9A%84%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF"><span class="nav-number">2.</span> <span class="nav-text">用策略模式实现选择支付方式的业务场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E4%BB%98%E6%A1%88%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">支付案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">4.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0Spring%E4%B8%AD%E7%9A%84-DispatcherServlet"><span class="nav-number">5.</span> <span class="nav-text">简单实现Spring中的 DispatcherServlet</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.gitee.io/p/72e3b671.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          策略模式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2021-04-06 23:05:18" itemprop="dateCreated datePublished" datetime="2021-04-06T23:05:18+08:00">2021-04-06</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ol>
+<li>针对同一类型的问题有多种处理方式，仅仅是具体的行为有差别时。</li>
+<li>需要安全的封装多种同一类型的操作时。</li>
+<li>出现同一抽象类的多个子类，而又需要使用if-else来选择子类时。</li>
+</ol>
+<h2 id="用策略模式实现选择支付方式的业务场景"><a href="#用策略模式实现选择支付方式的业务场景" class="headerlink" title="用策略模式实现选择支付方式的业务场景"></a>用策略模式实现选择支付方式的业务场景</h2><p>在商城系统中，常常存在多种策略的优惠活动，比如拼团、返现促销、优惠券抵扣。下面是一个模拟这个场景的demo：</p>
+<p>促销策略的接口 PromotionStrategy：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">PromotionStrategy</span> {</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">doPromotion</span><span class="params">()</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>优惠券抵扣策略 CouponStrategy：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CouponStrategy</span> <span class="keyword">implements</span> <span class="title class_">PromotionStrategy</span> {</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doPromotion</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"领取优惠券，课程价格直接抵扣优惠券面值"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>返现促销策略 CashbackStrategy：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CashbackStrategy</span> <span class="keyword">implements</span> <span class="title class_">PromotionStrategy</span> {</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doPromotion</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"返现促销，返回现金到支付宝账户"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>拼团策略 GroupBuyStrategy：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GroupBuyStrategy</span> <span class="keyword">implements</span> <span class="title class_">PromotionStrategy</span> {</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doPromotion</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"拼团，满20人，全团享受团价"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>当然还有一个无优惠活动策略 EmptyStrategy：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">EmptyStrategy</span> <span class="keyword">implements</span> <span class="title class_">PromotionStrategy</span> {</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doPromotion</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"无促销活动"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>促销活动方案类 PromotionActivity：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PromotionActivity</span> {</span><br><span class="line">    <span class="keyword">private</span> PromotionStrategy promotionStrategy;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PromotionActivity</span><span class="params">(PromotionStrategy promotionStrategy)</span> {</span><br><span class="line">        <span class="built_in">this</span>.promotionStrategy = promotionStrategy;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">execute</span><span class="params">()</span> {</span><br><span class="line">        promotionStrategy.doPromotion();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>测试类：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PromotionTest</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        <span class="type">PromotionActivity</span> <span class="variable">activity618</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PromotionActivity</span>(<span class="keyword">new</span> <span class="title class_">CashbackStrategy</span>());</span><br><span class="line">        <span class="type">PromotionActivity</span> <span class="variable">activity1111</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PromotionActivity</span>(<span class="keyword">new</span> <span class="title class_">CouponStrategy</span>());</span><br><span class="line">        activity618.execute();</span><br><span class="line">        activity1111.execute();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>类结构</p>
+<p><img src="/p/72e3b671/image-20220413232601362.png" alt="image-20220413232601362"></p>
+<p>从测试类来看，一次开启了多项优惠活动，但我们通常并不会一次性执行多种优惠，所以进行改造：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PromotionTest</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        <span class="type">PromotionActivity</span> <span class="variable">activity</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">promotionKey</span> <span class="operator">=</span> <span class="string">"COUPON"</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"COUPON"</span>.equals(promotionKey)) {</span><br><span class="line">            activity = <span class="keyword">new</span> <span class="title class_">PromotionActivity</span>(<span class="keyword">new</span> <span class="title class_">CouponStrategy</span>());</span><br><span class="line">        } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"CASHBACK"</span>.equals(promotionKey)) {</span><br><span class="line">            activity = <span class="keyword">new</span> <span class="title class_">PromotionActivity</span>(<span class="keyword">new</span> <span class="title class_">CashbackStrategy</span>());</span><br><span class="line">        } <span class="keyword">else</span> {</span><br><span class="line">            activity = <span class="keyword">new</span> <span class="title class_">PromotionActivity</span>(<span class="keyword">new</span> <span class="title class_">EmptyStrategy</span>());</span><br><span class="line">        }</span><br><span class="line">        activity.execute();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这样就满足了业务需求，但是随着优惠活动的增多，判断逻辑越来越复杂，编写好活动代码后需要重复测试，会大大增加工作量。那么我们可以结合工厂模式和单例模式来对此进行优化：</p>
+<p>新增活动策略工厂类 PromotionStrategyFactory ：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PromotionStrategyFactory</span> {</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Map&lt;String, PromotionStrategy&gt; PROMOTION_STRATEGY_MAP = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">PromotionStrategy</span> <span class="variable">NON_PROMOTION</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">EmptyStrategy</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> {</span><br><span class="line">        PROMOTION_STRATEGY_MAP.put(PromotionKey.COUPON, <span class="keyword">new</span> <span class="title class_">CouponStrategy</span>());</span><br><span class="line">        PROMOTION_STRATEGY_MAP.put(PromotionKey.CASHBACK, <span class="keyword">new</span> <span class="title class_">CashbackStrategy</span>());</span><br><span class="line">        PROMOTION_STRATEGY_MAP.put(PromotionKey.GROUPBUY, <span class="keyword">new</span> <span class="title class_">GroupBuyStrategy</span>());</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">interface</span> <span class="title class_">PromotionKey</span> {</span><br><span class="line">        <span class="type">String</span> <span class="variable">COUPON</span> <span class="operator">=</span> <span class="string">"COUPON"</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">CASHBACK</span> <span class="operator">=</span> <span class="string">"CASHBACK"</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">GROUPBUY</span> <span class="operator">=</span> <span class="string">"GROUPBUY"</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PromotionStrategyFactory</span><span class="params">()</span> {</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> PromotionStrategy <span class="title function_">getPromotionStrategy</span><span class="params">(String promotionKey)</span> {</span><br><span class="line">        <span class="type">PromotionStrategy</span> <span class="variable">promotionStrategy</span> <span class="operator">=</span> PROMOTION_STRATEGY_MAP.get(promotionKey);</span><br><span class="line">        <span class="type">return</span> <span class="variable">promotionStrategy</span> <span class="operator">=</span>= <span class="literal">null</span> ? NON_PROMOTION : promotionStrategy;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>测试类</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PromotionTest</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        <span class="type">String</span> <span class="variable">promotionKey</span> <span class="operator">=</span> <span class="string">"COUPON"</span>;</span><br><span class="line">        <span class="type">PromotionStrategy</span> <span class="variable">strategy</span> <span class="operator">=</span> PromotionStrategyFactory.getPromotionStrategy(promotionKey);</span><br><span class="line">        <span class="type">PromotionActivity</span> <span class="variable">activity</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PromotionActivity</span>(strategy);</span><br><span class="line">        activity.execute();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>如此一优化，直接删除了逻辑判断，每次新增活动时都会轻松很多。再举一个支付的案例，如果对接过银联、百度收银台、京东、QQ、支付宝、微信等支付的朋友看了下面这个案例，绝对深有体会。</p>
+<h2 id="支付案例"><a href="#支付案例" class="headerlink" title="支付案例"></a>支付案例</h2><p>所有的支付方式都有 名称、支付、查询余额等行为，抽取成一个支付方式的抽象类 Payment：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Payment</span> {</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> String <span class="title function_">getName</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//通用逻辑放到抽象类里面实现</span></span><br><span class="line">    <span class="keyword">public</span> R <span class="title function_">pay</span><span class="params">(String uid, <span class="type">double</span> amount)</span> {</span><br><span class="line">        <span class="comment">//余额是否足够</span></span><br><span class="line">        <span class="keyword">if</span> (queryBalance(uid) &lt; amount) {</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">R</span>(<span class="number">500</span>, <span class="string">"支付失败"</span>, <span class="string">"余额不足"</span>);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">R</span>(<span class="number">200</span>, <span class="string">"支付成功"</span>, <span class="string">"支付金额"</span> + amount);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="type">double</span> <span class="title function_">queryBalance</span><span class="params">(String uid)</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>R 是一个统一返回类</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">R</span> {</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> code;</span><br><span class="line">    <span class="keyword">private</span> Object data;</span><br><span class="line">    <span class="keyword">private</span> String msg;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">R</span><span class="params">(<span class="type">int</span> code, String msg, Object data)</span> {</span><br><span class="line">        <span class="built_in">this</span>.code = code;</span><br><span class="line">        <span class="built_in">this</span>.data = data;</span><br><span class="line">        <span class="built_in">this</span>.msg = msg;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"{"</span> +</span><br><span class="line">                <span class="string">"code="</span> + code +</span><br><span class="line">                <span class="string">", data="</span> + data +</span><br><span class="line">                <span class="string">", msg='"</span> + msg + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">'}'</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>AliPay</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AliPay</span> <span class="keyword">extends</span> <span class="title class_">Payment</span> {</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"支付宝"</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="type">double</span> <span class="title function_">queryBalance</span><span class="params">(String uid)</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="number">900</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>JDPay</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JDPay</span> <span class="keyword">extends</span> <span class="title class_">Payment</span> {</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"京东白条"</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">protected</span> <span class="type">double</span> <span class="title function_">queryBalance</span><span class="params">(String uid)</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="number">500</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>UnionPay</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UnionPay</span> <span class="keyword">extends</span> <span class="title class_">Payment</span> {</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"银联支付"</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="type">double</span> <span class="title function_">queryBalance</span><span class="params">(String uid)</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="number">120</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>WeChatPay</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WeChatPay</span> <span class="keyword">extends</span> <span class="title class_">Payment</span> {</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"微信支付"</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="type">double</span> <span class="title function_">queryBalance</span><span class="params">(String uid)</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="number">263</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>订单类 Order</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Order</span> {</span><br><span class="line">    <span class="keyword">private</span> String uid;</span><br><span class="line">    <span class="keyword">private</span> String orderId;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">double</span> amount;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Order</span><span class="params">(String uid, String orderId, <span class="type">double</span> amount)</span> {</span><br><span class="line">        <span class="built_in">this</span>.uid = uid;</span><br><span class="line">        <span class="built_in">this</span>.orderId = orderId;</span><br><span class="line">        <span class="built_in">this</span>.amount = amount;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> R <span class="title function_">pay</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">return</span> pay(PayStrategy.DEFAULT_PAY);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 完美解决 if...else 或者 switch</span></span><br><span class="line">    <span class="keyword">public</span> R <span class="title function_">pay</span><span class="params">(String payKey)</span> {</span><br><span class="line">        <span class="type">Payment</span> <span class="variable">payment</span> <span class="operator">=</span> PayStrategy.get(payKey);</span><br><span class="line">        System.out.println(<span class="string">"欢迎使用"</span> + payment.getName());</span><br><span class="line">        System.out.println(<span class="string">"本次交易金额为"</span> + amount + <span class="string">"，开始扣款"</span>);</span><br><span class="line">        <span class="keyword">return</span> payment.pay(uid, amount);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>PayStrategy</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PayStrategy</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">ALI_PAY</span> <span class="operator">=</span> <span class="string">"AliPay"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">JD_PAY</span> <span class="operator">=</span> <span class="string">"JdPay"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">WECHAT_PAY</span> <span class="operator">=</span> <span class="string">"WeChatPay"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">UNION_PAY</span> <span class="operator">=</span> <span class="string">"UnionPay"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">DEFAULT_PAY</span> <span class="operator">=</span> ALI_PAY;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, Payment&gt; strategy = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Payment&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> {</span><br><span class="line">        strategy.put(ALI_PAY, <span class="keyword">new</span> <span class="title class_">AliPay</span>());</span><br><span class="line">        strategy.put(JD_PAY, <span class="keyword">new</span> <span class="title class_">JDPay</span>());</span><br><span class="line">        strategy.put(WECHAT_PAY, <span class="keyword">new</span> <span class="title class_">WeChatPay</span>());</span><br><span class="line">        strategy.put(UNION_PAY, <span class="keyword">new</span> <span class="title class_">UnionPay</span>());</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Payment <span class="title function_">get</span><span class="params">(String payKey)</span> {</span><br><span class="line">        <span class="keyword">if</span> (!strategy.containsKey(payKey)) {</span><br><span class="line">            <span class="keyword">return</span> strategy.get(DEFAULT_PAY);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> strategy.get(payKey);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>测试类 Test</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PayTest</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        <span class="type">Order</span> <span class="variable">order</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Order</span>(<span class="string">"1"</span>, <span class="string">"123456789123"</span>, <span class="number">325</span>);</span><br><span class="line">        <span class="type">R</span> <span class="variable">result</span> <span class="operator">=</span> order.pay(PayStrategy.ALI_PAY);</span><br><span class="line"></span><br><span class="line">        System.out.println(result);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>优点：</p>
+<p>1、策略模式符合开闭原则。</p>
+<p>2、避免使用多重条件转移语句，如if…else…语句、switch 语句</p>
+<p>3、使用策略模式可以提高算法的保密性和安全性。</p>
+<p>缺点：</p>
+<p>1、客户端必须知道所有的策略，并且自行决定使用哪一个策略类。</p>
+<p>2、代码中会产生非常多策略类，增加维护难度。</p>
+<h2 id="简单实现Spring中的-DispatcherServlet"><a href="#简单实现Spring中的-DispatcherServlet" class="headerlink" title="简单实现Spring中的 DispatcherServlet"></a>简单实现Spring中的 DispatcherServlet</h2><p>我们常用的两种两种架构风格：REST和RPC，REST API 的每个URI对应的都是某一份资源，在我们通过Spring的Controller的URI进行访问资源时，会经过DispatchServlet分发给对应的Servlet。在J2EE的标准中，每一个URL对应一个Servlet。</p>
+<p><strong>会员控制器</strong></p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MemberController</span> {</span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">getMemberById</span><span class="params">(<span class="type">int</span> id)</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>订单控制器：</strong></p>
+<pre><code>public class OrderController {
+    public Object getOrderById(int id) {
+        return null;
+    }
+}
+</code></pre>
+<p><strong>DispatcherServlet</strong></p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * SpringMVC的委派模式就是通过DispatcherServlet将请求的URI转为不同的java代码</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DispatcherServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> {</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;Handler&gt; handlerMapping = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> <span class="keyword">throws</span> ServletException {</span><br><span class="line">        <span class="keyword">try</span> {</span><br><span class="line">            handlerMapping.add(<span class="keyword">new</span> <span class="title class_">Handler</span>().setUri(<span class="string">"/web/getMemberById"</span>).setController(MemberController.class.newInstance()).setMethod(MemberController.class.getMethod(<span class="string">"getMemberById"</span>, <span class="type">int</span>.class)));</span><br><span class="line">            handlerMapping.add(<span class="keyword">new</span> <span class="title class_">Handler</span>().setUri(<span class="string">"/web/getOrderById"</span>).setController(OrderController.class.newInstance()).setMethod(OrderController.class.getMethod(<span class="string">"getOrderById"</span>, <span class="type">int</span>.class)));</span><br><span class="line">        } <span class="keyword">catch</span> (Exception e) {</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException {</span><br><span class="line">        doDispatcher(req, resp);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用策略模式去掉多个if-else判断</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">doDispatcher</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> {</span><br><span class="line">        <span class="type">String</span> <span class="variable">requestURI</span> <span class="operator">=</span> req.getRequestURI();</span><br><span class="line">        <span class="type">Handler</span> <span class="variable">h</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">for</span> (Handler handler : handlerMapping) {</span><br><span class="line">            <span class="keyword">if</span> (Objects.equals(handler.getUri(), requestURI)) {</span><br><span class="line">                h = handler;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">try</span> {</span><br><span class="line">            h.getMethod().invoke(h.getController(), Integer.parseInt(req.getParameter(<span class="string">"mid"</span>)));</span><br><span class="line">        } <span class="keyword">catch</span> (IllegalAccessException e) {</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        } <span class="keyword">catch</span> (InvocationTargetException e) {</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Handler</span> {</span><br><span class="line">        String uri;</span><br><span class="line">        Object controller;</span><br><span class="line">        Method method;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> String <span class="title function_">getUri</span><span class="params">()</span> {</span><br><span class="line">            <span class="keyword">return</span> uri;</span><br><span class="line">        }</span><br><span class="line">		</span><br><span class="line">        <span class="comment">// 返回this是函数式编程中的链式</span></span><br><span class="line">        <span class="keyword">public</span> Handler <span class="title function_">setUri</span><span class="params">(String uri)</span> {</span><br><span class="line">            <span class="built_in">this</span>.uri = uri;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Object <span class="title function_">getController</span><span class="params">()</span> {</span><br><span class="line">            <span class="keyword">return</span> controller;</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Handler <span class="title function_">setController</span><span class="params">(Object controller)</span> {</span><br><span class="line">            <span class="built_in">this</span>.controller = controller;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Method <span class="title function_">getMethod</span><span class="params">()</span> {</span><br><span class="line">            <span class="keyword">return</span> method;</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Handler <span class="title function_">setMethod</span><span class="params">(Method method)</span> {</span><br><span class="line">            <span class="built_in">this</span>.method = method;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.gitee.io/p/72e3b671.html" title="策略模式">https://mrdjun.gitee.io/p/72e3b671.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"># 设计模式</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/f1601c3e.html" rel="prev" title="单例模式">
+                  <i class="fa fa-chevron-left"></i> 单例模式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/p/7b510e10.html" rel="next" title="代理模式">
+                  代理模式 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>

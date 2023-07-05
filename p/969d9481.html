@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.gitee.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="CAS全称Compare and swap（比较并替换），CAS虽然能很高效的解决原子操作，但CAS存在三大弊端：ABA问题、自旋时间长时浪费CPU、只能保证一个共享变量的原子操作。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CAS">
+<meta property="og:url" content="https://mrdjun.gitee.io/p/969d9481.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="CAS全称Compare and swap（比较并替换），CAS虽然能很高效的解决原子操作，但CAS存在三大弊端：ABA问题、自旋时间长时浪费CPU、只能保证一个共享变量的原子操作。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/969d9481/1193919-20180102142540362-571280295.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/969d9481/1193919-20180102142542299-1617994496.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/969d9481/1193919-20180102142543784-1625100143.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/969d9481/1193919-20180102142545221-837543615.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/969d9481/1193919-20180102142546909-270453852.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/969d9481/1193919-20180102142548299-328053032-16464619321157.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/969d9481/1193919-20180102142625753-443716413.png">
+<meta property="article:published_time" content="2021-08-22T04:49:26.000Z">
+<meta property="article:modified_time" content="2023-06-06T13:27:08.432Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="JUC并发包">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrdjun.gitee.io/p/969d9481/1193919-20180102142540362-571280295.png">
+
+
+<link rel="canonical" href="https://mrdjun.gitee.io/p/969d9481.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.gitee.io/p/969d9481.html","path":"p/969d9481.html","title":"CAS"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      CAS | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFCAS%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">什么是CAS？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK%E4%B8%AD%E7%9A%84CAS%E5%BA%94%E7%94%A8%E5%AE%9E%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">JDK中的CAS应用实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CAS%E7%9A%84%E4%BC%98%E7%82%B9"><span class="nav-number">3.</span> <span class="nav-text">CAS的优点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E5%8D%87%E5%90%9E%E5%90%90%E9%87%8F"><span class="nav-number">3.1.</span> <span class="nav-text">提升吞吐量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%81%BF%E5%85%8D%E6%AD%BB%E9%94%81"><span class="nav-number">3.2.</span> <span class="nav-text">可避免死锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CAS%E7%9A%84%E5%BC%8A%E7%AB%AF"><span class="nav-number">4.</span> <span class="nav-text">CAS的弊端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ABA%E9%97%AE%E9%A2%98"><span class="nav-number">4.1.</span> <span class="nav-text">ABA问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU%E5%BC%80%E9%94%80%E5%A4%A7"><span class="nav-number">4.2.</span> <span class="nav-text">CPU开销大</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AA%E8%83%BD%E4%BF%9D%E8%AF%81%E4%B8%80%E4%B8%AA%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F%E7%9A%84%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C"><span class="nav-number">4.3.</span> <span class="nav-text">只能保证一个共享变量的原子操作</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.gitee.io/p/969d9481.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CAS
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2021-08-22 12:49:26" itemprop="dateCreated datePublished" datetime="2021-08-22T12:49:26+08:00">2021-08-22</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><p>线程的三大特性：原子性、有序性、可见性。</p>
+<ul>
+<li><p>原子性：一个或多个操作的程序执行视作一个整体，不可被分割，不可被中断，不可被外界干扰，也就是说同一时刻只能有一个线程来执行这些操作。</p>
+</li>
+<li><p>有序性：程序按一定规则进行顺序的执行。</p>
+</li>
+<li><p>可见性：当多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能够立即看的到修改的值。</p>
+</li>
+</ul>
+<h2 id="什么是CAS？"><a href="#什么是CAS？" class="headerlink" title="什么是CAS？"></a>什么是CAS？</h2><p>CAS在Java出现，在Java中称为自旋锁。CAS类似于synchronized锁的功能，但两者原理不同。</p>
+<p>CAS机制当中使用了3个基本操作数：内存地址V，旧的预期值A，要修改的新值B。更新一个变量的时候，只有当变量的预期值A和内存地址V当中的实际值相同时，才会将内存地址V对应的值修改为B。这样说或许有些抽象，我们来看一个例子：</p>
+<ol>
+<li>在内存地址V当中，存储着值为10的变量。</li>
+</ol>
+<p><img src="/p/969d9481/1193919-20180102142540362-571280295.png" alt="img"></p>
+<ol start="2">
+<li>此时线程1想要把变量的值增加1。对线程1来说，旧的预期值A=10，要修改的新值B=11。</li>
+</ol>
+<p><img src="/p/969d9481/1193919-20180102142542299-1617994496.png" alt="img"></p>
+<ol start="3">
+<li>在线程1要提交更新之前，另一个线程2抢先一步，把内存地址V中的变量值率先更新成了11。</li>
+</ol>
+<p><img src="/p/969d9481/1193919-20180102142543784-1625100143.png" alt="img"></p>
+<ol start="4">
+<li>线程1开始提交更新，首先进行<strong>A和地址V的实际值比较（Compare）</strong>，发现A不等于V的实际值，提交失败。</li>
+</ol>
+<p><img src="/p/969d9481/1193919-20180102142545221-837543615.png" alt="img"></p>
+<ol start="5">
+<li>线程1重新获取内存地址V的当前值，并重新计算想要修改的新值。此时对线程1来说，A=11，B=12。这个重新尝试的过程被称为<strong>自旋</strong>。</li>
+</ol>
+<p><img src="/p/969d9481/1193919-20180102142546909-270453852.png" alt="img"></p>
+<ol start="6">
+<li>这一次比较幸运，没有其他线程改变地址V的值。线程1进行<strong>Compare</strong>，发现A和地址V的实际值是相等的。</li>
+</ol>
+<p><img src="/p/969d9481/1193919-20180102142548299-328053032-16464619321157.png" alt="img"></p>
+<ol start="7">
+<li>线程1进行<strong>SWAP</strong>，把地址V的值替换为B，也就是12。</li>
+</ol>
+<p><img src="/p/969d9481/1193919-20180102142625753-443716413.png" alt="img"></p>
+<p>从思想上来说，Synchronized属于<strong>悲观锁</strong>，悲观地认为程序中的并发情况严重，所以严防死守。CAS属于<strong>乐观锁</strong>，乐观地认为程序中的并发情况不那么严重，所以让线程不断去尝试更新。</p>
+<h2 id="JDK中的CAS应用实例"><a href="#JDK中的CAS应用实例" class="headerlink" title="JDK中的CAS应用实例"></a>JDK中的CAS应用实例</h2><p>在JDK的 java.util.concurrent.atomic 包下，一系列以Atomic开头的包装类。如AtomicBoolean，AtomicInteger，AtomicLong。它们分别用于Boolean，Integer，Long类型的原子性操作。</p>
+<p>compareAndSet利用JNI来完成CPU指令的操作。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="type">boolean</span> <span class="title function_">compareAndSet</span><span class="params">(<span class="type">int</span> expect, <span class="type">int</span> update)</span> {   </span><br><span class="line">    <span class="keyword">return</span> unsafe.compareAndSwapInt(<span class="built_in">this</span>, valueOffset, expect, update);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h2 id="CAS的优点"><a href="#CAS的优点" class="headerlink" title="CAS的优点"></a>CAS的优点</h2><h3 id="提升吞吐量"><a href="#提升吞吐量" class="headerlink" title="提升吞吐量"></a>提升吞吐量</h3><p>线程一直处于活跃状态（非阻塞），不需要CPU进行频繁调度。</p>
+<h3 id="可避免死锁"><a href="#可避免死锁" class="headerlink" title="可避免死锁"></a>可避免死锁</h3><p>不用 synchronized 或 Lock 当然就可以避免死锁。</p>
+<h2 id="CAS的弊端"><a href="#CAS的弊端" class="headerlink" title="CAS的弊端"></a>CAS的弊端</h2><h3 id="ABA问题"><a href="#ABA问题" class="headerlink" title="ABA问题"></a>ABA问题</h3><p>在并发环境下会出现的ABA问题是CAS机制中的一个严重弊端。</p>
+<blockquote>
+<p>什么是ABA问题？</p>
+</blockquote>
+<p>假设现在有一份资源初始值为A，此时有三个线程对这份资源进行CAS操作：</p>
+<ul>
+<li>线程1，期望值为A，欲更新值为B</li>
+<li>线程2，期望值为A，欲更新值为B</li>
+<li>线程3，期望值为B，欲更新值为A</li>
+</ul>
+<p>线程1率先抢到CPU时间片，线程2因为某些原因阻塞了；线程1取值与A比较，发现相等后将值改为B；此时线程3出现，线程3取值与B比较，发现相等后改为A；此时线程2从阻塞中恢复开始执行，线程2的取值与A对比相等，最终改为B。</p>
+<p>在这个过程中，线程2虽然完成了操作，但线程2并不知道该值经过了<code>A-&gt;B-&gt;A</code>的这个变化过程。</p>
+<p>看到这里可能对这个ABA问题还是没有感觉，再举个现实中的栗子：</p>
+<p>小明从他的巨额账户中已有的100元中取走50元，那他取走50后还剩50，假设提款机的代码有BUG，后台开了两个线程去扣款：</p>
+<ul>
+<li>线程1：获取当前值100，期望更新为50；</li>
+<li>线程2：获取当前值100，期望更新为50；</li>
+<li>线程1：执行成功，线程2某种原因阻塞了，此时某人给小明转账50，开一个线程3去处理转账。</li>
+<li>线程3：获取当前值50，期望更新为100，此时线程3执行成功，余额变为100。</li>
+<li>线程2：从阻塞中恢复，获取到的也是100，compare之后，继续更新余额为50！！！（小明哭唧唧）</li>
+</ul>
+<p>此时可以看到，正常情况下，小明从100元取走50还剩50，有人转账50过来，那最终小明的存款为100元。在这个案例中被这个提款机的ABA问题引发的BUG给弄掉了50块钱。</p>
+<p>ABA问题的实例代码：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="type">AtomicInteger</span> <span class="variable">DATA</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>(<span class="number">100</span>);</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; {</span><br><span class="line">        <span class="comment">// 抢到CPU时间片，开始工作</span></span><br><span class="line">        <span class="type">boolean</span> <span class="variable">b</span> <span class="operator">=</span> DATA.compareAndSet(<span class="number">100</span>, <span class="number">50</span>);</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">"是否成功将DATA的值修改为50："</span> + b);</span><br><span class="line">        <span class="keyword">try</span> { Thread.sleep(<span class="number">1000</span>); } <span class="keyword">catch</span> (InterruptedException ignored) {}</span><br><span class="line">    }, <span class="string">"线程1"</span>).start();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; {</span><br><span class="line">        <span class="comment">// 因某些原因阻塞了</span></span><br><span class="line">        <span class="keyword">try</span> { Thread.sleep(<span class="number">3000</span>); } <span class="keyword">catch</span> (InterruptedException ignored) {}</span><br><span class="line">        <span class="comment">// 阻塞后恢复工作</span></span><br><span class="line">        <span class="type">boolean</span> <span class="variable">b</span> <span class="operator">=</span> DATA.compareAndSet(<span class="number">100</span>, <span class="number">50</span>);</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">"是否成功将DATA的值修改为50："</span> + b);</span><br><span class="line">    }, <span class="string">"线程2"</span>).start();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; {</span><br><span class="line">        <span class="keyword">try</span> { Thread.sleep(<span class="number">2000</span>); } <span class="keyword">catch</span> (InterruptedException ignored) {}</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">b</span> <span class="operator">=</span> DATA.compareAndSet(<span class="number">50</span>, <span class="number">100</span>);</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">"是否成功将DATA的值修改为100："</span> + b);</span><br><span class="line">    }, <span class="string">"线程3"</span>).start();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//等待其他线程完成，为什么是2，因为一个是main线程，一个是后台的GC线程</span></span><br><span class="line">    <span class="keyword">while</span> (Thread.activeCount() &gt; <span class="number">2</span>) {</span><br><span class="line">        Thread.yield();</span><br><span class="line">    }</span><br><span class="line">    System.out.println(<span class="string">"DATA最终的值为："</span> + DATA.get());</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>执行结果：</p>
+<figure class="highlight tex"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">线程1是否成功将DATA的值修改为50：true</span><br><span class="line">线程3是否成功将DATA的值修改为100：true</span><br><span class="line">线程2是否成功将DATA的值修改为50：true</span><br><span class="line">DATA最终的值为：50</span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p>ABA问题的解决方案</p>
+</blockquote>
+<p>这个问题就像是：有张三、李四两个单身狗，张三在某个时间段内找到女朋友但是又分手了，但没告诉李四，此时李四还是会在张三是单身狗的情况下带他去洗脚。解决方案就是：张三每次交女朋友都喜欢晒朋友圈，张三是李四的特别关心，每次张三发朋友圈都会提醒李四看。</p>
+<p>CAS是乐观锁，还记得MySQL中也有个乐观锁吗？MySQL中的乐观锁是每次修改完数据后，留下一个版本号，在每次被更新之后版本号会+1，即 <code>A-&gt;B-&gt;A</code> 就变成了 <code>1A-&gt;2B-&gt;3A</code> 。</p>
+<p>补充一点：</p>
+<p>Integer 的源码（IntegerCache） 里面用了缓存，会缓存[-128, 127] 区间的值，在使用 AtomicInteger 需要格外注意！很有可能值被修改成功后，下一次被get时，会因为缓存，而取到上一次的值。</p>
+<h3 id="CPU开销大"><a href="#CPU开销大" class="headerlink" title="CPU开销大"></a>CPU开销大</h3><p>在并发量比较高的情况下，如果许多线程反复尝试更新某一个变量，却又一直更新不成功，循环往复，会给CPU带来很大的压力。</p>
+<h3 id="只能保证一个共享变量的原子操作"><a href="#只能保证一个共享变量的原子操作" class="headerlink" title="只能保证一个共享变量的原子操作"></a>只能保证一个共享变量的原子操作</h3><p>CAS机制所保证的只是一个变量的原子性操作，而不能保证<strong>整个代码块</strong>的原子性。比如需要保证3个变量共同进行原子性的更新，就不得不使用Synchronized或Lock了。</p>
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.gitee.io/p/969d9481.html" title="CAS">https://mrdjun.gitee.io/p/969d9481.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/JUC%E5%B9%B6%E5%8F%91%E5%8C%85/" rel="tag"># JUC并发包</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/e38626a3.html" rel="prev" title="四种单例模式">
+                  <i class="fa fa-chevron-left"></i> 四种单例模式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/p/f6316a6c.html" rel="next" title="ForkJoin">
+                  ForkJoin <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>

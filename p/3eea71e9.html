@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.gitee.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="在JDK8中，CMS&#x2F;G1 gc针对针对常见机器规格的一些常用参数配置模板。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="GC调优">
+<meta property="og:url" content="https://mrdjun.gitee.io/p/3eea71e9.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="在JDK8中，CMS&#x2F;G1 gc针对针对常见机器规格的一些常用参数配置模板。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-04-01T08:10:31.000Z">
+<meta property="article:modified_time" content="2023-06-06T13:27:08.498Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://mrdjun.gitee.io/p/3eea71e9.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.gitee.io/p/3eea71e9.html","path":"p/3eea71e9.html","title":"GC调优"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      GC调优 | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#G1-GC-%E8%B0%83%E4%BC%98%E6%8C%87%E5%8D%97"><span class="nav-number">1.</span> <span class="nav-text">G1 GC 调优指南</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.1.</span> <span class="nav-text">参数模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">基本设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E6%9D%82%E5%9C%BA%E6%99%AF"><span class="nav-number">1.3.</span> <span class="nav-text">复杂场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK-8-%E5%BA%94%E7%94%A8%E5%9F%BA%E7%A1%80-jvm-%E5%8F%82%E6%95%B0%E5%8F%82%E8%80%83"><span class="nav-number">2.</span> <span class="nav-text">JDK 8 应用基础 jvm 参数参考</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%8F%82%E8%80%83-%E6%8C%89%E6%9C%BA%E5%9E%8B"><span class="nav-number">2.1.</span> <span class="nav-text">参数参考(按机型)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%BB%BA%E8%AE%AE"><span class="nav-number">2.2.</span> <span class="nav-text">其他建议</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.gitee.io/p/3eea71e9.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GC调优
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2022-04-01 16:10:31" itemprop="dateCreated datePublished" datetime="2022-04-01T16:10:31+08:00">2022-04-01</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><h2 id="G1-GC-调优指南"><a href="#G1-GC-调优指南" class="headerlink" title="G1 GC 调优指南"></a>G1 GC 调优指南</h2><p><a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/9/gctuning/garbage-first-garbage-collector.htm">https://docs.oracle.com/javase/9/gctuning/garbage-first-garbage-collector.htm</a></p>
+<h3 id="参数模板"><a href="#参数模板" class="headerlink" title="参数模板"></a>参数模板</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Xmx**g -Xms**g -XX:MetaspaceSize=512m -XX:+MaxMetaspaceSize=512m -XX:G1MaxNewSizePercent=50 -XX:G1NewSizePercent=20 -XX:HeapDumpPath=/home/admin/logs -XX:+DisableExplicitGC</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="基本设置"><a href="#基本设置" class="headerlink" title="基本设置"></a>基本设置</h3><ul>
+<li>请根据具体情况指定参数模板中的Xmx和Xms，这两个数值一般写成一样的<br> 其数值可以根据下面的方法推算： </li>
+<li>在应用正常执行时使用jmap手动触发一次full GC, <code>jmap -histo:live </code> <ul>
+<li> 然后观察GC日志里面Full GC之后整个heap的剩余空间，这个可以估算为活跃数据的总大小LDS (Live Data Set) </li>
+<li> 然后整个heap的大小可以用经验公式 Xmx = LDS * f 来计算，其中f因子按照经验一般是取3~4。 </li>
+</ul>
+</li>
+<li>新生代大小-Xmn**g<br> 除非经过特别调校，否则不推荐手动指定G1新生代大小，可能会对G1内部参数的自动调整产生导致不正确的影响，最坏情况可能导致频繁的Full GC。 </li>
+</ul>
+<blockquote>
+<p>G1的young区大小有三个策略：1，固定大小；2，固定上限；3，固定上下限， 这个策略会在JVM启动时根据VM参数进行选择，默认是使用#3，在5%～60%的Heap大小范围内调整。<br>对于自动调整策略，在根据历史数据预测GC指标时，G1假设各项指标是按照线性关系变化的， 对于行为剧烈变化的应用，G1的自动调整策略是有可能被打乱的，如果发现young区经常进入特别小上限导致频繁GC，可以尝试：<br>1，调大-XX:MaxGCPauseMillis （默认200）<br>2，设置-XX:+UnlockExperimentalVMOptions -XX:G1NewSizePercent=30，来把young区下限调整到30或其他数值（注意：此时必须删掉-Xmn, -XX:NewRatio等参数才可以生效）。</p>
+</blockquote>
+<ul>
+<li><p>对于内存占用敏感的应用，可以设置-XX:G1MaxNewSizePercent=<br>如果是从CMS切换过来的，可以尝试设置value=[CMS -Xmn]/[-Xmx] * 100% </p>
+</li>
+<li><p>暂停时间-XX:MaxG1PauseMillis=&lt;毫秒&gt;<br>这个数值默认是200ms，如果业务性能指标没有出现问题，并且对于暂停没有特别要求，不推荐手动指定这个参数。虽然这是个软性限制，G1并不会严格遵守这个时间限制，但这个参数会影响G1内部参数的自动调整，如果指定了一个较小的暂停时间，G1回收器可能会为了尽量满足这个限制而去使用一些比较激进的参数。 </p>
+</li>
+<li><p>磁盘敏感型应用建议使用GC log rotation，参数为 </p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Xloggc:/home/admin/logs/gc.log  -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=4 -XX:GCLogFileSize=8m</span><br></pre></td></tr></tbody></table></figure>
+
+<p>JDK8 G1的默认GC输出比CMS多不少内容，会更快的消耗磁盘空间，gc log rotation会指定GC log的输出在几个GC日志文件之间循环流转。</p>
+<ul>
+<li>不要为了用G1而用G1<br>线上环境的很多GC策略都是经过压测调校的， 如果目前工作的很好，主要是暂停时间（GC 日志里面的”real”耗时）上没有问题，不推荐专门切换到G1算法，特别是比较小的堆（20G以下的）。</li>
+</ul>
+<h3 id="复杂场景"><a href="#复杂场景" class="headerlink" title="复杂场景"></a>复杂场景</h3><ul>
+<li><p>-XX:G1ReservePercent=10<br> 这个参数指定了G1要保留多少空闲空间来防止Promotion failure，G1的YGC失败会导致失败的年轻代region全部变成老年代region，是一个代价非常大的操作。gclog中应该尽量避免出现promotion failure，如果频繁出现可以考虑调大-XX:G1ReservePercent这个参数(默认10%)。 </p>
+</li>
+<li><p>-XX:+G1LogLevel=fine/finer/finest<br> 可以打印不同详细程度的GC信息 </p>
+</li>
+<li><p>-XX:+G1OptThruput<br> 在8.6.11以上（包括）的版本中可以使用该选项开启G1的throughput模式，针对特定场景可以降低CPU使用率的同时维持较低暂停时间。 </p>
+</li>
+</ul>
+<blockquote>
+<p>请注意，这个选项需要测试，如果观察到GC暂停时间明显上涨，则说明应用不适合这个模式；一般不推荐超过20G的堆(一次ygc之后剩余大小)使用这个选项。</p>
+</blockquote>
+<h2 id="JDK-8-应用基础-jvm-参数参考"><a href="#JDK-8-应用基础-jvm-参数参考" class="headerlink" title="JDK 8 应用基础 jvm 参数参考"></a>JDK 8 应用基础 jvm 参数参考</h2><h3 id="参数参考-按机型"><a href="#参数参考-按机型" class="headerlink" title="参数参考(按机型)"></a>参数参考(按机型)</h3><h4 id="4C8G"><a href="#4C8G" class="headerlink" title="4C8G"></a>4C8G</h4><ul>
+<li>CMS</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-server -Xms4g -Xmx4g -Xmn2g                                                 \</span><br><span class="line">-XX:+UseConcMarkSweepGC -XX:+CMSScavengeBeforeRemark                         \</span><br><span class="line">-XX:CMSMaxAbortablePrecleanTime=5000 -XX:+CMSClassUnloadingEnabled           \</span><br><span class="line">-XX:CMSInitiatingOccupancyFraction=75 -XX:+UseCMSInitiatingOccupancyOnly     \</span><br><span class="line">-XX:+ExplicitGCInvokesConcurrent -XX:ParallelGCThreads=4                     \</span><br><span class="line">-Xloggc:/home/admin/logs/gc.log -XX:+PrintGCDetails -XX:+PrintGCDateStamps   \</span><br><span class="line">-Dsun.rmi.dgc.server.gcInterval=2592000000                                   \</span><br><span class="line">-Dsun.rmi.dgc.client.gcInterval=2592000000                                   \</span><br><span class="line">-XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m                             \</span><br><span class="line">-XX:ReservedCodeCacheSize=256m                                               \</span><br><span class="line">-XX:MaxDirectMemorySize=512m                                                 \</span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/admin/logs            \</span><br><span class="line">-XX:ErrorFile=/home/admin/logs/hs_err_pid%p.log                              \</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>G1</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-server -Xms4g -Xmx4g -XX:MaxNewSize=2g                                      \</span><br><span class="line">-XX:+UseG1GC -XX:InitiatingHeapOccupancyPercent=40 -XX:G1HeapRegionSize=8m   \</span><br><span class="line">-XX:+ExplicitGCInvokesConcurrent -XX:ParallelGCThreads=4                     \</span><br><span class="line">-Xloggc:/home/admin/logs/gc.log -XX:+PrintGCDetails -XX:+PrintGCDateStamps   \</span><br><span class="line">-Dsun.rmi.dgc.server.gcInterval=2592000000                                   \</span><br><span class="line">-Dsun.rmi.dgc.client.gcInterval=2592000000                                   \</span><br><span class="line">-XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m                             \</span><br><span class="line">-XX:ReservedCodeCacheSize=256m                                               \</span><br><span class="line">-XX:MaxDirectMemorySize=512m                                                 \</span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/admin/logs            \</span><br><span class="line">-XX:ErrorFile=/home/admin/logs/hs_err_pid%p.log                              \</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="8C16G"><a href="#8C16G" class="headerlink" title="8C16G"></a>8C16G</h4><ul>
+<li>CMS</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-server -Xms10g -Xmx10g -Xmn5g                                               \</span><br><span class="line">-XX:+UseConcMarkSweepGC  -XX:+CMSScavengeBeforeRemark                        \</span><br><span class="line">-XX:CMSMaxAbortablePrecleanTime=5000 -XX:+CMSClassUnloadingEnabled           \</span><br><span class="line">-XX:CMSInitiatingOccupancyFraction=75 -XX:+UseCMSInitiatingOccupancyOnly     \</span><br><span class="line">-XX:+ExplicitGCInvokesConcurrent -XX:ParallelGCThreads=8                     \</span><br><span class="line">-Xloggc:/home/admin/logs/gc.log -XX:+PrintGCDetails -XX:+PrintGCDateStamps   \</span><br><span class="line">-Dsun.rmi.dgc.server.gcInterval=2592000000                                   \</span><br><span class="line">-Dsun.rmi.dgc.client.gcInterval=2592000000                                   \</span><br><span class="line">-XX:MetaspaceSize=512m -XX:MaxMetaspaceSize=512m                             \</span><br><span class="line">-XX:ReservedCodeCacheSize=512m                                               \</span><br><span class="line">-XX:MaxDirectMemorySize=512m                                                 \</span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/admin/logs            \</span><br><span class="line">-XX:ErrorFile=/home/admin/logs/hs_err_pid%p.log                              \</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>G1</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-server -Xms10g -Xmx10g -XX:MaxNewSize=5g                                    \</span><br><span class="line">-XX:+UseG1GC -XX:InitiatingHeapOccupancyPercent=40 -XX:G1HeapRegionSize=16m  \</span><br><span class="line">-XX:+ExplicitGCInvokesConcurrent -XX:ParallelGCThreads=8                     \</span><br><span class="line">-Xloggc:/home/admin/logs/gc.log -XX:+PrintGCDetails -XX:+PrintGCDateStamps   \</span><br><span class="line">-Dsun.rmi.dgc.server.gcInterval=2592000000                                   \</span><br><span class="line">-Dsun.rmi.dgc.client.gcInterval=2592000000                                   \</span><br><span class="line">-XX:MetaspaceSize=512m -XX:MaxMetaspaceSize=512m                             \</span><br><span class="line">-XX:ReservedCodeCacheSize=512m                                               \</span><br><span class="line">-XX:MaxDirectMemorySize=512m                                                 \</span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/admin/logs            \</span><br><span class="line">-XX:ErrorFile=/home/admin/logs/hs_err_pid%p.log                              \</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="其他建议"><a href="#其他建议" class="headerlink" title="其他建议"></a>其他建议</h3><p>MaxDirectMemorySize、MetaspaceSize、MaxMetaspace根据实际情况调整</p>
+<p>关闭偏向锁</p>
+<ul>
+<li>-XX:-UseBiasedLocking</li>
+</ul>
+<p>加速启动 (8.4.7)</p>
+<ul>
+<li>-Dcom.alibaba.introspector.findCustomizerClass.skipStrategy=SKIP_ALL (参考AJDK 8Release Note)</li>
+</ul>
+<p>启动时开启Attach机制, 避免FGC导致jcmd等命令无法响应</p>
+<ul>
+<li>-XX:+StartAttachListener</li>
+</ul>
+<p>Metaspace Dump (8.5.9_fp1)</p>
+<ul>
+<li>-XX:+MetaspaceDumpOnOutOfMemoryError -XX:MetaspaceDumpPath=/home/admin/logs</li>
+</ul>
+<p>异步 GC 日志 (8.5.9)</p>
+<ul>
+<li>-XX:+UseAsyncGCLog</li>
+</ul>
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.gitee.io/p/3eea71e9.html" title="GC调优">https://mrdjun.gitee.io/p/3eea71e9.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/JVM/" rel="tag"># JVM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/b279e65c.html" rel="prev" title="Callable接口">
+                  <i class="fa fa-chevron-left"></i> Callable接口
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/p/b07f48bf.html" rel="next" title="常用的排序方法">
+                  常用的排序方法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>

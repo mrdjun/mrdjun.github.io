@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.gitee.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="JAVA基础">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Java基础(五)">
+<meta property="og:url" content="https://mrdjun.gitee.io/p/3818800b.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="JAVA基础">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/3818800b/37DE256DECC211F4D5230BF7A654E128.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/3818800b/61A52D5795794D763D6F8D37D13AFE07.png">
+<meta property="article:published_time" content="2018-03-11T01:30:06.000Z">
+<meta property="article:modified_time" content="2023-06-06T13:27:08.415Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrdjun.gitee.io/p/3818800b/37DE256DECC211F4D5230BF7A654E128.png">
+
+
+<link rel="canonical" href="https://mrdjun.gitee.io/p/3818800b.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.gitee.io/p/3818800b.html","path":"p/3818800b.html","title":"Java基础(五)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      Java基础(五) | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E4%BB%8B%E7%BB%8DTreeMap%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">请介绍TreeMap的底层原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map%E5%92%8CSet%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">Map和Set有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#List%E5%92%8CSet%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">List和Set有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ArrayList%E5%92%8CLinkedList%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">ArrayList和LinkedList有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E5%93%AA%E4%BA%9B%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84List%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">有哪些线程安全的List？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8BArrayList%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">介绍一下ArrayList的数据结构？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%88%E8%B0%88CopyOnWriteArrayList%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">7.</span> <span class="nav-text">谈谈CopyOnWriteArrayList的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B4%E4%B8%80%E8%AF%B4TreeSet%E5%92%8CHashSet%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">8.</span> <span class="nav-text">说一说TreeSet和HashSet的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B4%E4%B8%80%E8%AF%B4HashSet%E7%9A%84%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84"><span class="nav-number">9.</span> <span class="nav-text">说一说HashSet的底层结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BlockingQueue%E4%B8%AD%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E6%A0%B7%E8%AE%BE%E8%AE%A1%EF%BC%9F"><span class="nav-number">10.</span> <span class="nav-text">BlockingQueue中有哪些方法，为什么这样设计？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BlockingQueue%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%9F"><span class="nav-number">11.</span> <span class="nav-text">BlockingQueue是怎么实现的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stream%EF%BC%88%E4%B8%8D%E6%98%AFIOStream%EF%BC%89%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="nav-number">12.</span> <span class="nav-text">Stream（不是IOStream）有哪些方法？</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.gitee.io/p/3818800b.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java基础(五)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2018-03-11 09:30:06" itemprop="dateCreated datePublished" datetime="2018-03-11T09:30:06+08:00">2018-03-11</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><h3 id="请介绍TreeMap的底层原理"><a href="#请介绍TreeMap的底层原理" class="headerlink" title="请介绍TreeMap的底层原理"></a>请介绍TreeMap的底层原理</h3><p>TreeMap基于红黑树（Red-Black tree）实现。映射根据其键的自然顺序进行排序，或者根据创建映射时提供的 Comparator 进行排序，具体取决于使用的构造方法。TreeMap的基本操作containsKey、get、put、remove方法，它的时间复杂度是log(N)。</p>
+<p>TreeMap包含几个重要的成员变量：root、size、comparator。其中root是红黑树的根节点。它是Entry类型，Entry是红黑树的节点，它包含了红黑树的6个基本组成：key、value、left、right、parent和color。Entry节点根据根据Key排序，包含的内容是value。Entry中key比较大小是根据比较器comparator来进行判断的。size是红黑树的节点个数。</p>
+<h3 id="Map和Set有什么区别？"><a href="#Map和Set有什么区别？" class="headerlink" title="Map和Set有什么区别？"></a>Map和Set有什么区别？</h3><p>Set代表无序的，元素不可重复的集合；</p>
+<p>Map代表具有映射关系（key-value）的集合，其所有的key是一个Set集合，即key无序且不能重复。</p>
+<h3 id="List和Set有什么区别？"><a href="#List和Set有什么区别？" class="headerlink" title="List和Set有什么区别？"></a>List和Set有什么区别？</h3><p>Set代表无序的，元素不可重复的集合；</p>
+<p>List代表有序的，元素可以重复的集合。</p>
+<h3 id="ArrayList和LinkedList有什么区别？"><a href="#ArrayList和LinkedList有什么区别？" class="headerlink" title="ArrayList和LinkedList有什么区别？"></a>ArrayList和LinkedList有什么区别？</h3><ol>
+<li>ArrayList的实现是基于数组，LinkedList的实现是基于双向链表；</li>
+<li>对于随机访问ArrayList要优于LinkedList，ArrayList可以根据下标以O(1)时间复杂度对元素进行随机访问，而LinkedList的每一个元素都依靠地址指针和它后一个元素连接在一起，查找某个元素的时间复杂度是O(N)；</li>
+<li>对于插入和删除操作，LinkedList要优于ArrayList，因为当元素被添加到LinkedList任意位置的时候，不需要像ArrayList那样重新计算大小或者是更新索引；</li>
+<li>LinkedList比ArrayList更占内存，因为LinkedList的节点除了存储数据，还存储了两个引用，一个指向前一个元素，一个指向后一个元素。</li>
+</ol>
+<h3 id="有哪些线程安全的List？"><a href="#有哪些线程安全的List？" class="headerlink" title="有哪些线程安全的List？"></a>有哪些线程安全的List？</h3><ol>
+<li><p>Vector</p>
+<p>Vector是比较古老的API，虽然保证了线程安全，但是由于效率低一般不建议使用。</p>
+</li>
+<li><p>Collections.SynchronizedList</p>
+<p>SynchronizedList是Collections的内部类，Collections提供了synchronizedList方法，可以将一个线程不安全的List包装成线程安全的List，即SynchronizedList。它比Vector有更好的扩展性和兼容性，但是它所有的方法都带有同步锁，也不是性能最优的List。</p>
+</li>
+<li><p>CopyOnWriteArrayList</p>
+<p>CopyOnWriteArrayList是Java 1.5在java.util.concurrent包下增加的类，它采用复制底层数组的方式来实现写操作。当线程对此类集合执行读取操作时，线程将会直接读取集合本身，无须加锁与阻塞。当线程对此类集合执行写入操作时，集合会在底层复制一份新的数组，接下来对新的数组执行写入操作。由于对集合的写入操作都是对数组的副本执行操作，因此它是线程安全的。在所有线程安全的List中，它是性能最优的方案。</p>
+</li>
+</ol>
+<h3 id="介绍一下ArrayList的数据结构？"><a href="#介绍一下ArrayList的数据结构？" class="headerlink" title="介绍一下ArrayList的数据结构？"></a>介绍一下ArrayList的数据结构？</h3><p>ArrayList的底层是用数组来实现的，默认第一次插入元素时创建大小为10的数组，超出限制时会增加50%的容量，并且数据以 System.arraycopy() 复制到新的数组，因此最好能给出数组大小的预估值。</p>
+<p>按数组下标访问元素的性能很高，这是数组的基本优势。直接在数组末尾加入元素的性能也高，但如果按下标插入、删除元素，则要用 System.arraycopy() 来移动部分受影响的元素，性能就变差了，这是基本劣势。</p>
+<h3 id="谈谈CopyOnWriteArrayList的原理"><a href="#谈谈CopyOnWriteArrayList的原理" class="headerlink" title="谈谈CopyOnWriteArrayList的原理"></a>谈谈CopyOnWriteArrayList的原理</h3><p>CopyOnWriteArrayList是Java并发包里提供的并发类，简单来说它就是一个线程安全且读操作无锁的ArrayList。正如其名字一样，在写操作时会复制一份新的List，在新的List上完成写操作，然后再将原引用指向新的List。这样就保证了写操作的线程安全。</p>
+<p>CopyOnWriteArrayList允许线程并发访问读操作，这个时候是没有加锁限制的，性能较高。而写操作的时候，则首先将容器复制一份，然后在新的副本上执行写操作，这个时候写操作是上锁的。结束之后再将原容器的引用指向新容器。注意，在上锁执行写操作的过程中，如果有需要读操作，会作用在原容器上。因此上锁的写操作不会影响到并发访问的读操作。</p>
+<ul>
+<li>优点：读操作性能很高，因为无需任何同步措施，比较适用于读多写少的并发场景。在遍历传统的List时，若中途有别的线程对其进行修改，则会抛出ConcurrentModificationException异常。而CopyOnWriteArrayList由于其”读写分离”的思想，遍历和修改操作分别作用在不同的List容器，所以在使用迭代器进行遍历时候，也就不会抛出ConcurrentModificationException异常了。</li>
+<li>缺点：一是内存占用问题，毕竟每次执行写操作都要将原容器拷贝一份，数据量大时，对内存压力较大，可能会引起频繁GC。二是无法保证实时性，Vector对于读写操作均加锁同步，可以保证读和写的强一致性。而CopyOnWriteArrayList由于其实现策略的原因，写和读分别作用在新老不同容器上，在写操作执行过程中，读不会阻塞但读取到的却是老容器的数据。</li>
+</ul>
+<h3 id="说一说TreeSet和HashSet的区别"><a href="#说一说TreeSet和HashSet的区别" class="headerlink" title="说一说TreeSet和HashSet的区别"></a>说一说TreeSet和HashSet的区别</h3><p>HashSet、TreeSet中的元素都是不能重复的，并且它们都是线程不安全的，二者的区别是：</p>
+<ol>
+<li>HashSet中的元素可以是null，但TreeSet中的元素不能是null；</li>
+<li>HashSet不能保证元素的排列顺序，而TreeSet支持自然排序、定制排序两种排序的方式；</li>
+<li>HashSet底层是采用哈希表实现的，而TreeSet底层是采用红黑树实现的。</li>
+</ol>
+<h3 id="说一说HashSet的底层结构"><a href="#说一说HashSet的底层结构" class="headerlink" title="说一说HashSet的底层结构"></a>说一说HashSet的底层结构</h3><p>HashSet是基于HashMap实现的，默认构造函数是构建一个初始容量为16，负载因子为0.75 的HashMap。它封装了一个 HashMap 对象来存储所有的集合元素，所有放入 HashSet 中的集合元素实际上由 HashMap 的 key 来保存，而 HashMap 的 value 则存储了一个 PRESENT，它是一个静态的 Object 对象。</p>
+<h3 id="BlockingQueue中有哪些方法，为什么这样设计？"><a href="#BlockingQueue中有哪些方法，为什么这样设计？" class="headerlink" title="BlockingQueue中有哪些方法，为什么这样设计？"></a>BlockingQueue中有哪些方法，为什么这样设计？</h3><p>为了应对不同的业务场景，BlockingQueue 提供了4 组不同的方法用于插入、移除以及对队列中的元素进行检查。如果请求的操作不能得到立即执行的话，每组方法的表现是不同的。这些方法如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">抛异常</th>
+<th align="left">特定值</th>
+<th align="left">阻塞</th>
+<th align="left">超时</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">插入</td>
+<td align="left">add(e)</td>
+<td align="left">offer(e)</td>
+<td align="left">put(e)</td>
+<td align="left">offer(e, time, unit)</td>
+</tr>
+<tr>
+<td align="left">移除</td>
+<td align="left">remove()</td>
+<td align="left">poll()</td>
+<td align="left">take()</td>
+<td align="left">poll(time, unit)</td>
+</tr>
+<tr>
+<td align="left">检查</td>
+<td align="left">element()</td>
+<td align="left">peek()</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p>四组不同的行为方式含义如下：</p>
+<ul>
+<li>抛异常：如果操作无法立即执行，则抛一个异常；</li>
+<li>特定值：如果操作无法立即执行，则返回一个特定的值(一般是 true / false)。</li>
+<li>阻塞：如果操作无法立即执行，则该方法调用将会发生阻塞，直到能够执行；</li>
+<li>超时：如果操作无法立即执行，则该方法调用将会发生阻塞，直到能够执行。但等待时间不会超过给定值，并返回一个特定值以告知该操作是否成功(典型的是true / false)。</li>
+</ul>
+<h3 id="BlockingQueue是怎么实现的？"><a href="#BlockingQueue是怎么实现的？" class="headerlink" title="BlockingQueue是怎么实现的？"></a>BlockingQueue是怎么实现的？</h3><p>BlockingQueue是一个接口，它的实现类有ArrayBlockingQueue、DelayQueue、 LinkedBlockingQueue、PriorityBlockingQueue、SynchronousQueue等。它们的区别主要体现在存储结构上或对元素操作上的不同，但是对于put与take操作的原理是类似的。下面以ArrayBlockingQueue为例，来说明BlockingQueue的实现原理。</p>
+<p>首先看一下ArrayBlockingQueue的构造函数，它初始化了put和take函数中用到的关键成员变量，这两个变量的类型分别是ReentrantLock和Condition。ReentrantLock是AbstractQueuedSynchronizer（AQS）的子类，它的newCondition函数返回的Condition实例，是定义在AQS类内部的ConditionObject类，该类可以直接调用AQS相关的函数。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">ArrayBlockingQueue</span><span class="params">(<span class="type">int</span> capacity, <span class="type">boolean</span> fair)</span> {     </span><br><span class="line">    <span class="keyword">if</span> (capacity &lt;= <span class="number">0</span>)       </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();   </span><br><span class="line">    <span class="built_in">this</span>.items = <span class="keyword">new</span> <span class="title class_">Object</span>[capacity]; </span><br><span class="line">    lock = <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>(fair); </span><br><span class="line">    notEmpty = lock.newCondition();  </span><br><span class="line">    notFull = lock.newCondition();  </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>put函数会在队列末尾添加元素，如果队列已经满了，无法添加元素的话，就一直阻塞等待到可以加入为止。函数的源码如下所示。我们会发现put函数使用了wait/notify的机制。与一般生产者-消费者的实现方式不同，同步队列使用ReentrantLock和Condition相结合的机制，即先获得锁，再等待，而不是synchronized和wait的机制。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">put</span><span class="params">(E e)</span> <span class="keyword">throws</span> InterruptedException {  </span><br><span class="line">    checkNotNull(e);     </span><br><span class="line">    <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="built_in">this</span>.lock;  </span><br><span class="line">    lock.lockInterruptibly();    </span><br><span class="line">    <span class="keyword">try</span> {        </span><br><span class="line">        <span class="keyword">while</span> (count == items.length)     </span><br><span class="line">            notFull.await();   </span><br><span class="line">        enqueue(e);    </span><br><span class="line">    } <span class="keyword">finally</span> {  </span><br><span class="line">        lock.unlock(); </span><br><span class="line">    }  </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>再来看一下消费者调用的take函数，take函数在队列为空时会被阻塞，一直到阻塞队列加入了新的元素。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> E <span class="title function_">take</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException {  </span><br><span class="line">    <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="built_in">this</span>.lock;      </span><br><span class="line">    lock.lockInterruptibly();   </span><br><span class="line">    <span class="keyword">try</span> {       </span><br><span class="line">        <span class="keyword">while</span> (count == <span class="number">0</span>)      </span><br><span class="line">            notEmpty.await(); </span><br><span class="line">        <span class="keyword">return</span> dequeue();  </span><br><span class="line">    } <span class="keyword">finally</span> {    </span><br><span class="line">        lock.unlock();  </span><br><span class="line">    } </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>扩展阅读</strong></p>
+<p>await操作：</p>
+<p>我们发现ArrayBlockingQueue并没有使用Object.wait，而是使用的Condition.await，这是为什么呢？Condition对象可以提供和Object的wait和notify一样的行为，但是后者必须先获取synchronized这个内置的monitor锁才能调用，而Condition则必须先获取ReentrantLock。这两种方式在阻塞等待时都会将相应的锁释放掉，但是Condition的等待可以中断，这是二者唯一的区别。</p>
+<p>我们先来看一下Condition的await函数，await函数的流程大致如下图所示。await函数主要有三个步骤，一是调用addConditionWaiter函数，在condition wait queue队列中添加一个节点，代表当前线程在等待一个消息。然后调用fullyRelease函数，将持有的锁释放掉，调用的是AQS的函数。最后一直调用isOnSyncQueue函数判断节点是否被转移到sync queue队列上，也就是AQS中等待获取锁的队列。如果没有，则进入阻塞状态，如果已经在队列上，则调用acquireQueued函数重新获取锁。</p>
+<p><img src="/p/3818800b/37DE256DECC211F4D5230BF7A654E128.png" alt="img"></p>
+<p>signal操作：</p>
+<p>signal函数将condition wait queue队列中队首的线程节点转移等待获取锁的sync queue队列中。这样的话，await函数中调用isOnSyncQueue函数就会返回true，导致await函数进入最后一步重新获取锁的状态。</p>
+<p>我们这里来详细解析一下condition wait queue和sync queue两个队列的设计原理。condition wait queue是等待消息的队列，因为阻塞队列为空而进入阻塞状态的take函数操作就是在等待阻塞队列不为空的消息。而sync queue队列则是等待获取锁的队列，take函数获得了消息，就可以运行了，但是它还必须等待获取锁之后才能真正进行运行状态。</p>
+<p>signal函数其实就做了一件事情，就是不断尝试调用transferForSignal函数，将condition wait queue队首的一个节点转移到sync queue队列中，直到转移成功。因为一次转移成功，就代表这个消息被成功通知到了等待消息的节点。</p>
+<p>signal函数的示意图如下所示。</p>
+<p><img src="/p/3818800b/61A52D5795794D763D6F8D37D13AFE07.png" alt="img"></p>
+<h3 id="Stream（不是IOStream）有哪些方法？"><a href="#Stream（不是IOStream）有哪些方法？" class="headerlink" title="Stream（不是IOStream）有哪些方法？"></a>Stream（不是IOStream）有哪些方法？</h3><p>Stream提供了大量的方法进行聚集操作，这些方法既可以是“中间的”，也可以是“末端的”。</p>
+<ul>
+<li>中间方法：中间操作允许流保持打开状态，并允许直接调用后续方法。上面程序中的map()方法就是中间方法。中间方法的返回值是另外一个流。</li>
+<li>末端方法：末端方法是对流的最终操作。当对某个Stream执行末端方法后，该流将会被“消耗”且不再可用。上面程序中的sum()、count()、average()等方法都是末端方法。</li>
+</ul>
+<p>除此之外，关于流的方法还有如下两个特征：</p>
+<ul>
+<li>有状态的方法：这种方法会给流增加一些新的属性，比如元素的唯一性、元素的最大数量、保证元素以排序的方式被处理等。有状态的方法往往需要更大的性能开销。</li>
+<li>短路方法：短路方法可以尽早结束对流的操作，不必检查所有的元素。</li>
+</ul>
+<p>下面简单介绍一下Stream常用的中间方法：</p>
+<ul>
+<li>filter(Predicate predicate)：过滤Stream中所有不符合predicate的元素。</li>
+<li>mapToXxx(ToXxxFunction mapper)：使用ToXxxFunction对流中的元素执行一对一的转换，该方法返回的新流中包含了ToXxxFunction转换生成的所有元素。</li>
+<li>peek(Consumer action)：依次对每个元素执行一些操作，该方法返回的流与原有流包含相同的元素。该方法主要用于调试。</li>
+<li>distinct()：该方法用于排序流中所有重复的元素（判断元素重复的标准是使用equals()比较返回true）。这是一个有状态的方法。</li>
+<li>sorted()：该方法用于保证流中的元素在后续的访问中处于有序状态。这是一个有状态的方法。</li>
+<li>limit(long maxSize)：该方法用于保证对该流的后续访问中最大允许访问的元素个数。这是一个有状态的、短路方法。</li>
+</ul>
+<p>下面简单介绍一下Stream常用的末端方法：</p>
+<ul>
+<li>forEach(Consumer action)：遍历流中所有元素，对每个元素执行action。</li>
+<li>toArray()：将流中所有元素转换为一个数组。</li>
+<li>reduce()：该方法有三个重载的版本，都用于通过某种操作来合并流中的元素。</li>
+<li>min()：返回流中所有元素的最小值。</li>
+<li>max()：返回流中所有元素的最大值。</li>
+<li>count()：返回流中所有元素的数量。</li>
+<li>anyMatch(Predicate predicate)：判断流中是否至少包含一个元素符合Predicate条件。</li>
+<li>noneMatch(Predicate predicate)：判断流中是否所有元素都不符合Predicate条件。</li>
+<li>findFirst()：返回流中的第一个元素。</li>
+<li>findAny()：返回流中的任意一个元素。</li>
+</ul>
+<p>除此之外，Java 8允许使用流式API来操作集合，Collection接口提供了一个stream()默认方法，该方法可返回该集合对应的流，接下来即可通过流式API来操作集合元素。由于Stream可以对集合元素进行整体的聚集操作，因此Stream极大地丰富了集合的功能。</p>
+<p><strong>扩展阅读</strong></p>
+<p>Java 8新增了Stream、IntStream、LongStream、DoubleStream等流式API，这些API代表多个支持串行和并行聚集操作的元素。上面4个接口中，Stream是一个通用的流接口，而IntStream、LongStream、DoubleStream则代表元素类型为int、long、double的流。</p>
+<p>Java 8还为上面每个流式API提供了对应的Builder，例如Stream.Builder、IntStream.Builder、LongStream.Builder、DoubleStream.Builder，开发者可以通过这些Builder来创建对应的流。</p>
+<p>独立使用Stream的步骤如下：</p>
+<ol>
+<li>使用Stream或XxxStream的builder()类方法创建该Stream对应的Builder。</li>
+<li>重复调用Builder的add()方法向该流中添加多个元素。</li>
+<li>调用Builder的build()方法获取对应的Stream。</li>
+<li>调用Stream的聚集方法。</li>
+</ol>
+<p>在上面4个步骤中，第4步可以根据具体需求来调用不同的方法，Stream提供了大量的聚集方法供用户调用，具体可参考Stream或XxxStream的API文档。对于大部分聚集方法而言，每个Stream只能执行一次。</p>
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.gitee.io/p/3818800b.html" title="Java基础(五)">https://mrdjun.gitee.io/p/3818800b.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/3eb3d776.html" rel="prev" title="Java基础(四)">
+                  <i class="fa fa-chevron-left"></i> Java基础(四)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/p/f284337e.html" rel="next" title="ArrayList & LinkedList">
+                  ArrayList & LinkedList <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.gitee.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="通过消息回退机制和mandatory参数，可以处理交换机投递失败的消息。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RabbitMQ备份交换机">
+<meta property="og:url" content="https://mrdjun.gitee.io/p/ad15fb59.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="通过消息回退机制和mandatory参数，可以处理交换机投递失败的消息。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/ad15fb59/RabbitMQ-%E4%BA%A4%E6%8D%A2%E6%9C%BA%E5%A4%87%E4%BB%BD%E6%96%B9%E6%A1%88.png">
+<meta property="article:published_time" content="2021-06-26T09:34:15.000Z">
+<meta property="article:modified_time" content="2023-06-06T13:27:08.527Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="消息中间件">
+<meta property="article:tag" content="RabbitMQ">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrdjun.gitee.io/p/ad15fb59/RabbitMQ-%E4%BA%A4%E6%8D%A2%E6%9C%BA%E5%A4%87%E4%BB%BD%E6%96%B9%E6%A1%88.png">
+
+
+<link rel="canonical" href="https://mrdjun.gitee.io/p/ad15fb59.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.gitee.io/p/ad15fb59.html","path":"p/ad15fb59.html","title":"RabbitMQ备份交换机"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      RabbitMQ备份交换机 | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">备份交换机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">代码实现</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.gitee.io/p/ad15fb59.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RabbitMQ备份交换机
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2021-06-26 17:34:15" itemprop="dateCreated datePublished" datetime="2021-06-26T17:34:15+08:00">2021-06-26</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><p>​        通过消息回退机制和mandatory参数，可以处理交换机投递失败的消息。</p>
+<p>​        消息回退到生产者后，有时候并不知道该如何处理这些无法路由的消息，最多就是打个日志，存到缓存定时投递，超出投递失败次数进行报警，再手动处理，手动的通病就是麻烦易出错。此外，生产者不止一台机器，那么每台都需要写处理这些回退消息的逻辑代码，反而增加了生产者的复杂性。</p>
+<blockquote>
+<p><strong>那么既不丢失消息，又不增加生产者的复杂性，该怎么做？</strong></p>
+</blockquote>
+<p>​        可以为队列设置死信交换机来存储投递失败的消息，可是这些不可路由消息根本没有机会进入到队列，因此无法使用死信队列来保存消息。在 RabbitMQ 中，有一种备份交换机的机制存在，可以很好的应对这个问题。</p>
+<h2 id="备份交换机"><a href="#备份交换机" class="headerlink" title="备份交换机"></a>备份交换机</h2><p>​        备份交换机可以理解为 RabbitMQ 中交换机的“备胎”，当我们为某一个交换机声明一个对应的备份交换机时，就是为它创建一个备胎，当交换机接收到一条不可路由消息时，将会把这条消息转发到备份交换机中，由备份交换机来进行转发和处理，通常备份交换机的类型为 Fanout ，这样就能把所有消息都投递到与其绑定的队列中，然后我们在备份交换机下绑定一个队列，这样所有那些原交换机无法被路由的消息，就会都进入这个队列了。 当然，还可以建立一个报警队列，用独立的消费者来进行监测和报警。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>​        新增一个备份交换机，绑定在 confirm.exchange 上，当 confirm.exchange 投递消息到队列失败后，将交给备份交换机来投递消息，设置交换机类型为 fanout，有两个队列 backup.queue，还有一个报警队列用来告知我们存在异常情况。</p>
+<p><img src="/p/ad15fb59/RabbitMQ-%E4%BA%A4%E6%8D%A2%E6%9C%BA%E5%A4%87%E4%BB%BD%E6%96%B9%E6%A1%88.png" alt="image-20210626155027879"></p>
+<p>ConfirmConfig 新增配置</p>
+<p>修改 confirm.exchange 的代码，绑定上备份交换机，声明其它组件。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 发布确认机制-示例使用</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">CONFIRM_QUEUE_NAME</span> <span class="operator">=</span> <span class="string">"confirm.queue"</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">CONFIRM_EXCHANGE_NAME</span> <span class="operator">=</span> <span class="string">"confirm.exchange"</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">ROUTING_KEY_CONFIRM</span> <span class="operator">=</span> <span class="string">"confirm.routing"</span>;</span><br><span class="line"><span class="comment">/** 备份交换机常量 */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span>  <span class="type">String</span> <span class="variable">CONFIRM_BACKUP_EXCHANGE</span> <span class="operator">=</span> <span class="string">"backup.exchange"</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span>  <span class="type">String</span> <span class="variable">CONFIRM_BACKUP_QUEUE_NAME</span> <span class="operator">=</span> <span class="string">"backup.queue"</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span>  <span class="type">String</span> <span class="variable">CONFIRM_WARNING_QUEUE_NAME</span> <span class="operator">=</span> <span class="string">"warning.queue"</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean(CONFIRM_EXCHANGE_NAME)</span></span><br><span class="line"><span class="keyword">public</span> DirectExchange <span class="title function_">confirmExchange</span><span class="params">()</span> {</span><br><span class="line">    <span class="keyword">return</span> ExchangeBuilder.directExchange(CONFIRM_EXCHANGE_NAME)</span><br><span class="line">        .durable(<span class="literal">true</span>)</span><br><span class="line">        <span class="comment">// 设置备份交换机</span></span><br><span class="line">        .alternate(CONFIRM_BACKUP_EXCHANGE)</span><br><span class="line">        .build();</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 备份交换机</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Bean(CONFIRM_BACKUP_EXCHANGE)</span></span><br><span class="line"><span class="keyword">public</span> FanoutExchange <span class="title function_">backupExchange</span><span class="params">()</span> {</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">FanoutExchange</span>(CONFIRM_BACKUP_EXCHANGE);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 声明备份队列</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Bean(CONFIRM_BACKUP_QUEUE_NAME)</span></span><br><span class="line"><span class="keyword">public</span> Queue <span class="title function_">backupQueue</span><span class="params">()</span> {</span><br><span class="line">    <span class="keyword">return</span> QueueBuilder.durable(CONFIRM_BACKUP_QUEUE_NAME).build();</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 声明警告队列</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Bean(CONFIRM_WARNING_QUEUE_NAME)</span></span><br><span class="line"><span class="keyword">public</span> Queue <span class="title function_">warnQueue</span><span class="params">()</span> {</span><br><span class="line">    <span class="keyword">return</span> QueueBuilder.durable(CONFIRM_WARNING_QUEUE_NAME).build();</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 备份队列绑定备份交换机</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> Binding <span class="title function_">backupQueueBindingExchange</span><span class="params">(<span class="meta">@Qualifier(CONFIRM_BACKUP_QUEUE_NAME)</span> Queue queue,</span></span><br><span class="line"><span class="params">                                          <span class="meta">@Qualifier(CONFIRM_BACKUP_EXCHANGE)</span> FanoutExchange exchange)</span> {</span><br><span class="line">    <span class="keyword">return</span> BindingBuilder.bind(queue).to(exchange);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 报警队列绑定备份交换机</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> Binding <span class="title function_">warnQueueBindingExchange</span><span class="params">(<span class="meta">@Qualifier(CONFIRM_WARNING_QUEUE_NAME)</span> Queue queue,</span></span><br><span class="line"><span class="params">                                        <span class="meta">@Qualifier(CONFIRM_BACKUP_EXCHANGE)</span> FanoutExchange exchange)</span> {</span><br><span class="line">    <span class="keyword">return</span> BindingBuilder.bind(queue).to(exchange);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>生产者新增测试方法</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 发送消息到交换机失败，由备份交换机投递消息.</span></span><br><span class="line"><span class="comment"> * NoSuchRoutingKey 是一个不存在的路由键</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@GetMapping("/sendFailMsg/{msg}")</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendFailMsg</span><span class="params">(<span class="meta">@PathVariable("msg")</span> String msg)</span> {</span><br><span class="line">    <span class="type">CorrelationData</span> <span class="variable">correlationData</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CorrelationData</span>(UUID.randomUUID().toString());</span><br><span class="line">    rabbitTemplate.convertAndSend(MqConstant.CONFIRM_EXCHANGE_NAME, <span class="string">"NoSuchRoutingKey"</span>, msg, correlationData);</span><br><span class="line">    log.info(<span class="string">"发送消息成功，消息内容：{}"</span>, msg);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>消费者，消费备份队列的消息、消费警告队列的消息。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RabbitListener(queues = {CONFIRM_BACKUP_QUEUE_NAME})</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">receiveBackupMessage</span><span class="params">(Message message, Channel channel)</span>{</span><br><span class="line">    log.info(<span class="string">"接收到无法投递的消息为：{}"</span>, <span class="keyword">new</span> <span class="title class_">String</span>(message.getBody()));</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="meta">@RabbitListener(queues = {CONFIRM_WARNING_QUEUE_NAME})</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">receiveWarnMessage</span><span class="params">(Message message, Channel channel)</span>{</span><br><span class="line">    log.warn(<span class="string">"接收到无法投递的消息为：{}"</span>, <span class="keyword">new</span> <span class="title class_">String</span>(message.getBody()));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>执行结果</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">----------------------------- 生产者日志 --------------------------------</span><br><span class="line">2021-06-26 17:31:30.126  INFO 156 --- [nio-8005-exec-1] c.f.t.r.p.boot.ConfirmMessageProducer    : 发送消息成功，消息内容：hello</span><br><span class="line">2021-06-26 17:31:30.131  INFO 156 --- [nectionFactory1] c.f.t.r.p.boot.ConfirmMessageCallback    : 交换机已收到 id=1ef4f524-81e2-4f43-a8e1-d2b0969da0c1 的消息</span><br><span class="line">----------------------------- 消费者日志 ------------------------------</span><br><span class="line">2021-06-26 17:31:30.132  WARN 21284 --- [ntContainer] c.f.t.r.c.boot.ConfirmMessageConsumer    : 接收到无法投递的消息为：hello</span><br><span class="line">2021-06-26 17:31:30.132  INFO 21284 --- [ntContainer] c.f.t.r.c.boot.ConfirmMessageConsumer    : 接收到无法投递的消息为：hello</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>日志中缺少了回退方法中的日志打印，为什么之前配置的回退方法没有回调？</strong></p>
+<p>mandatory 参数与备份交换机可以一起使用的时候，如果两者同时开启，备份交换机的优先级更高。  </p>
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.gitee.io/p/ad15fb59.html" title="RabbitMQ备份交换机">https://mrdjun.gitee.io/p/ad15fb59.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag"># 消息中间件</a>
+              <a href="/tags/RabbitMQ/" rel="tag"># RabbitMQ</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/d8b7ee3.html" rel="prev" title="RabbitMQ消息应答(ACK)">
+                  <i class="fa fa-chevron-left"></i> RabbitMQ消息应答(ACK)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/p/87548d77.html" rel="next" title="RabbitMQ优先级队列">
+                  RabbitMQ优先级队列 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>

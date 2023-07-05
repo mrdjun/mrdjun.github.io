@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.gitee.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="若消息尚未写入磁盘就发生宕机，则消息会发生丢失，如何解决这个问题？">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RabbitMQ消息的发布确认(上)">
+<meta property="og:url" content="https://mrdjun.gitee.io/p/607540b1.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="若消息尚未写入磁盘就发生宕机，则消息会发生丢失，如何解决这个问题？">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-29T10:41:00.000Z">
+<meta property="article:modified_time" content="2023-06-06T13:27:08.531Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="消息中间件">
+<meta property="article:tag" content="RabbitMQ">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://mrdjun.gitee.io/p/607540b1.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.gitee.io/p/607540b1.html","path":"p/607540b1.html","title":"RabbitMQ消息的发布确认(上)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      RabbitMQ消息的发布确认(上) | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E7%A1%AE%E8%AE%A4%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">发布确认原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E7%A1%AE%E8%AE%A4%E7%AD%96%E7%95%A5"><span class="nav-number">2.</span> <span class="nav-text">发布确认策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E4%B8%AA%E5%8F%91%E5%B8%83%E7%A1%AE%E8%AE%A4"><span class="nav-number">2.1.</span> <span class="nav-text">单个发布确认</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E7%A1%AE%E8%AE%A4%E5%8F%91%E5%B8%83"><span class="nav-number">2.2.</span> <span class="nav-text">批量确认发布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E7%A1%AE%E8%AE%A4%E5%8F%91%E5%B8%83"><span class="nav-number">2.3.</span> <span class="nav-text">异步确认发布</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.gitee.io/p/607540b1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RabbitMQ消息的发布确认(上)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2021-06-29 18:41:00" itemprop="dateCreated datePublished" datetime="2021-06-29T18:41:00+08:00">2021-06-29</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><p>场景描述：消息持久化是指消息保存在磁盘上，如果消息还没来得及写入磁盘就发生宕机，那么消息一样会发生丢失。</p>
+<p>解决方案：生产者发送消息的到了所有匹配的队列之后，队列写入磁盘成功后再回复生产者。</p>
+<blockquote>
+<p><strong>如何100%确保消息不丢失？</strong></p>
+</blockquote>
+<p>做好这三步，消息才能绝对不丢失：</p>
+<p>①队列持久化</p>
+<p>②队列中的消息持久化</p>
+<p>③发布确认</p>
+<h2 id="发布确认原理"><a href="#发布确认原理" class="headerlink" title="发布确认原理"></a>发布确认原理</h2><p>​        生产者将信道设置成 confirm 模式，一旦信道进入 confirm 模式，<strong>所有在该信道上面发布的消息都将会被指派一个唯一的 ID</strong>(从 1 开始)，一旦消息被投递到所有匹配的队列之后，broker就会发送一个确认给生产者(包含消息的唯一 ID)，这就使得生产者知道消息已经正确到达目的队列了，如果消息和队列是可持久化的，那么确认消息会在将消息写入磁盘之后发出，broker 回传给生产者的确认消息中 delivery-tag 域包含了确认消息的序列号，此外 broker 也可以设置basic.ack 的 multiple 域，表示到这个序列号之前的所有消息都已经得到了处理。</p>
+<p>​        confirm 模式最大的好处在于他是异步的，一旦发布一条消息，生产者应用程序就可以在等信道返回确认的同时继续发送下一条消息，当消息最终得到确认之后，生产者应用便可以通过回调方法来处理该确认消息，如果 RabbitMQ 因为自身内部错误导致消息丢失，就会发送一条 nack 消息，生产者应用程序同样可以在回调方法中处理该 nack 消息。</p>
+<h2 id="发布确认策略"><a href="#发布确认策略" class="headerlink" title="发布确认策略"></a>发布确认策略</h2><p>发布确认默认是没有开启的，如果要开启需要调用方法 confirmSelect。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">channel.confirmSelect();</span><br></pre></td></tr></tbody></table></figure>
+
+<p>发布一条消息确认一次，还是发布一批消息确认一次呢？RabbitMQ提供了以下几种策略：</p>
+<h3 id="单个发布确认"><a href="#单个发布确认" class="headerlink" title="单个发布确认"></a>单个发布确认</h3><p>​        发一条确认一条，确认后才能继续发送下一条。这是一种简单的确认方式，它是一种<strong>同步确认发布</strong>的方式。waitForConfirmsOrDie(long)这个方法只有在消息被确认的时候才返回，如果在指定时间范围内这个消息没有被确认那么它将抛出异常。</p>
+<p>​        这种确认方式有一个最大的缺点就是：<strong>发布速度特别慢，</strong>因为如果没有确认发布的消息就会阻塞所有后续消息的发布，这种方式最多提供每秒不超过数百条发布消息的吞吐量。当然对于某些应用程序来说这可能已经足够了。</p>
+<p><strong>代码实现</strong></p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">QUEUE_NAME</span> <span class="operator">=</span> <span class="string">"confirm"</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">singleConfirm</span><span class="params">()</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">    <span class="type">Channel</span> <span class="variable">channel</span> <span class="operator">=</span> getChannel();</span><br><span class="line">    <span class="comment">// 绑定队列</span></span><br><span class="line">    channel.queueDeclare(QUEUE_NAME, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">null</span>);</span><br><span class="line">    <span class="comment">// 开启发布确认机制</span></span><br><span class="line">    channel.confirmSelect();</span><br><span class="line">    <span class="comment">// 用于统计发送1000条消息花费的时间</span></span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= <span class="number">1000</span>; i++) {</span><br><span class="line">        <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> <span class="string">"message_"</span> + i;</span><br><span class="line">        channel.basicPublish(<span class="string">""</span>, QUEUE_NAME, <span class="literal">null</span>, (msg).getBytes(StandardCharsets.UTF_8));</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> channel.waitForConfirms();</span><br><span class="line">        <span class="keyword">if</span> (flag) {</span><br><span class="line">            System.out.println(<span class="string">"消息["</span> + msg + <span class="string">"]发送完成"</span>);</span><br><span class="line">        } <span class="keyword">else</span> {</span><br><span class="line">            System.err.println(<span class="string">"消息["</span> + msg + <span class="string">"]发送失败"</span>);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="type">long</span> <span class="variable">end</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">    System.out.println(<span class="string">"发送消息完成，耗时："</span> + (end - start) + <span class="string">"ms"</span>);</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 抽取方法</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Channel <span class="title function_">getChannel</span><span class="params">()</span> <span class="keyword">throws</span> IOException, TimeoutException {</span><br><span class="line">    <span class="type">ConnectionFactory</span> <span class="variable">connectionFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ConnectionFactory</span>();</span><br><span class="line">    connectionFactory.setHost(<span class="string">"192.168.19.128"</span>);</span><br><span class="line">    connectionFactory.setPort(<span class="number">5672</span>);</span><br><span class="line">    connectionFactory.setUsername(<span class="string">"admin"</span>);</span><br><span class="line">    connectionFactory.setPassword(<span class="string">"admin"</span>);</span><br><span class="line">    <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> connectionFactory.newConnection();</span><br><span class="line">    <span class="keyword">return</span> connection.createChannel();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>执行结果</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">发送消息完成，耗时：686ms</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="批量确认发布"><a href="#批量确认发布" class="headerlink" title="批量确认发布"></a>批量确认发布</h3><p>单个发布确认的方式非常慢，批量发布与之相比，先发布一批消息然后一起确认可以极大地提高吞吐量，当然这种方式的缺点就是：当发生故障导致发布出现问题时，不知道是哪个消息出现问题了，我们必须将整个批处理保存在内存中，以记录重要的信息而后重新发布消息。当然这种方案仍然是同步的，也一样阻塞消息的发布。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">multipleConfirm</span><span class="params">()</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">    <span class="type">Channel</span> <span class="variable">channel</span> <span class="operator">=</span> getChannel();</span><br><span class="line">    <span class="comment">// 绑定队列</span></span><br><span class="line">    channel.queueDeclare(QUEUE_NAME, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">null</span>);</span><br><span class="line">    <span class="comment">// 开启发布确认机制</span></span><br><span class="line">    channel.confirmSelect();</span><br><span class="line">    <span class="comment">// 用于统计发送1000条消息花费的时间</span></span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">    <span class="comment">// 批量确认消息大小</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">batchSize</span> <span class="operator">=</span> <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= <span class="number">1000</span>; i++) {</span><br><span class="line">        <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> <span class="string">"message_"</span> + i;</span><br><span class="line">        channel.basicPublish(<span class="string">""</span>, QUEUE_NAME, <span class="literal">null</span>, (msg).getBytes(StandardCharsets.UTF_8));</span><br><span class="line">        <span class="comment">// 每发布200条消息确认一次</span></span><br><span class="line">        <span class="keyword">if</span> (i % batchSize == <span class="number">0</span>) {</span><br><span class="line">            channel.waitForConfirms();</span><br><span class="line">        }</span><br><span class="line">        System.out.println(<span class="string">"消息["</span> + msg + <span class="string">"]发送完成"</span>);</span><br><span class="line">    }</span><br><span class="line">    <span class="type">long</span> <span class="variable">end</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">    System.out.println(<span class="string">"发送消息完成，耗时："</span> + (end - start) + <span class="string">"ms"</span>);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>执行结果</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">发送消息完成，耗时：109ms</span><br></pre></td></tr></tbody></table></figure>
+
+<p>批量与单个发布确认相比，批量高效了许多，但是可靠性欠缺。还有一种发布确认的策略即高效又可靠。</p>
+<h3 id="异步确认发布"><a href="#异步确认发布" class="headerlink" title="异步确认发布"></a>异步确认发布</h3><p>​        异步确认虽然编程逻辑比上两个要复杂，但是性价比最高，无论是可靠性还是效率都没得说，他是利用回调函数来达到消息可靠性传递的，这个中间件也是通过函数回调来保证是否投递成功，下面就让我们来详细讲解异步确认是怎么实现的。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">asyncConfirm</span><span class="params">()</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">    <span class="type">Channel</span> <span class="variable">channel</span> <span class="operator">=</span> getChannel();</span><br><span class="line">    <span class="comment">// 绑定队列</span></span><br><span class="line">    channel.queueDeclare(QUEUE_NAME, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">null</span>);</span><br><span class="line">    <span class="comment">// 开启发布确认机制</span></span><br><span class="line">    channel.confirmSelect();</span><br><span class="line">    <span class="comment">// ack成功的消息回调</span></span><br><span class="line">    <span class="type">ConfirmCallback</span> <span class="variable">ackCallback</span> <span class="operator">=</span> (deliveryTag, multiple) -&gt; {</span><br><span class="line">        System.out.println(<span class="string">"消息["</span> + deliveryTag + <span class="string">"]发送完成"</span>);</span><br><span class="line">    };</span><br><span class="line">    <span class="comment">// ack失败的消息回调 - 暂不处理</span></span><br><span class="line">    <span class="type">ConfirmCallback</span> <span class="variable">nackCallback</span> <span class="operator">=</span> (deliveryTag, multiple) -&gt; {</span><br><span class="line">        System.out.println(<span class="string">"消息["</span> + deliveryTag + <span class="string">"]发送失败"</span>);</span><br><span class="line">    };</span><br><span class="line">    <span class="comment">// 设置监听器 - 异步通知</span></span><br><span class="line">    channel.addConfirmListener(ackCallback, nackCallback);</span><br><span class="line"></span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++) {</span><br><span class="line">        <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> <span class="string">"message_"</span> + i;</span><br><span class="line">        channel.basicPublish(<span class="string">""</span>, QUEUE_NAME, <span class="literal">null</span>, (msg).getBytes(StandardCharsets.UTF_8));</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="type">long</span> <span class="variable">end</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">    System.out.println(<span class="string">"发送消息完成，耗时："</span> + (end - start) + <span class="string">"ms"</span>);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>执行结果</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">发送消息完成，耗时：53ms</span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p><strong>如何处理ack失败的消息？</strong></p>
+</blockquote>
+<p>将消息放回队列继续发送即可，直到该消息发送成功。</p>
+<p>代码实现思路：使用一个容器（Collection或Map容器）装下发送的全部消息，在ACK成功的回调方法中移除该元素，剩下的就是ACK失败的消息。</p>
+<p>需要保存消息ID以及对应的消息内容，删除的时候需要根据ID来删，所以容器选用Map，Map中并发环境下的最好的选择是ConcurrentHashMap和ConcurrentSkipListMap，ConcurrentHashMap不能保证元素的有序性，所以使用跳表ConcurrentSkipListMap，其底层是双向链表的数据结构并且另外维护了一个多层级索引链表，特性是增删快有序（链表特性）、查询速度快（可以代替平衡树的数据结构）。</p>
+<p><strong>代码实现</strong></p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> ConcurrentSkipListMap&lt;Long, String&gt; messages = <span class="keyword">new</span> <span class="title class_">ConcurrentSkipListMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">asyncConfirm</span><span class="params">()</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">    <span class="type">Channel</span> <span class="variable">channel</span> <span class="operator">=</span> getChannel();</span><br><span class="line">    <span class="comment">// 绑定队列</span></span><br><span class="line">    channel.queueDeclare(QUEUE_NAME, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">null</span>);</span><br><span class="line">    <span class="comment">// 开启发布确认机制</span></span><br><span class="line">    channel.confirmSelect();</span><br><span class="line">    <span class="comment">// ack成功的消息回调</span></span><br><span class="line">    <span class="type">ConfirmCallback</span> <span class="variable">ackCallback</span> <span class="operator">=</span> (deliveryTag, multiple) -&gt; {</span><br><span class="line">        <span class="keyword">if</span> (multiple) {</span><br><span class="line">            ConcurrentNavigableMap&lt;Long, String&gt; confirmed = messages.headMap(deliveryTag);</span><br><span class="line">            confirmed.clear();</span><br><span class="line">        } <span class="keyword">else</span> {</span><br><span class="line">            messages.remove(deliveryTag);</span><br><span class="line">        }</span><br><span class="line">        System.out.println(<span class="string">"消息tag["</span> + deliveryTag + <span class="string">"]已确认"</span>);</span><br><span class="line">    };</span><br><span class="line">    <span class="comment">// ack失败的消息回调</span></span><br><span class="line">    <span class="type">ConfirmCallback</span> <span class="variable">nackCallback</span> <span class="operator">=</span> (deliveryTag, multiple) -&gt; {</span><br><span class="line">        <span class="type">String</span> <span class="variable">message</span> <span class="operator">=</span> messages.get(deliveryTag);</span><br><span class="line">        <span class="comment">// 重新发送</span></span><br><span class="line">        channel.basicPublish(<span class="string">""</span>, QUEUE_NAME, <span class="literal">null</span>, (message).getBytes(StandardCharsets.UTF_8));</span><br><span class="line">        System.out.println(<span class="string">"消息tag["</span> + deliveryTag + <span class="string">"]消息内容["</span> + message + <span class="string">"]未确认"</span>);</span><br><span class="line">    };</span><br><span class="line">    <span class="comment">// 设置监听器 - 异步通知</span></span><br><span class="line">    channel.addConfirmListener(ackCallback, nackCallback);</span><br><span class="line"></span><br><span class="line">    <span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++) {</span><br><span class="line">        <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> <span class="string">"message_"</span> + i;</span><br><span class="line">        channel.basicPublish(<span class="string">""</span>, QUEUE_NAME, <span class="literal">null</span>, (msg).getBytes(StandardCharsets.UTF_8));</span><br><span class="line">        <span class="comment">// k为消息序号，v为消息内容存入Map</span></span><br><span class="line">        messages.put(channel.getNextPublishSeqNo(), msg);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="type">long</span> <span class="variable">end</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">    System.out.println(<span class="string">"发送消息完成，耗时："</span> + (end - start) + <span class="string">"ms"</span>);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.gitee.io/p/607540b1.html" title="RabbitMQ消息的发布确认(上)">https://mrdjun.gitee.io/p/607540b1.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag"># 消息中间件</a>
+              <a href="/tags/RabbitMQ/" rel="tag"># RabbitMQ</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/b8aa99c2.html" rel="prev" title="RabbitMQ惰性队列">
+                  <i class="fa fa-chevron-left"></i> RabbitMQ惰性队列
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/p/796e71f0.html" rel="next" title="RabbitMQ消息的发布确认(下)">
+                  RabbitMQ消息的发布确认(下) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>

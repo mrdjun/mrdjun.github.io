@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.gitee.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="JAVA基础">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Java基础(一)">
+<meta property="og:url" content="https://mrdjun.gitee.io/p/15328330.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="JAVA基础">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-03-01T01:30:06.000Z">
+<meta property="article:modified_time" content="2023-06-06T13:27:08.415Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://mrdjun.gitee.io/p/15328330.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.gitee.io/p/15328330.html","path":"p/15328330.html","title":"Java基础(一)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      Java基础(一) | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88Java%E4%BB%A3%E7%A0%81%E5%8F%AF%E4%BB%A5%E5%AE%9E%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%BC%96%E5%86%99%E3%80%81%E5%88%B0%E5%A4%84%E8%BF%90%E8%A1%8C%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">为什么Java代码可以实现一次编写、到处运行？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AAJava%E6%96%87%E4%BB%B6%E9%87%8C%E5%8F%AF%E4%BB%A5%E6%9C%89%E5%A4%9A%E4%B8%AA%E7%B1%BB%E5%90%97%EF%BC%88%E4%B8%8D%E5%90%AB%E5%86%85%E9%83%A8%E7%B1%BB%EF%BC%89%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">一个Java文件里可以有多个类吗（不含内部类）？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B4%E4%B8%80%E8%AF%B4%E4%BD%A0%E5%AF%B9Java%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90%E7%9A%84%E4%BA%86%E8%A7%A3"><span class="nav-number">3.</span> <span class="nav-text">说一说你对Java访问权限的了解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8BJava%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">介绍一下Java的数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#int%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%95%B0%E6%8D%AE%E8%8C%83%E5%9B%B4%E6%98%AF%E5%A4%9A%E5%B0%91%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">int类型的数据范围是多少？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E4%BB%8B%E7%BB%8D%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%92%8C%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">6.</span> <span class="nav-text">请介绍全局变量和局部变量的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8B%E5%AE%9E%E4%BE%8B%E5%8F%98%E9%87%8F%E7%9A%84%E9%BB%98%E8%AE%A4%E5%80%BC"><span class="nav-number">7.</span> <span class="nav-text">请介绍一下实例变量的默认值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E5%95%A5%E8%A6%81%E6%9C%89%E5%8C%85%E8%A3%85%E7%B1%BB%EF%BC%9F"><span class="nav-number">8.</span> <span class="nav-text">为啥要有包装类？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B4%E4%B8%80%E8%AF%B4%E8%87%AA%E5%8A%A8%E8%A3%85%E7%AE%B1%E3%80%81%E8%87%AA%E5%8A%A8%E6%8B%86%E7%AE%B1%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">9.</span> <span class="nav-text">说一说自动装箱、自动拆箱的应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AF%B9Integer%E5%92%8CDouble%E7%B1%BB%E5%9E%8B%E5%88%A4%E6%96%AD%E7%9B%B8%E7%AD%89%EF%BC%9F"><span class="nav-number">10.</span> <span class="nav-text">如何对Integer和Double类型判断相等？</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.gitee.io/p/15328330.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java基础(一)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2018-03-01 09:30:06" itemprop="dateCreated datePublished" datetime="2018-03-01T09:30:06+08:00">2018-03-01</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><h3 id="为什么Java代码可以实现一次编写、到处运行？"><a href="#为什么Java代码可以实现一次编写、到处运行？" class="headerlink" title="为什么Java代码可以实现一次编写、到处运行？"></a>为什么Java代码可以实现一次编写、到处运行？</h3><p>JVM（Java虚拟机）是Java跨平台的关键。</p>
+<p>在程序运行前，Java源代码（.java）需要经过编译器编译成字节码（.class）。在程序运行时，JVM负责将字节码翻译成特定平台下的机器码并运行，也就是说，只要在不同的平台上安装对应的JVM，就可以运行字节码文件。</p>
+<p>同一份Java源代码在不同的平台上运行，它不需要做任何的改变，并且只需要编译一次。而编译好的字节码，是通过JVM这个中间的“桥梁”实现跨平台的，JVM是与平台相关的软件，它能将统一的字节码翻译成该平台的机器码。</p>
+<p><strong>注意事项</strong></p>
+<ol>
+<li>编译的结果是生成字节码、不是机器码，字节码不能直接运行，必须通过JVM翻译成机器码才能运行；</li>
+<li>跨平台的是Java程序、而不是JVM，JVM是用C/C++开发的软件，不同平台下需要安装不同版本的JVM。</li>
+</ol>
+<h3 id="一个Java文件里可以有多个类吗（不含内部类）？"><a href="#一个Java文件里可以有多个类吗（不含内部类）？" class="headerlink" title="一个Java文件里可以有多个类吗（不含内部类）？"></a>一个Java文件里可以有多个类吗（不含内部类）？</h3><ol>
+<li>一个java文件里可以有多个类，但最多只能有一个被public修饰的类；</li>
+<li>如果这个java文件中包含public修饰的类，则这个类的名称必须和java文件名一致。</li>
+</ol>
+<h3 id="说一说你对Java访问权限的了解"><a href="#说一说你对Java访问权限的了解" class="headerlink" title="说一说你对Java访问权限的了解"></a>说一说你对Java访问权限的了解</h3><p>Java语言为我们提供了三种访问修饰符，即private、protected、public，在使用这些修饰符修饰目标时，一共可以形成四种访问权限，即private、default、protected、public，注意在不加任何修饰符时为default访问权限。</p>
+<p>在修饰成员变量/成员方法时，该成员的四种访问权限的含义如下：</p>
+<ul>
+<li>private：该成员可以被该类内部成员访问；</li>
+<li>default：该成员可以被该类内部成员访问，也可以被同一包下其他的类访问；</li>
+<li>protected：该成员可以被该类内部成员访问，也可以被同一包下其他的类访问，还可以被它的子类访问；</li>
+<li>public：该成员可以被任意包下，任意类的成员进行访问。</li>
+</ul>
+<p>在修饰类时，该类只有两种访问权限，对应的访问权限的含义如下：</p>
+<ul>
+<li>default：该类可以被同一包下其他的类访问；</li>
+<li>public：该类可以被任意包下，任意的类所访问。</li>
+</ul>
+<h3 id="介绍一下Java的数据类型"><a href="#介绍一下Java的数据类型" class="headerlink" title="介绍一下Java的数据类型"></a>介绍一下Java的数据类型</h3><p>Java数据类型包括<strong>基本数据类型</strong>和<strong>引用数据类型</strong>两大类。</p>
+<table>
+<thead>
+<tr>
+<th align="center">8个基本类型</th>
+</tr>
+</thead>
+</table>
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">基本类型</th>
+<th align="center">所占字节(byte)</th>
+<th align="center">所占位数(bit)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">数值类型</td>
+<td align="center">byte</td>
+<td align="center">1</td>
+<td align="center">8</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">short</td>
+<td align="center">2</td>
+<td align="center">2*8</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">long</td>
+<td align="center">8</td>
+<td align="center">8*8</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">int</td>
+<td align="center">4</td>
+<td align="center">4*8</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">float</td>
+<td align="center">4</td>
+<td align="center">4*8</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">double</td>
+<td align="center">16</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">char</td>
+<td align="center">2</td>
+<td align="center">2*8</td>
+</tr>
+<tr>
+<td align="center">布尔类型</td>
+<td align="center">boolean</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+</tbody></table>
+<p>引用类型就是对一个对象的引用，根据引用对象类型的不同，可以将引用类型分为3类，即数组、类、接口类型。引用类型本质上就是通过指针，指向堆中对象所持有的内存空间，只是Java语言不再沿用指针这个说法而已。</p>
+<h3 id="int类型的数据范围是多少？"><a href="#int类型的数据范围是多少？" class="headerlink" title="int类型的数据范围是多少？"></a>int类型的数据范围是多少？</h3><p>int类型占4字节（32位），数据范围是 -2^31 ~ 2^31-1。</p>
+<h3 id="请介绍全局变量和局部变量的区别"><a href="#请介绍全局变量和局部变量的区别" class="headerlink" title="请介绍全局变量和局部变量的区别"></a>请介绍全局变量和局部变量的区别</h3><p>Java中的变量分为成员变量和局部变量，它们的区别如下：</p>
+<p>成员变量：</p>
+<ol>
+<li>成员变量是在类的范围里定义的变量；</li>
+<li>成员变量有默认初始值；</li>
+<li>未被static修饰的成员变量也叫实例变量，它存储于对象所在的堆内存中，生命周期与对象相同；</li>
+<li>被static修饰的成员变量也叫类变量，它存储于方法区中，生命周期与当前类相同。</li>
+</ol>
+<p>局部变量：</p>
+<ol>
+<li>局部变量是在方法里定义的变量；</li>
+<li>局部变量没有默认初始值；</li>
+<li>局部变量存储于栈内存中，作用的范围结束，变量空间会自动的释放。</li>
+</ol>
+<p><strong>注意事项</strong></p>
+<p>Java中没有真正的全局变量，面试官应该是出于其他语言的习惯说全局变量的，他的本意应该是指成员变量。</p>
+<h3 id="请介绍一下实例变量的默认值"><a href="#请介绍一下实例变量的默认值" class="headerlink" title="请介绍一下实例变量的默认值"></a>请介绍一下实例变量的默认值</h3><p>实例变量若为引用数据类型，其默认值一律为null。若为基本数据类型，其默认值如下：</p>
+<ul>
+<li>byte：0</li>
+<li>short：0</li>
+<li>int：0</li>
+<li>long：0L</li>
+<li>float：0.0F</li>
+<li>double：0.0</li>
+<li>char：’\u0000’</li>
+<li>boolean：false</li>
+</ul>
+<p><strong>注意事项</strong></p>
+<p>上述默认值规则适用于所有的成员变量，所以对于类变量也是适用的。</p>
+<h3 id="为啥要有包装类？"><a href="#为啥要有包装类？" class="headerlink" title="为啥要有包装类？"></a>为啥要有包装类？</h3><p>Java语言是面向对象的语言，其设计理念是“一切皆对象”。但8种基本数据类型却出现了例外，它们不具备对象的特性。正是为了解决这个问题，Java为每个基本数据类型都定义了一个对应的引用类型，这就是包装类。</p>
+<p><strong>扩展阅读</strong></p>
+<p>Java之所以提供8种基本数据类型，主要是为了照顾程序员的传统习惯。这8种基本数据类型的确带来了一定的方便性，但在某些时候也会受到一些制约。比如，所有的引用类型的变量都继承于Object类，都可以当做Object类型的变量使用，但基本数据类型却不可以。如果某个方法需要Object类型的参数，但实际传入的值却是数字的话，就需要做特殊的处理了。有了包装类，这种问题就可以得以简化。</p>
+<h3 id="说一说自动装箱、自动拆箱的应用场景"><a href="#说一说自动装箱、自动拆箱的应用场景" class="headerlink" title="说一说自动装箱、自动拆箱的应用场景"></a>说一说自动装箱、自动拆箱的应用场景</h3><p>自动装箱、自动拆箱是JDK1.5提供的功能。</p>
+<p>自动装箱：可以把一个基本类型的数据直接赋值给对应的包装类型；</p>
+<p>自动拆箱：可以把一个包装类型的对象直接赋值给对应的基本类型；</p>
+<p>通过自动装箱、自动拆箱功能，可以大大简化基本类型变量和包装类对象之间的转换过程。比如，某个方法的参数类型为包装类型，调用时我们所持有的数据却是基本类型的值，则可以不做任何特殊的处理，直接将这个基本类型的值传入给方法即可。</p>
+<h3 id="如何对Integer和Double类型判断相等？"><a href="#如何对Integer和Double类型判断相等？" class="headerlink" title="如何对Integer和Double类型判断相等？"></a>如何对Integer和Double类型判断相等？</h3><p>Integer、Double不能直接进行比较，这包括：</p>
+<ul>
+<li>不能用==进行直接比较，因为它们是不同的数据类型；</li>
+<li>不能转为字符串进行比较，因为转为字符串后，浮点值带小数点，整数值不带，这样它们永远都不相等；</li>
+<li>不能使用compareTo方法进行比较，虽然它们都有compareTo方法，但该方法只能对相同类型进行比较。</li>
+</ul>
+<p>整数、浮点类型的包装类，都继承于Number类型，而Number类型分别定义了将数字转换为byte、short、int、long、float、double的方法。所以，可以将Integer、Double先转为转换为相同的基本数据类型（如double），然后使用==进行比较。</p>
+<p><strong>示例代码</strong></p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Integer</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">100</span>;</span><br><span class="line"><span class="type">Double</span> <span class="variable">d</span> <span class="operator">=</span> <span class="number">100.00</span>;</span><br><span class="line">System.out.println(i.doubleValue() == d.doubleValue());</span><br></pre></td></tr></tbody></table></figure>
+
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.gitee.io/p/15328330.html" title="Java基础(一)">https://mrdjun.gitee.io/p/15328330.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/90391726.html" rel="prev" title="MrDJun's resume">
+                  <i class="fa fa-chevron-left"></i> MrDJun's resume
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/p/ba031852.html" rel="next" title="Java基础(二)">
+                  Java基础(二) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>

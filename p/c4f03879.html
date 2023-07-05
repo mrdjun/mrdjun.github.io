@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.gitee.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="JAVA基础">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Java基础(三)">
+<meta property="og:url" content="https://mrdjun.gitee.io/p/c4f03879.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="JAVA基础">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-03-06T01:27:06.000Z">
+<meta property="article:modified_time" content="2023-06-06T13:27:08.415Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://mrdjun.gitee.io/p/c4f03879.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.gitee.io/p/c4f03879.html","path":"p/c4f03879.html","title":"Java基础(三)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      Java基础(三) | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B4%E4%B8%80%E8%AF%B4hashCode-%E5%92%8Cequals-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.</span> <span class="nav-text">说一说hashCode()和equals()的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E9%87%8D%E5%86%99hashCode-%E5%92%8Cequals-%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">为什么要重写hashCode()和equals()？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%92%8Cequals-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">&#x3D;&#x3D;和equals()有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String%E7%B1%BB%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">String类有哪些方法？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String%E5%8F%AF%E4%BB%A5%E8%A2%AB%E7%BB%A7%E6%89%BF%E5%90%97%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">String可以被继承吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B4%E4%B8%80%E8%AF%B4String%E5%92%8CStringBuffer%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="nav-number">6.</span> <span class="nav-text">说一说String和StringBuffer有什么区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B4%E4%B8%80%E8%AF%B4StringBuffer%E5%92%8CStringBuilder%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="nav-number">7.</span> <span class="nav-text">说一说StringBuffer和StringBuilder有什么区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%97%B6%EF%BC%8Cnew%E5%92%8C%E2%80%9D%E2%80%9D%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8%E5%93%AA%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%9F"><span class="nav-number">8.</span> <span class="nav-text">使用字符串时，new和””推荐使用哪种方式？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B4%E4%B8%80%E8%AF%B4%E4%BD%A0%E5%AF%B9%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-number">9.</span> <span class="nav-text">说一说你对字符串拼接的理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9B%B8%E5%8A%A0%E7%9A%84%E5%BA%95%E5%B1%82%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%9F"><span class="nav-number">10.</span> <span class="nav-text">两个字符串相加的底层是如何实现的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-a-%E2%80%9Cabc%E2%80%9D-%EF%BC%8C%E8%AF%B4%E4%B8%80%E4%B8%8B%E8%BF%99%E4%B8%AA%E8%BF%87%E7%A8%8B%E4%BC%9A%E5%88%9B%E5%BB%BA%E4%BB%80%E4%B9%88%EF%BC%8C%E6%94%BE%E5%9C%A8%E5%93%AA%E9%87%8C%EF%BC%9F"><span class="nav-number">11.</span> <span class="nav-text">String a &#x3D; “abc”; ，说一下这个过程会创建什么，放在哪里？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#new-String-%E2%80%9Cabc%E2%80%9D-%E6%98%AF%E5%8E%BB%E4%BA%86%E5%93%AA%E9%87%8C%EF%BC%8C%E4%BB%85%E4%BB%85%E6%98%AF%E5%9C%A8%E5%A0%86%E9%87%8C%E9%9D%A2%E5%90%97%EF%BC%9F"><span class="nav-number">12.</span> <span class="nav-text">new String(“abc”) 是去了哪里，仅仅是在堆里面吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E5%92%8C%E6%8A%BD%E8%B1%A1%E7%B1%BB%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">13.</span> <span class="nav-text">接口和抽象类有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E4%B8%AD%E5%8F%AF%E4%BB%A5%E6%9C%89%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%90%97%EF%BC%9F"><span class="nav-number">14.</span> <span class="nav-text">接口中可以有构造函数吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E9%9D%A2%E5%90%91%E6%8E%A5%E5%8F%A3%E7%BC%96%E7%A8%8B%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-number">15.</span> <span class="nav-text">谈谈你对面向接口编程的理解</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.gitee.io/p/c4f03879.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java基础(三)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2018-03-06 09:27:06" itemprop="dateCreated datePublished" datetime="2018-03-06T09:27:06+08:00">2018-03-06</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><h3 id="说一说hashCode-和equals-的关系"><a href="#说一说hashCode-和equals-的关系" class="headerlink" title="说一说hashCode()和equals()的关系"></a>说一说hashCode()和equals()的关系</h3><p>hashCode()用于获取哈希码（散列码），eauqls()用于比较两个对象是否相等，它们应遵守如下规定：</p>
+<ul>
+<li>如果两个对象相等，则它们必须有相同的哈希码。</li>
+<li>如果两个对象有相同的哈希码，则它们未必相等。</li>
+</ul>
+<p><strong>扩展阅读</strong></p>
+<p>在Java中，Set接口代表无序的、元素不可重复的集合，HashSet则是Set接口的典型实现。</p>
+<p>当向HashSet中加入一个元素时，它需要判断集合中是否已经包含了这个元素，从而避免重复存储。由于这个判断十分的频繁，所以要讲求效率，绝不能采用遍历集合逐个元素进行比较的方式。实际上，HashSet是通过获取对象的哈希码，以及调用对象的equals()方法来解决这个判断问题的。</p>
+<p>HashSet首先会调用对象的hashCode()方法获取其哈希码，并通过哈希码确定该对象在集合中存放的位置。假设这个位置之前已经存了一个对象，则HashSet会调用equals()对两个对象进行比较。若相等则说明对象重复，此时不会保存新加的对象。若不等说明对象不重复，但是它们存储的位置发生了碰撞，此时HashSet会采用链式结构在同一位置保存多个对象，即将新加对象链接到原来对象的之后。之后，再有新添加对象也映射到这个位置时，就需要与这个位置中所有的对象进行equals()比较，若均不相等则将其链到最后一个对象之后。</p>
+<h3 id="为什么要重写hashCode-和equals-？"><a href="#为什么要重写hashCode-和equals-？" class="headerlink" title="为什么要重写hashCode()和equals()？"></a>为什么要重写hashCode()和equals()？</h3><p>Object类提供的equals()方法默认是用==来进行比较的，也就是说只有两个对象是同一个对象时，才能返回相等的结果。而实际的业务中，我们通常的需求是，若两个不同的对象它们的内容是相同的，就认为它们相等。鉴于这种情况，Object类中equals()方法的默认实现是没有实用价值的，所以通常都要重写。</p>
+<p>由于hashCode()与equals()具有联动关系（参考“说一说hashCode()和equals()的关系”一题），所以equals()方法重写时，通常也要将hashCode()进行重写，使得这两个方法始终满足相关的约定。</p>
+<h3 id="和equals-有什么区别？"><a href="#和equals-有什么区别？" class="headerlink" title="==和equals()有什么区别？"></a>==和equals()有什么区别？</h3><p>==运算符：</p>
+<ul>
+<li>作用于基本数据类型时，是比较两个数值是否相等；</li>
+<li>作用于引用数据类型时，是比较两个对象的内存地址是否相同，即判断它们是否为同一个对象；</li>
+</ul>
+<p>equals()方法：</p>
+<ul>
+<li>没有重写时，Object默认以 == 来实现，即比较两个对象的内存地址是否相同；</li>
+<li>进行重写后，一般会按照对象的内容来进行比较，若两个对象内容相同则认为对象相等，否则认为对象不等。</li>
+</ul>
+<h3 id="String类有哪些方法？"><a href="#String类有哪些方法？" class="headerlink" title="String类有哪些方法？"></a>String类有哪些方法？</h3><p>String类是Java最常用的API，它包含了大量处理字符串的方法，比较常用的有：</p>
+<ul>
+<li>char charAt(int index)：返回指定索引处的字符；</li>
+<li>String substring(int beginIndex, int endIndex)：从此字符串中截取出一部分子字符串；</li>
+<li>String[] split(String regex)：以指定的规则将此字符串分割成数组；</li>
+<li>String trim()：删除字符串前导和后置的空格；</li>
+<li>int indexOf(String str)：返回子串在此字符串首次出现的索引；</li>
+<li>int lastIndexOf(String str)：返回子串在此字符串最后出现的索引；</li>
+<li>boolean startsWith(String prefix)：判断此字符串是否以指定的前缀开头；</li>
+<li>boolean endsWith(String suffix)：判断此字符串是否以指定的后缀结尾；</li>
+<li>String toUpperCase()：将此字符串中所有的字符大写；</li>
+<li>String toLowerCase()：将此字符串中所有的字符小写；</li>
+<li>String replaceFirst(String regex, String replacement)：用指定字符串替换第一个匹配的子串；</li>
+<li>String replaceAll(String regex, String replacement)：用指定字符串替换所有的匹配的子串。</li>
+</ul>
+<p><strong>注意事项</strong></p>
+<p>String类的方法太多了，你没必要都记下来，更不需要一一列举。面试时能说出一些常用的方法，表现出对这个类足够的熟悉就可以了。另外，建议你挑几个方法仔细看看源码实现，面试时可以重点说这几个方法。</p>
+<h3 id="String可以被继承吗？"><a href="#String可以被继承吗？" class="headerlink" title="String可以被继承吗？"></a>String可以被继承吗？</h3><p>String类由final修饰，所以不能被继承。</p>
+<p><strong>扩展阅读</strong></p>
+<p>在Java中，String类被设计为不可变类，主要表现在它保存字符串的成员变量是final的。</p>
+<ul>
+<li>Java 9之前字符串采用char[]数组来保存字符，即 private final char[] value；</li>
+<li>Java 9做了改进，采用byte[]数组来保存字符，即 private final byte[] value；</li>
+</ul>
+<p>之所以要把String类设计为不可变类，主要是出于安全和性能的考虑，可归纳为如下4点。</p>
+<ul>
+<li>由于字符串无论在任何 Java 系统中都广泛使用，会用来存储敏感信息，如账号，密码，网络路径，文件处理等场景里，保证字符串 String 类的安全性就尤为重要了，如果字符串是可变的，容易被篡改，那我们就无法保证使用字符串进行操作时，它是安全的，很有可能出现 SQL 注入，访问危险文件等操作。</li>
+<li>在多线程中，只有不变的对象和值是线程安全的，可以在多个线程中共享数据。由于 String 天然的不可变，当一个线程”修改“了字符串的值，只会产生一个新的字符串对象，不会对其他线程的访问产生副作用，访问的都是同样的字符串数据，不需要任何同步操作。</li>
+<li>字符串作为基础的数据结构，大量地应用在一些集合容器之中，尤其是一些散列集合，在散列集合中，存放元素都要根据对象的 hashCode() 方法来确定元素的位置。由于字符串 hashcode 属性不会变更，保证了唯一性，使得类似 HashMap，HashSet 等容器才能实现相应的缓存功能。由于 String 的不可变，避免重复计算 hashcode，只要使用缓存的 hashcode 即可，这样一来大大提高了在散列集合中使用 String 对象的性能。</li>
+<li>当字符串不可变时，字符串常量池才有意义。字符串常量池的出现，可以减少创建相同字面量的字符串，让不同的引用指向池中同一个字符串，为运行时节约很多的堆内存。若字符串可变，字符串常量池失去意义，基于常量池的 String.intern() 方法也失效，每次创建新的字符串将在堆内开辟出新的空间，占据更多的内存。</li>
+</ul>
+<p>因为要保证String类的不可变，那么将这个类定义为final的就很容易理解了。如果没有final修饰，那么就会存在String的子类，这些子类可以重写String类的方法，强行改变字符串的值，这便违背了String类设计的初衷。</p>
+<h3 id="说一说String和StringBuffer有什么区别"><a href="#说一说String和StringBuffer有什么区别" class="headerlink" title="说一说String和StringBuffer有什么区别"></a>说一说String和StringBuffer有什么区别</h3><p>String类是不可变类，即一旦一个String对象被创建以后，包含在这个对象中的字符序列是不可改变的，直至这个对象被销毁。</p>
+<p>StringBuffer对象则代表一个字符序列可变的字符串，当一个StringBuffer被创建以后，通过StringBuffer提供的append()、insert()、reverse()、setCharAt()、setLength()等方法可以改变这个字符串对象的字符序列。一旦通过StringBuffer生成了最终想要的字符串，就可以调用它的toString()方法将其转换为一个String对象。</p>
+<h3 id="说一说StringBuffer和StringBuilder有什么区别"><a href="#说一说StringBuffer和StringBuilder有什么区别" class="headerlink" title="说一说StringBuffer和StringBuilder有什么区别"></a>说一说StringBuffer和StringBuilder有什么区别</h3><p>StringBuffer、StringBuilder都代表可变的字符串对象，它们有共同的父类 AbstractStringBuilder，并且两个类的构造方法和成员方法也基本相同。不同的是，StringBuffer是线程安全的，而StringBuilder是非线程安全的，所以StringBuilder性能略高。一般情况下，要创建一个内容可变的字符串，建议优先考虑StringBuilder类。</p>
+<h3 id="使用字符串时，new和””推荐使用哪种方式？"><a href="#使用字符串时，new和””推荐使用哪种方式？" class="headerlink" title="使用字符串时，new和””推荐使用哪种方式？"></a>使用字符串时，new和””推荐使用哪种方式？</h3><p>先看看 “hello” 和 new String(“hello”) 的区别：</p>
+<ul>
+<li>当Java程序直接使用 “hello” 的字符串直接量时，JVM将会使用常量池来管理这个字符串；</li>
+<li>当使用 new String(“hello”) 时，JVM会先使用常量池来管理 “hello” 直接量，再调用String类的构造器来创建一个新的String对象，新创建的String对象被保存在堆内存中。</li>
+</ul>
+<p>显然，采用new的方式会多创建一个对象出来，会占用更多的内存，所以一般建议使用直接量的方式创建字符串。</p>
+<h3 id="说一说你对字符串拼接的理解"><a href="#说一说你对字符串拼接的理解" class="headerlink" title="说一说你对字符串拼接的理解"></a>说一说你对字符串拼接的理解</h3><p>拼接字符串有很多种方式，其中最常用的有4种，下面列举了这4种方式各自适合的场景。</p>
+<ol>
+<li>+ 运算符：如果拼接的都是字符串直接量，则适合使用 + 运算符实现拼接；</li>
+<li>StringBuilder：如果拼接的字符串中包含变量，并不要求线程安全，则适合使用StringBuilder；</li>
+<li>StringBuffer：如果拼接的字符串中包含变量，并且要求线程安全，则适合使用StringBuffer；</li>
+<li>String类的concat方法：如果只是对两个字符串进行拼接，并且包含变量，则适合使用concat方法；</li>
+</ol>
+<p><strong>扩展阅读</strong></p>
+<p>采用 + 运算符拼接字符串时：</p>
+<ul>
+<li>如果拼接的都是字符串直接量，则在编译时编译器会将其直接优化为一个完整的字符串，和你直接写一个完整的字符串是一样的，所以效率非常的高。</li>
+<li>如果拼接的字符串中包含变量，则在编译时编译器采用StringBuilder对其进行优化，即自动创建StringBuilder实例并调用其append()方法，将这些字符串拼接在一起，效率也很高。但如果这个拼接操作是在循环中进行的，那么每次循环编译器都会创建一个StringBuilder实例，再去拼接字符串，相当于执行了 new StringBuilder().append(str)，所以此时效率很低。</li>
+</ul>
+<p>采用StringBuilder/StringBuffer拼接字符串时：</p>
+<ul>
+<li>StringBuilder/StringBuffer都有字符串缓冲区，缓冲区的容量在创建对象时确定，并且默认为16。当拼接的字符串超过缓冲区的容量时，会触发缓冲区的扩容机制，即缓冲区加倍。</li>
+<li>缓冲区频繁的扩容会降低拼接的性能，所以如果能提前预估最终字符串的长度，则建议在创建可变字符串对象时，放弃使用默认的容量，可以指定缓冲区的容量为预估的字符串的长度。</li>
+</ul>
+<p>采用String类的concat方法拼接字符串时：</p>
+<ul>
+<li>concat方法的拼接逻辑是，先创建一个足以容纳待拼接的两个字符串的字节数组，然后先后将两个字符串拼到这个数组里，最后将此数组转换为字符串。</li>
+<li>在拼接大量字符串的时候，concat方法的效率低于StringBuilder。但是只拼接2个字符串时，concat方法的效率要优于StringBuilder。并且这种拼接方式代码简洁，所以只拼2个字符串时建议优先选择concat方法。</li>
+</ul>
+<h3 id="两个字符串相加的底层是如何实现的？"><a href="#两个字符串相加的底层是如何实现的？" class="headerlink" title="两个字符串相加的底层是如何实现的？"></a>两个字符串相加的底层是如何实现的？</h3><p>如果拼接的都是字符串直接量，则在编译时编译器会将其直接优化为一个完整的字符串，和你直接写一个完整的字符串是一样的。</p>
+<p>如果拼接的字符串中包含变量，则在编译时编译器采用StringBuilder对其进行优化，即自动创建StringBuilder实例并调用其append()方法，将这些字符串拼接在一起。</p>
+<h3 id="String-a-“abc”-，说一下这个过程会创建什么，放在哪里？"><a href="#String-a-“abc”-，说一下这个过程会创建什么，放在哪里？" class="headerlink" title="String a = “abc”; ，说一下这个过程会创建什么，放在哪里？"></a>String a = “abc”; ，说一下这个过程会创建什么，放在哪里？</h3><p>JVM会使用常量池来管理字符串直接量。在执行这句话时，JVM会先检查常量池中是否已经存有”abc”，若没有则将”abc”存入常量池，否则就复用常量池中已有的”abc”，将其引用赋值给变量a。</p>
+<h3 id="new-String-“abc”-是去了哪里，仅仅是在堆里面吗？"><a href="#new-String-“abc”-是去了哪里，仅仅是在堆里面吗？" class="headerlink" title="new String(“abc”) 是去了哪里，仅仅是在堆里面吗？"></a>new String(“abc”) 是去了哪里，仅仅是在堆里面吗？</h3><p>在执行这句话时，JVM会先使用常量池来管理字符串直接量，即将”abc”存入常量池。然后再创建一个新的String对象，这个对象会被保存在堆内存中。并且，堆中对象的数据会指向常量池中的直接量。</p>
+<h3 id="接口和抽象类有什么区别？"><a href="#接口和抽象类有什么区别？" class="headerlink" title="接口和抽象类有什么区别？"></a>接口和抽象类有什么区别？</h3><p>从设计目的上来说，二者有如下的区别：</p>
+<p>接口体现的是一种规范。对于接口的实现者而言，接口规定了实现者必须向外提供哪些服务；对于接口的调用者而言，接口规定了调用者可以调用哪些服务，以及如何调用这些服务。当在一个程序中使用接口时，接口是多个模块间的耦合标准；当在多个应用程序之间使用接口时，接口是多个程序之间的通信标准。</p>
+<p>抽象类体现的是一种模板式设计。抽象类作为多个子类的抽象父类，可以被当成系统实现过程中的中间产品，这个中间产品已经实现了系统的部分功能，但这个产品依然不能当成最终产品，必须有更进一步的完善，这种完善可能有几种不同方式。</p>
+<p>从使用方式上来说，二者有如下的区别：</p>
+<ul>
+<li>接口里只能包含抽象方法、静态方法、默认方法和私有方法，不能为普通方法提供方法实现；抽象类则完全可以包含普通方法。</li>
+<li>接口里只能定义静态常量，不能定义普通成员变量；抽象类里则既可以定义普通成员变量，也可以定义静态常量。</li>
+<li>接口里不包含构造器；抽象类里可以包含构造器，抽象类里的构造器并不是用于创建对象，而是让其子类调用这些构造器来完成属于抽象类的初始化操作。</li>
+<li>接口里不能包含初始化块；但抽象类则完全可以包含初始化块。</li>
+<li>一个类最多只能有一个直接父类，包括抽象类；但一个类可以直接实现多个接口，通过实现多个接口可以弥补Java单继承的不足。</li>
+</ul>
+<p><strong>扩展阅读</strong></p>
+<p>接口和抽象类很像，它们都具有如下共同的特征：</p>
+<ul>
+<li>接口和抽象类都不能被实例化，它们都位于继承树的顶端，用于被其他类实现和继承。</li>
+<li>接口和抽象类都可以包含抽象方法，实现接口或继承抽象类的普通子类都必须实现这些抽象方法。</li>
+</ul>
+<h3 id="接口中可以有构造函数吗？"><a href="#接口中可以有构造函数吗？" class="headerlink" title="接口中可以有构造函数吗？"></a>接口中可以有构造函数吗？</h3><p>由于接口定义的是一种规范，因此接口里不能包含构造器和初始化块定义。接口里可以包含成员变量（只能是静态常量）、方法（只能是抽象实例方法、类方法、默认方法或私有方法）、内部类（包括内部接口、枚举）定义。</p>
+<h3 id="谈谈你对面向接口编程的理解"><a href="#谈谈你对面向接口编程的理解" class="headerlink" title="谈谈你对面向接口编程的理解"></a>谈谈你对面向接口编程的理解</h3><p>接口体现的是一种规范和实现分离的设计哲学，充分利用接口可以极好地降低程序各模块之间的耦合，从而提高系统的可扩展性和可维护性。基于这种原则，很多软件架构设计理论都倡导“面向接口”编程，而不是面向实现类编程，希望通过面向接口编程来降低程序的耦合。</p>
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.gitee.io/p/c4f03879.html" title="Java基础(三)">https://mrdjun.gitee.io/p/c4f03879.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/ba031852.html" rel="prev" title="Java基础(二)">
+                  <i class="fa fa-chevron-left"></i> Java基础(二)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/p/3eb3d776.html" rel="next" title="Java基础(四)">
+                  Java基础(四) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>
