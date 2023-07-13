@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.gitee.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="当Java程序运行时，没有任何指针指向的对象就是垃圾，JVM会对内存进行自动分配与回收，其中GC的主要作用就是清除这些垃圾，自动释放内存。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="JVM 垃圾回收">
+<meta property="og:url" content="https://mrdjun.gitee.io/p/d6094941.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="当Java程序运行时，没有任何指针指向的对象就是垃圾，JVM会对内存进行自动分配与回收，其中GC的主要作用就是清除这些垃圾，自动释放内存。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/d6094941/image-20230713004444156.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/d6094941/QQ20200903-100656@2x.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/d6094941/QQ20200903-102802@2x.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/d6094941/image-20230713010613556.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/d6094941/QQ20200915-095724@2x.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/d6094941/mVbDKEFY82.jpg">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/d6094941/AB4KDE85OF.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/d6094941/QQ20200922-143837@2x.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/d6094941/QQ20200922-142231@2x.png">
+<meta property="og:image" content="https://mrdjun.gitee.io/p/d6094941/QQ20200915-104531@2x.png">
+<meta property="article:published_time" content="2023-07-08T09:13:53.000Z">
+<meta property="article:modified_time" content="2023-07-13T17:03:37.298Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrdjun.gitee.io/p/d6094941/image-20230713004444156.png">
+
+
+<link rel="canonical" href="https://mrdjun.gitee.io/p/d6094941.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.gitee.io/p/d6094941.html","path":"p/d6094941.html","title":"JVM 垃圾回收"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      JVM 垃圾回收 | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%9A%84%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">垃圾回收的相关概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FGC-FULL-GC"><span class="nav-number">1.1.</span> <span class="nav-text">FGC(FULL GC)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#System-gc"><span class="nav-number">1.2.</span> <span class="nav-text">System.gc()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="nav-number">1.3.</span> <span class="nav-text">内存溢出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F"><span class="nav-number">1.4.</span> <span class="nav-text">内存泄漏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#STW-Stop-The-World"><span class="nav-number">1.5.</span> <span class="nav-text">STW(Stop The World)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B-Reference"><span class="nav-number">2.</span> <span class="nav-text">Java中的引用类型(Reference)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%BA%E5%BC%95%E7%94%A8%EF%BC%9A%E4%B8%8D%E5%9B%9E%E6%94%B6"><span class="nav-number">2.1.</span> <span class="nav-text">强引用：不回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E5%BC%95%E7%94%A8%EF%BC%9A%E5%86%85%E5%AD%98%E4%B8%8D%E8%B6%B3%E5%8D%B3%E5%9B%9E%E6%94%B6"><span class="nav-number">2.2.</span> <span class="nav-text">软引用：内存不足即回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%B1%E5%BC%95%E7%94%A8%EF%BC%9A%E5%8F%91%E7%8E%B0%E5%8D%B3%E5%9B%9E%E6%94%B6"><span class="nav-number">2.3.</span> <span class="nav-text">弱引用：发现即回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E5%BC%95%E7%94%A8%EF%BC%9A%E5%AF%B9%E8%B1%A1%E5%9B%9E%E6%94%B6%E8%B7%9F%E8%B8%AA"><span class="nav-number">2.4.</span> <span class="nav-text">虚引用：对象回收跟踪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%88%E7%BB%93%E5%99%A8%E5%BC%95%E7%94%A8"><span class="nav-number">2.5.</span> <span class="nav-text">终结器引用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">垃圾回收算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text">引用计数算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90%E7%AE%97%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">可达性分析算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95"><span class="nav-number">3.3.</span> <span class="nav-text">标记清除算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95"><span class="nav-number">3.4.</span> <span class="nav-text">复制算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95"><span class="nav-number">3.5.</span> <span class="nav-text">标记压缩算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83%E4%B8%8E%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8"><span class="nav-number">3.6.</span> <span class="nav-text">算法比较与实际应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E9%87%8F%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="nav-number">3.7.</span> <span class="nav-text">增量收集算法*</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">垃圾回收器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="nav-number">4.1.</span> <span class="nav-text">垃圾回收器性能指标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%8F%91%E5%B1%95%E5%8E%86%E5%8F%B2"><span class="nav-number">4.2.</span> <span class="nav-text">垃圾回收器发展历史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E7%BB%84%E5%90%88"><span class="nav-number">4.3.</span> <span class="nav-text">垃圾回收器组合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E6%9F%A5%E7%9C%8B"><span class="nav-number">4.4.</span> <span class="nav-text">默认垃圾回收器查看</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E4%BB%8B%E7%BB%8D"><span class="nav-number">4.5.</span> <span class="nav-text">经典垃圾回收器介绍</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.gitee.io/p/d6094941.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JVM 垃圾回收
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2023-07-08 17:13:53" itemprop="dateCreated datePublished" datetime="2023-07-08T17:13:53+08:00">2023-07-08</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><p>当Java程序运行时，没有任何指针指向的对象就是垃圾，JVM会对内存进行自动分配与回收，其中GC的主要作用就是清除这些垃圾，自动释放内存。</p>
+<h2 id="垃圾回收的相关概念"><a href="#垃圾回收的相关概念" class="headerlink" title="垃圾回收的相关概念"></a>垃圾回收的相关概念</h2><h3 id="FGC-FULL-GC"><a href="#FGC-FULL-GC" class="headerlink" title="FGC(FULL GC)"></a>FGC(FULL GC)</h3><p>收集整个堆，包括新生代，老年代，永久代或元数据空间。</p>
+<h3 id="System-gc"><a href="#System-gc" class="headerlink" title="System.gc()"></a>System.gc()</h3><p>调用<code>System.gc()</code>或者<code>Runtime.getRuntime().gc()</code>会显式触发fgc(Full GC)，但Java语言规范了，并不保证GC一定会执行。jvm有自己的gc策略，一般情况下，无需手动触发。</p>
+<h3 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h3><p>在程序运行过程中，给一个对象分配内存空间时，无法申请到足够的内存。对应的异常是OutOfMemoryError，简称OOM。</p>
+<h3 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h3><p>不再使用的对象，持续占有内存得不到及时的释放（GC无法回收这些不再使用的对象），从而造成内存空间的浪费成为内存泄漏。</p>
+<h3 id="STW-Stop-The-World"><a href="#STW-Stop-The-World" class="headerlink" title="STW(Stop The World)"></a>STW(Stop The World)</h3><p>GC事件发生过程中，会产生应用程序的停顿，整个应用程序都会被暂停。下面即将介绍的可达性分析算法会导致STW，因为：</p>
+<ol>
+<li>分析工作必须在一个能确保一致性的快照中进行；</li>
+<li>一致性指整个分析期间整个执行系统看起来像被冻结在某个时间点上；</li>
+<li>如果分析过程中对象引用关系还在不断变化，则分析结果的准确性无法保证。</li>
+</ol>
+<p>GC完成之后，STW便随之结束。</p>
+<h2 id="Java中的引用类型-Reference"><a href="#Java中的引用类型-Reference" class="headerlink" title="Java中的引用类型(Reference)"></a>Java中的引用类型(Reference)</h2><p>JDK1.2之后，Java对引用的概念进行了扩充，分为强引用（Strong Reference）、软引用（Soft Reference）、弱引用（Weak Reference）、虚引用（Phantom Reference）和终结器引用（Final Reference）：</p>
+<p><img src="/p/d6094941/image-20230713004444156.png" alt="image-20230713004444156"></p>
+<h3 id="强引用：不回收"><a href="#强引用：不回收" class="headerlink" title="强引用：不回收"></a>强引用：不回收</h3><p>最传统的引用定义，程序中普遍存在的引用赋值，类似<code>Object o = new Object()</code>这种引用关系。无论在任何情况下，只要强引用关系还在，垃圾回收器就永远不会回收掉被引用的对象。所以，<strong>强引用是造成Java内存泄露的主要原因之一</strong>。</p>
+<h3 id="软引用：内存不足即回收"><a href="#软引用：内存不足即回收" class="headerlink" title="软引用：内存不足即回收"></a>软引用：内存不足即回收</h3><p>软引用是用来描述一些还有用，但非必需的对象。只被软引用关联着的对象，在系统即将要发生内存溢出异常前，会被放入到Reference Queue，进行二次回收。简而言之就是内存不足时回收。</p>
+<p>软引用常用来实现内存敏感的缓存，比如内存充足时，就是用缓存，内存不足时就清除缓存，避免程序OOM。</p>
+<p>软引用例子：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">SoftReference&lt;Object&gt; softReference = <span class="keyword">new</span> <span class="title class_">SoftReference</span>&lt;&gt;(obj);</span><br><span class="line">obj = <span class="literal">null</span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="弱引用：发现即回收"><a href="#弱引用：发现即回收" class="headerlink" title="弱引用：发现即回收"></a>弱引用：发现即回收</h3><p>弱引用关联的对象只能生存到下一次垃圾收集发生为止。在系统GC时，只要发生弱引用，不管系统堆空间是否充足，都会回收。简而言之就是发现即回收。</p>
+<p>弱引用例子：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">WeakReference&lt;Object&gt; weakReference = <span class="keyword">new</span> <span class="title class_">WeakReference</span>&lt;&gt;(obj);</span><br><span class="line">obj = <span class="literal">null</span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="虚引用：对象回收跟踪"><a href="#虚引用：对象回收跟踪" class="headerlink" title="虚引用：对象回收跟踪"></a>虚引用：对象回收跟踪</h3><ul>
+<li><p>一个对象是否有虚引用的存在，完全不会决定对象的生命周期。如果一个对象仅存在虚引用，那么它和没有引用几乎是一样的，随时都可能被垃圾回收器回收。</p>
+</li>
+<li><p>虚引用不能单独使用，也无法通过虚引用来获取被引用的对象，当调用虚引用的get方法获取对象时，将返回null。</p>
+</li>
+<li><p>为一个对象设置虚引用关联的唯一目的在于跟踪垃圾回收过程。比如：能在这个对象被收集器回收时收到一个系统通知。</p>
+</li>
+</ul>
+<p>虚引用必须和引用队列一起使用：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">ReferenceQueue&lt;Object&gt; referenceQueue = <span class="keyword">new</span> <span class="title class_">ReferenceQueue</span>&lt;&gt;();</span><br><span class="line">PhantomReference&lt;Object&gt; phantomReference = <span class="keyword">new</span> <span class="title class_">PhantomReference</span>&lt;&gt;(obj, referenceQueue);</span><br><span class="line">obj = <span class="literal">null</span>;</span><br><span class="line">phantomReference.get(); <span class="comment">// null</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>虚引用对象被垃圾回收器回收后，会将这个虚引用加入引用队列，已通知应用程序对象回收情况。虚引用的唯一作用是用于跟踪垃圾回收过程（通过观察引用队列里是否有对应的虚引用）。</p>
+<h3 id="终结器引用"><a href="#终结器引用" class="headerlink" title="终结器引用"></a>终结器引用</h3><ul>
+<li>它用于实现对象的finalize（）方法，也可以称为终结器引用。</li>
+<li>无需手动编码，<strong>其内部配合引用队列使用。</strong></li>
+<li>在GC时， 终结器引用入队。由Finalizer线程通过终结器引用找到被引用对象并调用它的finalize（）方法，第二次GC时才能回收被引用对象。</li>
+</ul>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.lang.ref;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Final references, used to implement finalization</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FinalReference</span>&lt;T&gt; <span class="keyword">extends</span> <span class="title class_">Reference</span>&lt;T&gt; {</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">FinalReference</span><span class="params">(T referent, ReferenceQueue&lt;? <span class="built_in">super</span> T&gt; q)</span> {</span><br><span class="line">        <span class="built_in">super</span>(referent, q);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h2 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h2><p>垃圾回收分为<strong>标记阶段</strong>（对象存活判断）和<strong>清除阶段</strong>（垃圾对象回收）。</p>
+<ol>
+<li>标记阶段</li>
+</ol>
+<p>在堆中存放这几乎所有的Java对象实例，在GC执行垃圾回收之前，首先需要区分出内存中哪些是存活对象，哪些是已死亡对象。只有被标记为已经死亡的对象，GC才会进行回收。这个阶段的算法包括<strong>引用计数法</strong>和<strong>可达性分析算法</strong>；</p>
+<ol start="2">
+<li>清除阶段</li>
+</ol>
+<p>当成功分出存活和死亡对象之后，GC接下来的任务就是执行垃圾回收，释放内存。目前JVM中比较常见的三种垃圾算法分别是<strong>标记清除算法</strong>、<strong>复制算法</strong>、<strong>标记压缩算法</strong>。</p>
+<h3 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h3><p>引用计数算法（Reference Counting）算法对每个对象保存一个整型的引用计数器属性，用于记录对象被引用的情况。对于一个对象Object，只要有任何一个对象引用了它，则它的引用计数器加1，引用失效时，引用计数器就减1。所以当一个对象的引用计数器值为0时，说明该对象不再被引用，可进行回收。</p>
+<p>优点：实现简单，效率高，垃圾回收没有延迟；</p>
+<p>缺点：</p>
+<ol>
+<li>计数器的存在增加了存储空间的开销；</li>
+<li>每次赋值都需要更新计数器，增加了程序时间开销；</li>
+<li>致命问题：无法处理循环引用的情况（正因为如此，Java压根没有使用该算法）。</li>
+</ol>
+<p>举个循环引用的例子：</p>
+<p><img src="/p/d6094941/QQ20200903-100656@2x.png" alt="QQ20200903-100656@2x"></p>
+<p>上面例子中，Object1的引用计数器值为1，但实际可能这三个对象都已经不再被使用，它们的引用计数器的值都不为0，无法被回收，这就导致了内存泄露。</p>
+<h3 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h3><p>可达性分析算法同样具备实现简单执行高效等特点，并且还解决了引用计数算法无法处理的循环引用问题，可达性分析算法也叫根搜索算法、追踪性垃圾收集算法。</p>
+<h4 id="可达性分析算法的基本思路"><a href="#可达性分析算法的基本思路" class="headerlink" title="可达性分析算法的基本思路"></a>可达性分析算法的基本思路</h4><ol>
+<li>以根对象集合（GC Roots）为起点，从上至下搜索被根对象连接的目标对象是否可达，搜索走过的路径称为引用链；</li>
+<li>如果目标对象没有任何引用链相连，则是不可达的，意味着对象已经死亡属于垃圾；</li>
+<li>只有那些能够被根对象集合直接或者间接连接的对象才是存活对象。</li>
+</ol>
+<p>如下图所示：</p>
+<p><img src="/p/d6094941/QQ20200903-102802@2x.png" alt="QQ20200903-102802@2x"></p>
+<p>绿色对象为存活对象，它们直接或间接与GC Roots相连，橙色对象为可回收对象。</p>
+<p>那么哪些对象可以作为GC Roots呢？Java中，GC Roots包括以下几类元素：</p>
+<ol>
+<li>虚拟机栈中引用的对象；</li>
+<li>本地方法栈内引用的对象；</li>
+<li>方法区中类静态属性引用的对象，如Java类的引用类型静态变量；</li>
+<li>方法区中常量引用的对象；</li>
+<li>所有被synchronized持有的对象；</li>
+<li>Java虚拟机内部引用；</li>
+<li>反映Java虚拟机内部情况的JMXBean、JVMTI中注册的回调、本地代码缓存等。</li>
+</ol>
+<p>在使用可达性分析算法判断内存是否可回收时，分析工作必须在一个能保障一致性的快照中进行。这点也是导致GC进行时必须STW的一个重要原因。</p>
+<h4 id="对象复活演示"><a href="#对象复活演示" class="headerlink" title="对象复活演示"></a>对象复活演示</h4><p>对象的finalization机制：当垃圾回收器回收一个垃圾对象之前，总会先调用这个对象的<code>finalize()</code>方法，用于在对象回收时进行资源释放。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable { }</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>finalize()</code>方法为Object的一个非final方法，所以子类可以进行重写。</p>
+<p>因为<code>finalize()</code>方法的存在，Java中一个对象可能处于三种状态：</p>
+<ol>
+<li>可触及的，从GC Roots开始可以到达该对象；</li>
+<li>可复活的，对象的所有引用都被释放，但对象可能在<code>finalize()</code>方法中复活；</li>
+<li>不可触及的，对象的<code>finalize()</code>方法被调用，并且没有复活。不可触及的对象不可能被复活，<strong>因为<code>finalize()</code>方法只会被调用一次</strong>。</li>
+</ol>
+<p>判断一个对象是否可回收需要经历两次标记过程：</p>
+<ol>
+<li>如果对象到GC Roots没有引用链，那么进行第一次标记；</li>
+<li>对已经标记了的对象进行筛选，判断对象是否有必要执行<code>finalize()</code>方法：<ul>
+<li>如果对象没有重写<code>finalize()</code>方法，或者<code>finalize()</code>方法已经被调用过，则该对象是不可触及的；</li>
+<li>如果重写了，但还没执行过，则该对象会被放入F-Queue队列；</li>
+<li>GC对F-Queue队列中的对象进行遍历，如果对象在<code>finalize()</code>方法中与引用链上的任意一个对象建立了联系，那么该对象被复活，从F-Queue队列中移出。当该对象再次出现没有引用的情况时，<code>finalize()</code>方法不会再被调用，该对象直接被判定为不可触及。</li>
+</ul>
+</li>
+</ol>
+<p><code>finalize()</code>方法执行是由虚拟机自动创建的低优先级的Finalizer线程触发，举个例子：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException {</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">1200</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>启动main线程，让程序阻塞，然后用jvisualvm观察线程状态：</p>
+<p><img src="/p/d6094941/image-20230713010613556.png" alt="image-20230713010613556"></p>
+<p>举个对象通过<code>finalize()</code>方法复活的例子：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> {</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 静态类变量，属于GC Roots</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Main obj;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">finalize</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"finalize方法中不做任何事情"</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        <span class="keyword">try</span> {</span><br><span class="line">            obj = <span class="keyword">new</span> <span class="title class_">Main</span>();</span><br><span class="line">            <span class="comment">// 移除对象引用链</span></span><br><span class="line">            obj = <span class="literal">null</span>;</span><br><span class="line">            System.gc();</span><br><span class="line">            System.out.println(<span class="string">"第一次GC"</span>);</span><br><span class="line">            <span class="comment">// 因为Finalizer线程优先级很低，让程序暂停2秒，确保finalize()方法调用</span></span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">2</span>);</span><br><span class="line">            isAlive(obj);</span><br><span class="line"></span><br><span class="line">            obj = <span class="literal">null</span>;</span><br><span class="line">            System.gc();</span><br><span class="line">            System.out.println(<span class="string">"第二次GC"</span>);</span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">2</span>);</span><br><span class="line">            isAlive(obj);</span><br><span class="line">        } <span class="keyword">catch</span> (Exception e) {</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">isAlive</span><span class="params">(Object obj)</span> {</span><br><span class="line">        <span class="keyword">if</span> (obj == <span class="literal">null</span>) {</span><br><span class="line">            System.out.println(<span class="string">"对象已死"</span>);</span><br><span class="line">        } <span class="keyword">else</span> {</span><br><span class="line">            System.out.println(<span class="string">"对象还活着"</span>);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>上面代码中，Main类重写了finalize()方法，但方法内没有可以让对象复活的逻辑。程序输出如下：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">finalize方法中不做任何事情</span><br><span class="line">第一次GC</span><br><span class="line">对象已死</span><br><span class="line">第二次GC</span><br><span class="line">对象已死</span><br></pre></td></tr></tbody></table></figure>
+
+<p>可以看到，将obj置为null后，第一次GC，该对象就已经被回收。</p>
+<p>下面往<code>finalize()</code>方法中添加逻辑，让对象复活：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">finalize</span><span class="params">()</span> {</span><br><span class="line">    System.out.println(<span class="string">"复活obj"</span>);</span><br><span class="line">    <span class="comment">// 复活对象</span></span><br><span class="line">    obj = <span class="built_in">this</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>程序输出如下：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">第一次GC</span><br><span class="line">复活obj</span><br><span class="line">对象还活着</span><br><span class="line">第二次GC</span><br><span class="line">对象已死</span><br></pre></td></tr></tbody></table></figure>
+
+<p>上面例子也证明了<code>finalize()</code>方法最多只被执行一次。</p>
+<p>严禁主动调用某个对象的finalize()方法，应该交给垃圾回收机制调用，因为：</p>
+<ol>
+<li>在finalize()方法里可能导致对象复活； </li>
+<li>finalize()方法执行时间没有保障，如果对象不被回收，finalize()方法没有执行机会；</li>
+<li>一个糟糕的finalize()方法会严重影响GC性能。</li>
+</ol>
+<h3 id="标记清除算法"><a href="#标记清除算法" class="headerlink" title="标记清除算法"></a>标记清除算法</h3><p>标记清除算法执行过程：当内存快被耗尽时，会停止整个程序（STW），进行两项工作：</p>
+<ul>
+<li>标记：回收器从GC Roots开始遍历，标记所有可达对象（在对象头中进行标记）；</li>
+<li>清除：回收器对堆内存进行从头到尾线性遍历，如果对象头中没有标记，则说明是不可达对象，进行回收（回收细节：JVM会维护一个空闲地址列表，把可回收对象的地址存放进来，这个时候对象并没有真正被删掉，下次新对象进行分配时候直接覆盖可回收对象）。</li>
+</ul>
+<p>缺点：</p>
+<ol>
+<li>效率不是很高，因为要进行两次遍历工作；</li>
+<li>STW会影响用户体验；</li>
+<li>这种方式整理出来的内存不是连续的，碎片化。</li>
+</ol>
+<h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p>为了解决标记清除算法的缺点，复制算法提出了新思路。</p>
+<p>复制算法的基本思想：将内存一分为二，每次只使用其中一块。GC时，将存活的对象复制到另一块未使用的内存中，然后当前内存块的对象全部清除，两个内存块交互角色，如次循环反复（堆内存中的幸存者0区和1区就是这么搞的）。</p>
+<p>优点：</p>
+<ol>
+<li>不需要进行两次遍历，效率更高；</li>
+<li>复制算法可以保证空间连续性，没有碎片问题。</li>
+</ol>
+<p>当然也有缺点：</p>
+<ol>
+<li>内存只有一半是可用的，浪费了内存空间；</li>
+<li>对象复制后，地址肯定变了，那么栈中对象的引用地址也要改变，这就增加了时间开销；</li>
+<li>极端情况下，假如当前内存块中没有垃圾，那么需要将所有存活对象都复制到另一块内存，费力不讨好。</li>
+</ol>
+<h3 id="标记压缩算法"><a href="#标记压缩算法" class="headerlink" title="标记压缩算法"></a>标记压缩算法</h3><p>标记压缩算法是标记清除算法的改进版本，基本思路是：</p>
+<ul>
+<li>标记：和标记清除算法的标记阶段一致；</li>
+<li>压缩：将存活的对象压缩（移动）到内存的一端，按顺序排放，之后清理边界外的所有空间。</li>
+</ul>
+<p>使用标记压缩算法后，我们就没必要维护一个内存空闲列表了，只需要记录内存使用的末端地址即可，有新对象需要分配内存时，只需要从这个末端地址开始继续往后排，然后更新这个末端地址即可（这种分配方式也称为指针碰撞）。</p>
+<p>优点：</p>
+<ol>
+<li>没有碎片化问题；</li>
+<li>不会像复制算法那样，浪费一半的内存空间。</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>从效率上来看，因为多了压缩对象过程，所以不及标记清除算法；</li>
+<li>涉及到对象的移动，所以栈中的引用地址也要变，也会增加时间开销；</li>
+<li>压缩过程中，也需要STW。</li>
+</ol>
+<h3 id="算法比较与实际应用"><a href="#算法比较与实际应用" class="headerlink" title="算法比较与实际应用"></a>算法比较与实际应用</h3><p>可以看到，没有完美的垃圾回收算法，大家都有优缺点：</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">标记清除</th>
+<th align="left">标记压缩</th>
+<th align="left">复制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">速度</td>
+<td align="left">中等</td>
+<td align="left">最慢</td>
+<td align="left">最快</td>
+</tr>
+<tr>
+<td align="left">内存开销</td>
+<td align="left">少，但有碎片</td>
+<td align="left">少，没有碎片</td>
+<td align="left">多，没有碎片</td>
+</tr>
+<tr>
+<td align="left">移动对象</td>
+<td align="left">否</td>
+<td align="left">是</td>
+<td align="left">是</td>
+</tr>
+</tbody></table>
+<p>没有最完美的算法，只有最合适的算法。我们可以在堆内存中针对不同区域的特性使用不同的回收算法，取长补短（分代收集）：</p>
+<ul>
+<li>新生代：该区域的对象大多朝生夕死，存活率低，回收频繁，所以复制算法非常适合用于该区域；</li>
+<li>老年代：老年代内存区域较大，对象生命周期长，回收不那么频繁，所以这个区域一般使用标记清除或者标记压缩算法。</li>
+</ul>
+<h3 id="增量收集算法"><a href="#增量收集算法" class="headerlink" title="增量收集算法*"></a>增量收集算法*</h3><p>上述的三种垃圾回收算法都要进行STW，如果一次性将所有的垃圾进行处理，会造成系统长时间的停顿，为了改善这个问题，增量收集算法应运而生。</p>
+<p>增量收集算法让垃圾收集线程和应用程序交替执行，每次垃圾收集线程只收集一小片区域的内存，接着切换到应用程序线程，以此反复，直到垃圾收集完成。但该算法的基础还是传统的标记清除算法和复制算法。</p>
+<p>优点：没有长时间的STW；</p>
+<p>缺点：线程切换会使得垃圾回收的总体成本上升，造成系统吞吐量下降。</p>
+<h2 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h2><h3 id="垃圾回收器性能指标"><a href="#垃圾回收器性能指标" class="headerlink" title="垃圾回收器性能指标"></a>垃圾回收器性能指标</h3><ul>
+<li>吞吐量：程序运行时间占总运行时间（总运行时间=程序运行时间+垃圾回收时间）的比例，垃圾回收时间越少，吞吐量越高；</li>
+<li>暂停时间：STW的时间；</li>
+<li>内存占用：Java堆所占的大小。</li>
+</ul>
+<p>以上三点构成不可能三角，即一款垃圾回收器不可能同时满足三点。随着硬件水平的提升，内存占用不再是我们关注的重点，评估垃圾回收器性能时，重点关注吞吐量和暂停时间。吞吐量和暂停时间是相互矛盾的，目前我们追求的效果是：在最大吞吐量优先的情况下，减小暂停时间。</p>
+<h3 id="垃圾回收器发展历史"><a href="#垃圾回收器发展历史" class="headerlink" title="垃圾回收器发展历史"></a>垃圾回收器发展历史</h3><ul>
+<li>1999年JDK 1.3.1 发布第一款串行方式的Serial GC，ParNew垃圾回收器是Serial回收器的多线程版本；</li>
+<li>2002年2月26，Parallel GC和Concurrent Mark Sweep GC（CMS）跟随JDK 1.4.2一起发布；</li>
+<li>Parallel GC在JDK 1.6后称为HotSpot默认GC；</li>
+<li>2012年，在JDK 1.7u4版本中，G1可用；</li>
+<li>2017年，JDK 9中，G1成为默认垃圾回收器，CMS被标记为过时；</li>
+<li>2018年3月，JDK 10中提升G1并行性；</li>
+<li>2018年9月，JDK 11引入了Epsilon垃圾回收器，同时引入ZGC（实验版本）；</li>
+<li>2019年3月，JDK 12发布，增强G1，并引入Shenandoah GC（实验版本）；</li>
+<li>2019年9月，JDK 13发布，增强ZGC；</li>
+<li>2020年3月，JDK 14发布，删除CMS，拓展ZGC在MAC和Windows上的应用。</li>
+</ul>
+<h3 id="垃圾回收器组合"><a href="#垃圾回收器组合" class="headerlink" title="垃圾回收器组合"></a>垃圾回收器组合</h3><p>7款经典垃圾回收器间的组合关系：</p>
+<p><img src="/p/d6094941/QQ20200915-095724@2x.png" alt="QQ20200915-095724@2x"></p>
+<p>说明：</p>
+<ol>
+<li>两个回收器间有连线，说明它们可以搭配使用；</li>
+<li>Serial Old作为CMS出现“Concurrent Mode Failure”失败的后备预案；</li>
+<li>G1可用于新生代和老年代；</li>
+<li>红色虚线连线：JDK 8将这两组组合声明为废弃，并在JDK 9中完全移除；</li>
+<li>绿色虚线连线：JDK 14中，弃用了该组合；</li>
+<li>绿色虚线边框：JDK 14中，删除了CMS。</li>
+</ol>
+<h3 id="默认垃圾回收器查看"><a href="#默认垃圾回收器查看" class="headerlink" title="默认垃圾回收器查看"></a>默认垃圾回收器查看</h3><p>编写一段简单的java程序：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        System.out.println(<span class="string">"hello"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>添加<code>-XX:+PrintCommandLineFlags</code>JVM参数配置，在JDK 8环境下程序输出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-XX:InitialHeapSize=536870912 -XX:MaxHeapSize=8589934592 -XX:+PrintCommandLineFlags -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseParallelGC </span><br><span class="line">hello</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>-XX:+UseParallelGC</code>说明JDK 8默认的垃圾回收器为Parallel。</p>
+<p>在JDK 9环境下输出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-XX:G1ConcRefinementThreads=10 -XX:InitialHeapSize=536870912 -XX:MaxHeapSize=8589934592 -XX:+PrintCommandLineFlags -XX:ReservedCodeCacheSize=251658240 -XX:+SegmentedCodeCache -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseG1GC </span><br><span class="line">hello</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>-XX:+UseG1GC</code>说明JDK 9默认的垃圾回收器为G1。</p>
+<h3 id="经典垃圾回收器介绍"><a href="#经典垃圾回收器介绍" class="headerlink" title="经典垃圾回收器介绍"></a>经典垃圾回收器介绍</h3><h4 id="Serial、Serial-Old回收器"><a href="#Serial、Serial-Old回收器" class="headerlink" title="Serial、Serial Old回收器"></a>Serial、Serial Old回收器</h4><p>Serial垃圾回收器是单线程<strong>串行回收器</strong>，作为HotSpot中Client模式下的默认新生代垃圾收集器。采用<strong>复制算法</strong>、<strong>串行回收</strong>和<strong>STW机制</strong>的方式执行内存回收。</p>
+<p>Serial Old垃圾回收器为Serial提供的老年代垃圾回收器，采用<strong>标记压缩算法</strong>、<strong>串行回收</strong>和<strong>STW机制</strong>进行内存回收：</p>
+<ul>
+<li><p>Serial Old是运行在Client模式下默认的老年代垃圾回收器；</p>
+</li>
+<li><p>Serial Old在Server模式下主要有两个用途：</p>
+<p>a. 与新生代的Parallel Scavenge配合使用；</p>
+<p>b. 作为老年代CMS回收器的后备垃圾收集方案。</p>
+</li>
+</ul>
+<p>Serial适用于运行在Client模式下的虚拟机或者内存不大（几十MB到一两百MB）的环境下，因为是串行的，有较长时间的STW，所以并不适用于要求快响应、交互较强的应用。</p>
+<p>可以通过<code>XX:+UseSerialGC</code>参数启用Serial回收器，表示新生代使用Serial，老年代使用Serial Old。</p>
+<h4 id="ParNew回收器"><a href="#ParNew回收器" class="headerlink" title="ParNew回收器"></a>ParNew回收器</h4><p>ParNew是Parallel New两个词的简写，是Serial的多线程版本垃圾回收器。ParNew是很多JVM运行在Server模式下新生代的默认垃圾回收器，采用<strong>复制算法</strong>、<strong>并行回收</strong>和<strong>STW机制</strong>进行内存回收。</p>
+<p>可以通过<code>XX:+UseParNewGC</code>参数启用ParNew回收器，表示新生代使用ParNew，老年代不受影响。</p>
+<p>Serial、ParNew搭配Serial Old回收器示意图：</p>
+<p><img src="/p/d6094941/mVbDKEFY82.jpg" alt="mVbDKEFY82"></p>
+<h4 id="Parallel、Parallel-Old回收器"><a href="#Parallel、Parallel-Old回收器" class="headerlink" title="Parallel、Parallel Old回收器"></a>Parallel、Parallel Old回收器</h4><p>Parallel Scavenge回收器也是作用于新生代，同样采用复制算法，并行回收和STW机制。</p>
+<p>Parallel Scavenge和ParNew对比：</p>
+<ul>
+<li>Parallel Scavenge为吞吐量优先的垃圾回收器；</li>
+<li>Parallel Scavenge具有自适应调节策略。</li>
+</ul>
+<p>JDK 1.6提供了用于老年代的并行垃圾回收器 —— Parallel Old回收器，用于替代Serial Old回收器。Parallel采用标记压缩、并行回收和STW机制。</p>
+<p>可以通过<code>-XX:+UseParallelGC</code>指定新生代使用Parallel Scavenge回收器；<code>-XX:+UseParallelOldGC</code>指定老年代使用Parallel Old回收器，它们是成对存在的，开启一个另一个也会开启。</p>
+<p>此外还可以通过<code>-XX:ParallelGCThreads=</code>设置并行回收器的线程数：</p>
+<ul>
+<li>默认情况下，当CPU数量小于8个时，<code>-XX:ParallelGCThreads=</code>的值等于CPU数量；</li>
+<li>当CPU数量大于8个，<code>-XX:ParallelGCThreads=</code>的值等于<code>3+5*CPU_COUNT/8</code>。</li>
+</ul>
+<p><code>-XX:+UseAdaptiveSizePolicy</code>开启Parallel Scavenge的自适应调节策略：</p>
+<p>该模式下，年轻代大小、伊甸园区和幸存者区的比例、晋升老年代的对象年龄阈值都会自动调整，以达到在堆大小、吞吐量和停顿时间之间的平衡点。</p>
+<h4 id="CMS回收器"><a href="#CMS回收器" class="headerlink" title="CMS回收器"></a>CMS回收器</h4><p>JDK 1.5 HotSpot推出了一款真正意义上的并发回收器 —— CMS（Concurrent-Mark-Sweep），第一次实现了让垃圾回收线程和用户线程同时工作。CMS的关注点在于尽可能缩短垃圾收集时用户线程停顿的时间。</p>
+<p>CMS作为一款老年代的垃圾回收器，不能和新生代垃圾回收器Parallel Scavenge搭配使用，只能和ParNew或者Serial搭配使用。</p>
+<p>CMS回收器示意图：</p>
+<p><img src="/p/d6094941/AB4KDE85OF.png" alt="AB4KDE85OF"></p>
+<p>主要分为以下几个步骤：</p>
+<ol>
+<li>初始标记（Initial-Mark）：所有用户线程暂停（STW），这个阶段仅仅标记出GC Roots能直接关联到的对象，所以速度非常快，STW时间很短；</li>
+<li>并发标记（Concurrent-Mark）：该阶段从GC Roots直接关联对象开始遍历整个对象链，虽然这个过程耗时较长，但并不需要暂停用户线程，并发执行，没有STW；</li>
+<li>重新标记（Remark）：由于上一步用户线程也在执行，所以这一步用于修正因用户线程继续运行而导致标记发生变动的那一部分对象的标记记录。这个阶段会比初始标记阶段耗时长一点，但远比并发标记阶段低；</li>
+<li>并发清除（Concurrent-Sweep）：该阶段清理删除垃圾，回收空间。由于没有移动对象，所以该阶段也不需要STW。</li>
+</ol>
+<p>CMS的优缺点都很明显：</p>
+<p>优点：</p>
+<ul>
+<li>并发收集；</li>
+<li>低延迟。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>会产生碎片。因为清理阶段用户线线程还在执行，所以只能采用不移动对象的标记-清除算法，而该算法会产生碎片问题；</li>
+<li>对CPU资源敏感。CPU资源除了用于用户线程外，还需分配一部分用于处理垃圾回收，降低了吞吐量；</li>
+<li>无法处理浮动垃圾。并发标记阶段，用户线程并未停止，该阶段也会产生垃圾， CMS无法对这些垃圾进行标记，只能留到下次GC时处理。</li>
+</ul>
+<p>此外，CMS在回收过程中，因为用户线程并没有中断，所以还需确保用户线程有足够的内存可用。换句话说，CMS回收器不能等老年代即将被填满时才去回收，而应当堆内存使用率到达一定阈值时，便开始进行回收。如果CMS运行期间预留内存不足，就会出现一次“Concurrent Mode Failure”失败，虚拟机会启动后备方案，临时启用Serial Old回收器来完成老年代的垃圾回收。</p>
+<p>CMS回收器可设置参数：</p>
+<ul>
+<li><code>-XX:+UseConcMarkSweepGC</code>，开启CMS GC，开启后，<code>-XX:+UseParNewGC</code>会自动打开；</li>
+<li><code>-XX:CMSInitiatingOccupanyFraction=</code>，设置堆内存使用率阈值，一旦达到这个阈值，CMS开始进行回收（JDK5及之前，默认值为68，JDK6及以上版本默认值为92%）；</li>
+<li><code>-XX:+UseCMSCompactAtFullCollection</code>，指定在CMS回收完老年代后，对内存空间进行压缩处理，以避免碎片化问题；</li>
+<li><code>-XX:CMSFullGCsBeforeCompaction</code>，设置执行多少次CMS GC后，对内存空间进行压缩整理；</li>
+<li><code>-XX:ParallelCMSThreads=</code>，设置CMS的线程数。默认启动的线程数为<code>(ParallelGCThreads+3)/4</code>。我们知道，当CPU个数小于8时，ParallelGCThreads的默认值为CPU个数，所以对于一个8核CPU，默认启动的CMS线程数为3，换句话说只有62.5%的CPU资源用于处理用户线程。所以CMS不适合吞吐量要求高的场景。</li>
+</ul>
+<h4 id="G1回收器"><a href="#G1回收器" class="headerlink" title="G1回收器"></a>G1回收器</h4><p>G1（Garbage First）回收器把堆内存分割成很多不相关的区域（region，物理上不连续），使用不同区域来表示伊甸园区，幸存者区和老年代。</p>
+<p>G1会避免对整个Java堆进行垃圾收集，它会跟踪各个region里垃圾回收的价值大小（回收所获得的空间大小及所需时间的经验值），在后台维护一个优先列表，每次根据允许收集时间，优先回收价值最大的region。</p>
+<p><strong>region的说明</strong></p>
+<p><img src="/p/d6094941/QQ20200922-143837@2x.png" alt="QQ20200922-143837@2x"></p>
+<ul>
+<li>E表示伊甸园区，S表示幸存者区、O表示老年代，空白表示未使用的内存区域；</li>
+<li>一个region在同一时间内只能属于一种角色；</li>
+<li>G1新增了一个全新的内存区域——Humongous，主要用于存放大对象。</li>
+</ul>
+<p>G1回收垃圾过程如下图所示：</p>
+<p><img src="/p/d6094941/QQ20200922-142231@2x.png" alt="QQ20200922-142231@2x"></p>
+<ol>
+<li><strong>初始标记</strong>：仅仅是标记GC Roots能直接关联的对象，需要STW，但这个过程非常快；</li>
+<li><strong>并发标记</strong>：从GC Roots出发，对堆中对象进行可达性分析，找出存活对象，该阶段耗时较长，但是可与用户线程并发执行；</li>
+<li><strong>最终标记</strong>：主要修正在并发标记阶段因为用户线程继续运行而导致标记记录产生变动的那一部分对象的标记记录，需要STW；</li>
+<li><strong>筛选回收</strong>：将各个region分区的回收价值和成本进行排序，根据用户所期望的停顿时间制定回收计划。这阶段停顿用户线程，STW。</li>
+</ol>
+<p>G1回收器的优缺点：</p>
+<p>优点：</p>
+<ul>
+<li>并行与并发；</li>
+<li>分代收集，可以采用不同的算法处理不同的对象；</li>
+<li>空间整合，标记压缩算法意味着不会产生内存碎片；</li>
+<li>可预测的停顿时间，能让使用者明确指定一个长度为M毫秒时间片段内，消耗在垃圾回收的时间不超过N毫秒（根据优先列表优先回收价值最大的region）。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>在小内存环境下和CMS相比没有优势，G1适合大的堆内存；</li>
+<li>在用户程序运行过程中，G1无论是为了垃圾回收产生的内存占用，还是程序运行时的额外执行负载都要比CMS高。</li>
+</ul>
+<p>G1回收器相关参数设置：</p>
+<ul>
+<li><code>-XX:+UseG1GC</code>，开启G1 GC；</li>
+<li><code>-XX:G1HeapRegionSize=</code>，设置region的大小。值为2的幂，范围是1MB到32MB之间，目标是根据最小堆内存大小划分出约2048个区域。所以如果这个值设置为2MB，那么堆最小内存大约为4GB；</li>
+<li><code>-XX:MaxGCPauseMillis=</code>，设置期望达到的最大GC停顿时间指标（JVM会尽力实现，但不保证达到），默认值为200ms；</li>
+<li><code>-XX:ParallelGCThread=</code>，设置STW时GC线程数值，最多设置为8；</li>
+<li><code>-XX:ConcGCThreads=</code>，设置并发标记的线程数，推荐值为ParallelGCThread的1/4左右；</li>
+<li><code>-XX:InitiatingHeapOccupancyPercent=</code>，设置触发并发GC周期的Java堆占用率阈值，超过这个值就触发GC，默认值为45。</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>上面这几款经典的垃圾回收器各有特点，具体使用的时候需要根据具体的情况选用不同的垃圾回收器：</p>
+<p><img src="/p/d6094941/QQ20200915-104531@2x.png" alt="QQ20200915-104531@2x"></p>
+<table>
+<thead>
+<tr>
+<th align="left">垃圾回收器</th>
+<th align="left">分类</th>
+<th align="left">作用位置</th>
+<th align="left">使用算法</th>
+<th align="left">特点</th>
+<th align="left">适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Serial</td>
+<td align="left">串行</td>
+<td align="left">新生代</td>
+<td align="left">复制算法</td>
+<td align="left">响应速度优先</td>
+<td align="left">适用于单CPU环境下的Client模式</td>
+</tr>
+<tr>
+<td align="left">ParNew</td>
+<td align="left">并行</td>
+<td align="left">新生代</td>
+<td align="left">复制算法</td>
+<td align="left">响应速度优先</td>
+<td align="left">多CPU环境Server模式下与CMS配合使用</td>
+</tr>
+<tr>
+<td align="left">Parallel</td>
+<td align="left">并行</td>
+<td align="left">新生代</td>
+<td align="left">复制算法</td>
+<td align="left">吞吐量优先</td>
+<td align="left">适用于后台运算而不需要太多交互的场景</td>
+</tr>
+<tr>
+<td align="left">Serial Old</td>
+<td align="left">串行</td>
+<td align="left">老年代</td>
+<td align="left">标记-压缩算法</td>
+<td align="left">响应速度优先</td>
+<td align="left">单CPU环境下的Client模式</td>
+</tr>
+<tr>
+<td align="left">Parallel Old</td>
+<td align="left">并行</td>
+<td align="left">老年代</td>
+<td align="left">标记-压缩算法</td>
+<td align="left">吞吐量优先</td>
+<td align="left">适用于后台运算而不需要太多交互的场景</td>
+</tr>
+<tr>
+<td align="left">CMS</td>
+<td align="left">并发</td>
+<td align="left">老年代</td>
+<td align="left">标记-压缩算法</td>
+<td align="left">响应速度优先</td>
+<td align="left">适用于互联网或B/S业务</td>
+</tr>
+<tr>
+<td align="left">G1</td>
+<td align="left">并行与并发</td>
+<td align="left">新生代、老年代</td>
+<td align="left">复制算法 标记-压缩算法</td>
+<td align="left">响应速度优先</td>
+<td align="left">面向服务端应用</td>
+</tr>
+</tbody></table>
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.gitee.io/p/d6094941.html" title="JVM 垃圾回收">https://mrdjun.gitee.io/p/d6094941.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/JVM/" rel="tag"># JVM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/4bb4364.html" rel="prev" title="深入学习Spring组件注册">
+                  <i class="fa fa-chevron-left"></i> 深入学习Spring组件注册
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>

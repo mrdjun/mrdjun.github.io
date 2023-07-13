@@ -39,6 +39,47 @@
       </tags>
   </entry>
   <entry>
+    <title>适配器模式</title>
+    <url>/p/f5c535ea.html</url>
+    <content><![CDATA[<html><head></head><body><h2 id="案例一"><a href="#案例一" class="headerlink" title="案例一"></a>案例一</h2><p>插座的电压是 220V，手机充电器会把 220V 转换成 5V电压给手机充电，此时这个充电器就是一个适配器。</p>
+<p>AC220：插座输出 220V 电压 </p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AC220</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">outputAC220V</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"[插座电源] 输出交流电220V"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">220</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>DC5（接口）：手机充电器输出5V电压</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">DC5</span> {</span><br><span class="line">    <span class="type">int</span> <span class="title function_">output5V</span><span class="params">()</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>PowerAdapter 电源适配器</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PowerAdapter</span> <span class="keyword">implements</span> <span class="title class_">DC5</span> {</span><br><span class="line">    <span class="keyword">private</span> AC220 ac220;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PowerAdapter</span><span class="params">(AC220 ac220)</span> {</span><br><span class="line">        <span class="built_in">this</span>.ac220 = ac220;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">output5V</span><span class="params">()</span> {</span><br><span class="line">        <span class="type">int</span> <span class="variable">adapterInput</span> <span class="operator">=</span> ac220.outputAC220V();</span><br><span class="line">        <span class="type">int</span> <span class="variable">adapterOutput</span> <span class="operator">=</span> adapterInput / <span class="number">44</span>;</span><br><span class="line">        System.out.println(<span class="string">"[手机充电器]使用电源适配器转换为"</span> + adapterOutput + <span class="string">"V电压"</span>);</span><br><span class="line">        <span class="keyword">return</span> adapterOutput;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Test 测试类</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PowerAdapterTest</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">PowerAdapter</span>(<span class="keyword">new</span> <span class="title class_">AC220</span>()).output5V();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="案例二"><a href="#案例二" class="headerlink" title="案例二"></a>案例二</h2><p>外国人听不懂中文，我们只会讲中文，那么需要一个翻译，把中文翻译成英文</p>
+<p>Chinese 中国人</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Chinese</span> {</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">speak</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"[中国人]你好"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"你好"</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Translator（接口）：翻译中文</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Translator</span> {</span><br><span class="line">    String <span class="title function_">translate</span><span class="params">()</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>TranslateAdapter：翻译适配</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TranslateAdapter</span> <span class="keyword">implements</span> <span class="title class_">Translator</span> {</span><br><span class="line">    <span class="keyword">private</span> Chinese chinese;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">TranslateAdapter</span><span class="params">(Chinese chinese)</span> {</span><br><span class="line">        <span class="built_in">this</span>.chinese = chinese;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">translate</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"[翻译适配器]将"</span> + chinese.speak() + <span class="string">"翻译成英文：Hello"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Hello"</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Test 测试类</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AdapterTest</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">TranslateAdapter</span>(<span class="keyword">new</span> <span class="title class_">Chinese</span>()).translate();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>优点</p>
+<p>（1）提高类的透明性和复用性，现有的类会被服用但不需要改变；</p>
+<p>（2）目标类和适配器类解耦，可以提高程序的扩展性；</p>
+<p>（3）大多数场景符合开闭原则；</p>
+<p>缺点</p>
+<p>（1）在适配器代码编写时，需要全面考虑，可能会增加系统的复杂度；</p>
+<p>（2）增加了代码的阅读难度，降低了代码的可读性，过多使用适配器会使系统的代码凌乱；</p>
+</body></html>]]></content>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>装饰者模式</title>
     <url>/p/a708a60d.html</url>
     <content><![CDATA[<html><head></head><body><p>指在不改变原有对象的基础上，将功能附加到对象上，比继承更加灵活。</p>
@@ -91,47 +132,6 @@
 <p>（1）主体：陶瓷、衣服</p>
 <p>（2）包装：塑料袋、泡沫、纸板</p>
 <p>首先分析主体和包装的公共行为，比如都具备名称和价格，那么一个行为抽象接口类；主体继承这个行为抽象类，在抽象出一个主体抽象类；主体的基类和所有的包装全部都单独继承这个主体抽象类做自己的实现。在此之后，这个主体要包怎么样的包装，使用附加的方式加上去（通过构造函数传递行为抽象类的对象实现递归），而不是通过继承来加。</p>
-</body></html>]]></content>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>适配器模式</title>
-    <url>/p/f5c535ea.html</url>
-    <content><![CDATA[<html><head></head><body><h2 id="案例一"><a href="#案例一" class="headerlink" title="案例一"></a>案例一</h2><p>插座的电压是 220V，手机充电器会把 220V 转换成 5V电压给手机充电，此时这个充电器就是一个适配器。</p>
-<p>AC220：插座输出 220V 电压 </p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AC220</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">outputAC220V</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"[插座电源] 输出交流电220V"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">220</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>DC5（接口）：手机充电器输出5V电压</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">DC5</span> {</span><br><span class="line">    <span class="type">int</span> <span class="title function_">output5V</span><span class="params">()</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>PowerAdapter 电源适配器</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PowerAdapter</span> <span class="keyword">implements</span> <span class="title class_">DC5</span> {</span><br><span class="line">    <span class="keyword">private</span> AC220 ac220;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PowerAdapter</span><span class="params">(AC220 ac220)</span> {</span><br><span class="line">        <span class="built_in">this</span>.ac220 = ac220;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">output5V</span><span class="params">()</span> {</span><br><span class="line">        <span class="type">int</span> <span class="variable">adapterInput</span> <span class="operator">=</span> ac220.outputAC220V();</span><br><span class="line">        <span class="type">int</span> <span class="variable">adapterOutput</span> <span class="operator">=</span> adapterInput / <span class="number">44</span>;</span><br><span class="line">        System.out.println(<span class="string">"[手机充电器]使用电源适配器转换为"</span> + adapterOutput + <span class="string">"V电压"</span>);</span><br><span class="line">        <span class="keyword">return</span> adapterOutput;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>Test 测试类</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PowerAdapterTest</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">PowerAdapter</span>(<span class="keyword">new</span> <span class="title class_">AC220</span>()).output5V();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<h2 id="案例二"><a href="#案例二" class="headerlink" title="案例二"></a>案例二</h2><p>外国人听不懂中文，我们只会讲中文，那么需要一个翻译，把中文翻译成英文</p>
-<p>Chinese 中国人</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Chinese</span> {</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">speak</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"[中国人]你好"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"你好"</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>Translator（接口）：翻译中文</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Translator</span> {</span><br><span class="line">    String <span class="title function_">translate</span><span class="params">()</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>TranslateAdapter：翻译适配</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TranslateAdapter</span> <span class="keyword">implements</span> <span class="title class_">Translator</span> {</span><br><span class="line">    <span class="keyword">private</span> Chinese chinese;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">TranslateAdapter</span><span class="params">(Chinese chinese)</span> {</span><br><span class="line">        <span class="built_in">this</span>.chinese = chinese;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">translate</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"[翻译适配器]将"</span> + chinese.speak() + <span class="string">"翻译成英文：Hello"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Hello"</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>Test 测试类</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AdapterTest</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">TranslateAdapter</span>(<span class="keyword">new</span> <span class="title class_">Chinese</span>()).translate();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>优点</p>
-<p>（1）提高类的透明性和复用性，现有的类会被服用但不需要改变；</p>
-<p>（2）目标类和适配器类解耦，可以提高程序的扩展性；</p>
-<p>（3）大多数场景符合开闭原则；</p>
-<p>缺点</p>
-<p>（1）在适配器代码编写时，需要全面考虑，可能会增加系统的复杂度；</p>
-<p>（2）增加了代码的阅读难度，降低了代码的可读性，过多使用适配器会使系统的代码凌乱；</p>
 </body></html>]]></content>
       <tags>
         <tag>设计模式</tag>
@@ -2132,31 +2132,6 @@
       </tags>
   </entry>
   <entry>
-    <title>四种单例模式</title>
-    <url>/p/e38626a3.html</url>
-    <content><![CDATA[<html><head></head><body><p>其实在学Spring5源码的时候，就已经罗列了各种单例模式。在此，学习过 java.util.concurrent 包后，站在多线程的角度上分析比较经典的懒汉模式的双重锁校验（又称为DCL懒汉式（Double Check Lock））。</p>
-<h2 id="逐步进阶，基础版本"><a href="#逐步进阶，基础版本" class="headerlink" title="逐步进阶，基础版本"></a>逐步进阶，基础版本</h2><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> LazySingleton singleton4;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> LazySingleton <span class="title function_">lazy</span><span class="params">()</span> {</span><br><span class="line">    <span class="keyword">if</span> (singleton4 == <span class="literal">null</span>) {</span><br><span class="line">        singleton4 = <span class="keyword">new</span> <span class="title class_">LazySingleton</span>();</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> singleton4;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>存在问题分析：多线程进行访问时，可能多个线程会同时进入if 的作用域中，那么就会创建多个 LazySingleton() 对象，导致这些线程返回的对象地址不一致。</p>
-<h2 id="普通加锁版本"><a href="#普通加锁版本" class="headerlink" title="普通加锁版本"></a>普通加锁版本</h2><p>直接方法加锁，确实能够解决问题，但是性能十分低下。</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> LazySingleton singleton4;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> LazySingleton <span class="title function_">lazy</span><span class="params">()</span> {</span><br><span class="line">    <span class="keyword">if</span> (singleton4 == <span class="literal">null</span>) {</span><br><span class="line">        singleton4 = <span class="keyword">new</span> <span class="title class_">LazySingleton</span>();</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> singleton4;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<h2 id="双重校验加锁版本"><a href="#双重校验加锁版本" class="headerlink" title="双重校验加锁版本"></a>双重校验加锁版本</h2><p>​        多线程都可以进入方法和第一个 if 的作用域，锁类的目的是保证只能有一个线程进入当前类后进入第二个if作用域创建实例对象，随后解锁，让其它进入第一个if作用域的阻塞线程在判断一次是否为空。<br>​        虽然性能是提升了，但是真的线程安全吗？并发下的指令重排是会出问题的，分析： singleton4 = new LazySingleton() 不是原子性操作，有三个步骤： ①分配内存空间 ②执行构造方法并实例化对象 ③ 分配内存地址，把这个对象指向这个空间。CPU执行时不一定是按照123执行的，如果按照执行顺序是132，第3步先执行的话，还没有完成实例化，就指向这个空间了，此时的 singleton4 不为空，下一个线程进入方法的第一个if判断走false，直接返回这个对象，此时的这个 singleton4 并没有完成实例化！所以就会导致数据不一致的问题。</p>
-<p>​    volatile 有三大特性：1、可见性；2、禁止指令重排；3、不保证原子性。所以使用volatile 关键字修饰即可。</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> LazySingleton singleton4;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> LazySingleton <span class="title function_">lazy2</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException {</span><br><span class="line">    <span class="keyword">if</span> (singleton4 == <span class="literal">null</span>) {</span><br><span class="line">        <span class="keyword">synchronized</span> (LazySingleton.class) {</span><br><span class="line">            <span class="keyword">if</span> (singleton4 == <span class="literal">null</span>) {</span><br><span class="line">                singleton4 = <span class="keyword">new</span> <span class="title class_">LazySingleton</span>();</span><br><span class="line">            }</span><br><span class="line">            <span class="keyword">return</span> singleton4;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> singleton4;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<h2 id="单例模式被破坏的情况"><a href="#单例模式被破坏的情况" class="headerlink" title="单例模式被破坏的情况"></a>单例模式被破坏的情况</h2><p>破坏单例模式的意思就是：一个单例对象存在多个。</p>
-<p>反射、序列化、克隆都会破坏单例模式。</p>
-<p>解决方案：枚举单例模式、容器式单例模式（ConcurrentHashMap）、线程隔离式单例模式（ThreadLocal）</p>
-<p>尝试破坏枚举单例模式：</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">enum</span> <span class="title class_">Lazy4</span> {</span><br><span class="line">    INSTANCE;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Lazy4 <span class="title function_">getInstance</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">        <span class="type">Lazy4</span> <span class="variable">instance1</span> <span class="operator">=</span> Lazy4.INSTANCE;</span><br><span class="line">        Constructor&lt;Lazy4&gt; declaredConstructor = Lazy4.class.getDeclaredConstructor(String.class, <span class="type">int</span>.class);</span><br><span class="line">        declaredConstructor.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="type">Lazy4</span> <span class="variable">instance2</span> <span class="operator">=</span> declaredConstructor.newInstance(); </span><br><span class="line">        System.out.println(instance1); System.out.println(instance2);</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
-
-</body></html>]]></content>
-      <tags>
-        <tag>JUC并发包</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Semaphore信号量</title>
     <url>/p/f353d57c.html</url>
     <content><![CDATA[<html><head></head><body><p>应用场景：多个共享资源互斥、并发限流（如Hystrix）。</p>
@@ -2194,6 +2169,31 @@
 
 <h3 id="Semaphore释放锁"><a href="#Semaphore释放锁" class="headerlink" title="Semaphore释放锁"></a>Semaphore释放锁</h3><p>线程获取执行资格之后需要释放锁，当前线程不释放锁的话，会导致其它线程无法进入获取许可。释放锁调用的是AQS中的relase方法：</p>
 <figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">release</span><span class="params">(<span class="type">int</span> permits)</span> {</span><br><span class="line">    <span class="keyword">if</span> (permits &lt; <span class="number">0</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line">    sync.releaseShared(permits);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="type">boolean</span> <span class="title function_">releaseShared</span><span class="params">(<span class="type">int</span> arg)</span> {</span><br><span class="line">    <span class="keyword">if</span> (tryReleaseShared(arg)) {</span><br><span class="line">        doReleaseShared();</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="type">boolean</span> <span class="title function_">tryReleaseShared</span><span class="params">(<span class="type">int</span> releases)</span> {</span><br><span class="line">    <span class="keyword">for</span> (;;) {</span><br><span class="line">        <span class="comment">// 获取锁当前状态</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">current</span> <span class="operator">=</span> getState();</span><br><span class="line">        <span class="comment">// 释放锁前先恢复许可数</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">next</span> <span class="operator">=</span> current + releases;</span><br><span class="line">        <span class="keyword">if</span> (next &lt; current) <span class="comment">// overflow</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">"Maximum permit count exceeded"</span>);</span><br><span class="line">        <span class="comment">// 用CAS更新锁状态</span></span><br><span class="line">        <span class="keyword">if</span> (compareAndSetState(current, next))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+</body></html>]]></content>
+      <tags>
+        <tag>JUC并发包</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>四种单例模式</title>
+    <url>/p/e38626a3.html</url>
+    <content><![CDATA[<html><head></head><body><p>其实在学Spring5源码的时候，就已经罗列了各种单例模式。在此，学习过 java.util.concurrent 包后，站在多线程的角度上分析比较经典的懒汉模式的双重锁校验（又称为DCL懒汉式（Double Check Lock））。</p>
+<h2 id="逐步进阶，基础版本"><a href="#逐步进阶，基础版本" class="headerlink" title="逐步进阶，基础版本"></a>逐步进阶，基础版本</h2><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> LazySingleton singleton4;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> LazySingleton <span class="title function_">lazy</span><span class="params">()</span> {</span><br><span class="line">    <span class="keyword">if</span> (singleton4 == <span class="literal">null</span>) {</span><br><span class="line">        singleton4 = <span class="keyword">new</span> <span class="title class_">LazySingleton</span>();</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> singleton4;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>存在问题分析：多线程进行访问时，可能多个线程会同时进入if 的作用域中，那么就会创建多个 LazySingleton() 对象，导致这些线程返回的对象地址不一致。</p>
+<h2 id="普通加锁版本"><a href="#普通加锁版本" class="headerlink" title="普通加锁版本"></a>普通加锁版本</h2><p>直接方法加锁，确实能够解决问题，但是性能十分低下。</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> LazySingleton singleton4;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> LazySingleton <span class="title function_">lazy</span><span class="params">()</span> {</span><br><span class="line">    <span class="keyword">if</span> (singleton4 == <span class="literal">null</span>) {</span><br><span class="line">        singleton4 = <span class="keyword">new</span> <span class="title class_">LazySingleton</span>();</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> singleton4;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="双重校验加锁版本"><a href="#双重校验加锁版本" class="headerlink" title="双重校验加锁版本"></a>双重校验加锁版本</h2><p>​        多线程都可以进入方法和第一个 if 的作用域，锁类的目的是保证只能有一个线程进入当前类后进入第二个if作用域创建实例对象，随后解锁，让其它进入第一个if作用域的阻塞线程在判断一次是否为空。<br>​        虽然性能是提升了，但是真的线程安全吗？并发下的指令重排是会出问题的，分析： singleton4 = new LazySingleton() 不是原子性操作，有三个步骤： ①分配内存空间 ②执行构造方法并实例化对象 ③ 分配内存地址，把这个对象指向这个空间。CPU执行时不一定是按照123执行的，如果按照执行顺序是132，第3步先执行的话，还没有完成实例化，就指向这个空间了，此时的 singleton4 不为空，下一个线程进入方法的第一个if判断走false，直接返回这个对象，此时的这个 singleton4 并没有完成实例化！所以就会导致数据不一致的问题。</p>
+<p>​    volatile 有三大特性：1、可见性；2、禁止指令重排；3、不保证原子性。所以使用volatile 关键字修饰即可。</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> LazySingleton singleton4;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> LazySingleton <span class="title function_">lazy2</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException {</span><br><span class="line">    <span class="keyword">if</span> (singleton4 == <span class="literal">null</span>) {</span><br><span class="line">        <span class="keyword">synchronized</span> (LazySingleton.class) {</span><br><span class="line">            <span class="keyword">if</span> (singleton4 == <span class="literal">null</span>) {</span><br><span class="line">                singleton4 = <span class="keyword">new</span> <span class="title class_">LazySingleton</span>();</span><br><span class="line">            }</span><br><span class="line">            <span class="keyword">return</span> singleton4;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> singleton4;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="单例模式被破坏的情况"><a href="#单例模式被破坏的情况" class="headerlink" title="单例模式被破坏的情况"></a>单例模式被破坏的情况</h2><p>破坏单例模式的意思就是：一个单例对象存在多个。</p>
+<p>反射、序列化、克隆都会破坏单例模式。</p>
+<p>解决方案：枚举单例模式、容器式单例模式（ConcurrentHashMap）、线程隔离式单例模式（ThreadLocal）</p>
+<p>尝试破坏枚举单例模式：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">enum</span> <span class="title class_">Lazy4</span> {</span><br><span class="line">    INSTANCE;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Lazy4 <span class="title function_">getInstance</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">        <span class="type">Lazy4</span> <span class="variable">instance1</span> <span class="operator">=</span> Lazy4.INSTANCE;</span><br><span class="line">        Constructor&lt;Lazy4&gt; declaredConstructor = Lazy4.class.getDeclaredConstructor(String.class, <span class="type">int</span>.class);</span><br><span class="line">        declaredConstructor.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="type">Lazy4</span> <span class="variable">instance2</span> <span class="operator">=</span> declaredConstructor.newInstance(); </span><br><span class="line">        System.out.println(instance1); System.out.println(instance2);</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
 
 </body></html>]]></content>
       <tags>
@@ -2553,6 +2553,52 @@ signalAll();
       </tags>
   </entry>
   <entry>
+    <title>线程Suspend &amp; Resume</title>
+    <url>/p/64fda4e0.html</url>
+    <content><![CDATA[<html><head></head><body><table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>suspend</td>
+<td>线程暂停</td>
+</tr>
+<tr>
+<td>resume</td>
+<td>恢复线程执行</td>
+</tr>
+</tbody></table>
+<h2 id="一、基本应用"><a href="#一、基本应用" class="headerlink" title="一、基本应用"></a>一、基本应用</h2><p>一个案例看懂 suspend() 与 resume() 的基本应用：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ThreadSuspendAndResume</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException {</span><br><span class="line">        <span class="type">MyThread</span> <span class="variable">myThread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyThread</span>();</span><br><span class="line">        myThread.start();</span><br><span class="line">        Thread.sleep(<span class="number">500</span>); <span class="comment">// 让线程执行500毫秒</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// A段</span></span><br><span class="line">        myThread.suspend(); <span class="comment">// 暂停</span></span><br><span class="line">        System.out.println(<span class="string">"A="</span> + System.currentTimeMillis() + <span class="string">" i="</span> + myThread.i); <span class="comment">// 查看暂停之后的结果</span></span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">        System.out.println(<span class="string">"A="</span> + System.currentTimeMillis() + <span class="string">" i="</span> + myThread.i); <span class="comment">// 查看500毫秒后的结果</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// B段</span></span><br><span class="line">        myThread.resume();<span class="comment">// 暂停500毫秒之后，使用resume恢复</span></span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line"></span><br><span class="line">        myThread.suspend();</span><br><span class="line">        System.out.println(<span class="string">"B="</span> + System.currentTimeMillis() + <span class="string">" i="</span> + myThread.i);</span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">        System.out.println(<span class="string">"B="</span> + System.currentTimeMillis() + <span class="string">" i="</span> + myThread.i);</span><br><span class="line"></span><br><span class="line">        myThread.stop(); <span class="comment">// 销毁线程对象</span></span><br><span class="line">        System.out.println(<span class="string">"END!"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="type">long</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) {</span><br><span class="line">            i++;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>执行结果：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">A=1613381037365 i=389072852</span><br><span class="line">A=1613381037868 i=389072852</span><br><span class="line">B=1613381038373 i=784162715</span><br><span class="line">B=1613381038889 i=784162715</span><br><span class="line">END!</span><br></pre></td></tr></tbody></table></figure>
+
+<p>从控制台上的时间和数值来看，线程的确是被暂停了，而且可以恢复成运行状态。</p>
+<h2 id="二、缺点——独占"><a href="#二、缺点——独占" class="headerlink" title="二、缺点——独占"></a>二、缺点——独占</h2><p>这两个方法在使用不当的情况下，极易造成公共同步对象被独占，造成<strong>死锁</strong>（其他线程无法访问公共同步对象）的结果。</p>
+<p>独占案例：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SuspendResumeDealLock</span> {</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        <span class="type">SuspendResumeDealLock</span> <span class="variable">that</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SuspendResumeDealLock</span>();</span><br><span class="line"></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>() {</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> {</span><br><span class="line">                System.out.println(<span class="string">"线程a启动"</span>);</span><br><span class="line">                that.printString();</span><br><span class="line">            }</span><br><span class="line">        };</span><br><span class="line"></span><br><span class="line">        thread1.setName(<span class="string">"a"</span>);</span><br><span class="line">        thread1.start();</span><br><span class="line"></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>() {</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> {</span><br><span class="line">                System.out.println(<span class="string">"线程2启动"</span>);</span><br><span class="line">                that.printString();</span><br><span class="line">                System.out.println(<span class="string">"线程2完成打印!!!!!"</span>);</span><br><span class="line">            }</span><br><span class="line">        };</span><br><span class="line"></span><br><span class="line">        thread2.start();</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">synchronized</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">printString</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"begin"</span>);</span><br><span class="line">        <span class="keyword">if</span> (Thread.currentThread().getName().equals(<span class="string">"a"</span>)) {</span><br><span class="line">            System.out.println(<span class="string">"线程a进入永远暂停"</span>);</span><br><span class="line">            Thread.currentThread().suspend();</span><br><span class="line">        }</span><br><span class="line">        System.out.println(<span class="string">"end"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>打印结果：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">线程a启动</span><br><span class="line">线程2启动</span><br><span class="line">begin</span><br><span class="line">线程a进入永远暂停</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>a线程把 printString() 方法锁定了，造成 thread2 无法进入 printString()。</p>
+<h2 id="三、缺点——数据不完整"><a href="#三、缺点——数据不完整" class="headerlink" title="三、缺点——数据不完整"></a>三、缺点——数据不完整</h2><p>在使用suspend()方法和resume()方法时，容易出现线程暂停进而导致数不完整的情况。下面这个案例就是一个数据不完整的实例：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SuspendResumeDealLock_3</span> {</span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> <span class="string">"1"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">password</span> <span class="operator">=</span> <span class="string">"11"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setValue</span><span class="params">(String u, String p)</span> {</span><br><span class="line">        <span class="built_in">this</span>.username = u;</span><br><span class="line">        <span class="keyword">if</span> (Thread.currentThread().getName().equals(<span class="string">"a"</span>)) {</span><br><span class="line">            System.out.println(<span class="string">"暂停线程a"</span>);</span><br><span class="line">            Thread.currentThread().suspend();</span><br><span class="line">        }</span><br><span class="line">        <span class="built_in">this</span>.password = p;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">printUsernamePassword</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(username + <span class="string">" "</span> + password);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException {</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Run</span>();</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Run</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Run</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException {</span><br><span class="line">        <span class="keyword">final</span> <span class="type">SuspendResumeDealLock_3</span> <span class="variable">myObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SuspendResumeDealLock_3</span>();</span><br><span class="line"></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>() {</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> {</span><br><span class="line">                myObject.setValue(<span class="string">"a"</span>, <span class="string">"aa"</span>);</span><br><span class="line">            }</span><br><span class="line">        };</span><br><span class="line"></span><br><span class="line">        thread.setName(<span class="string">"a"</span>);</span><br><span class="line">        thread.start();</span><br><span class="line"></span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>() {</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> {</span><br><span class="line">                myObject.printUsernamePassword();</span><br><span class="line">            }</span><br><span class="line">        };</span><br><span class="line">        thread1.start();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">暂停线程a</span><br><span class="line">a 11</span><br></pre></td></tr></tbody></table></figure>
+
+<p>线程的暂停和唤醒应当使用 wait()、notify()、notifyAll()方法。</p>
+</body></html>]]></content>
+      <tags>
+        <tag>JUC并发包</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>优雅的中断线程</title>
     <url>/p/5f59eead.html</url>
     <content><![CDATA[<html><head></head><body><p>不推荐使用 stop、suspend、resume 这三个过期作废的方法，因为有可能会发生不可预料的结果而且出现错误后还比较难定位。</p>
@@ -2599,52 +2645,6 @@ signalAll();
 
 <p>从下面的输出结果来看，如果线程在 sleep 状态下停止，则该线程会进入 catch 语句，并且清除停止状态值，变成false。</p>
 <figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line">run start ...</span><br><span class="line">complete!</span><br><span class="line">在sleep中停止，进入<span class="keyword">catch</span>！<span class="literal">false</span></span><br><span class="line">java.lang.InterruptedException: sleep interrupted</span><br><span class="line">	at java.lang.Thread.sleep(Native Method)</span><br><span class="line">	at com.fun.async.test.class03.SleepThreadInterrupt$MyThread.run(SleepThreadInterrupt.java:<span class="number">26</span>)</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
-</body></html>]]></content>
-      <tags>
-        <tag>JUC并发包</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>线程Suspend &amp; Resume</title>
-    <url>/p/64fda4e0.html</url>
-    <content><![CDATA[<html><head></head><body><table>
-<thead>
-<tr>
-<th>方法名</th>
-<th>用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>suspend</td>
-<td>线程暂停</td>
-</tr>
-<tr>
-<td>resume</td>
-<td>恢复线程执行</td>
-</tr>
-</tbody></table>
-<h2 id="一、基本应用"><a href="#一、基本应用" class="headerlink" title="一、基本应用"></a>一、基本应用</h2><p>一个案例看懂 suspend() 与 resume() 的基本应用：</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ThreadSuspendAndResume</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException {</span><br><span class="line">        <span class="type">MyThread</span> <span class="variable">myThread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyThread</span>();</span><br><span class="line">        myThread.start();</span><br><span class="line">        Thread.sleep(<span class="number">500</span>); <span class="comment">// 让线程执行500毫秒</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// A段</span></span><br><span class="line">        myThread.suspend(); <span class="comment">// 暂停</span></span><br><span class="line">        System.out.println(<span class="string">"A="</span> + System.currentTimeMillis() + <span class="string">" i="</span> + myThread.i); <span class="comment">// 查看暂停之后的结果</span></span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">        System.out.println(<span class="string">"A="</span> + System.currentTimeMillis() + <span class="string">" i="</span> + myThread.i); <span class="comment">// 查看500毫秒后的结果</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// B段</span></span><br><span class="line">        myThread.resume();<span class="comment">// 暂停500毫秒之后，使用resume恢复</span></span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line"></span><br><span class="line">        myThread.suspend();</span><br><span class="line">        System.out.println(<span class="string">"B="</span> + System.currentTimeMillis() + <span class="string">" i="</span> + myThread.i);</span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">        System.out.println(<span class="string">"B="</span> + System.currentTimeMillis() + <span class="string">" i="</span> + myThread.i);</span><br><span class="line"></span><br><span class="line">        myThread.stop(); <span class="comment">// 销毁线程对象</span></span><br><span class="line">        System.out.println(<span class="string">"END!"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="type">long</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) {</span><br><span class="line">            i++;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>执行结果：</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">A=1613381037365 i=389072852</span><br><span class="line">A=1613381037868 i=389072852</span><br><span class="line">B=1613381038373 i=784162715</span><br><span class="line">B=1613381038889 i=784162715</span><br><span class="line">END!</span><br></pre></td></tr></tbody></table></figure>
-
-<p>从控制台上的时间和数值来看，线程的确是被暂停了，而且可以恢复成运行状态。</p>
-<h2 id="二、缺点——独占"><a href="#二、缺点——独占" class="headerlink" title="二、缺点——独占"></a>二、缺点——独占</h2><p>这两个方法在使用不当的情况下，极易造成公共同步对象被独占，造成<strong>死锁</strong>（其他线程无法访问公共同步对象）的结果。</p>
-<p>独占案例：</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SuspendResumeDealLock</span> {</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        <span class="type">SuspendResumeDealLock</span> <span class="variable">that</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SuspendResumeDealLock</span>();</span><br><span class="line"></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>() {</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> {</span><br><span class="line">                System.out.println(<span class="string">"线程a启动"</span>);</span><br><span class="line">                that.printString();</span><br><span class="line">            }</span><br><span class="line">        };</span><br><span class="line"></span><br><span class="line">        thread1.setName(<span class="string">"a"</span>);</span><br><span class="line">        thread1.start();</span><br><span class="line"></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>() {</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> {</span><br><span class="line">                System.out.println(<span class="string">"线程2启动"</span>);</span><br><span class="line">                that.printString();</span><br><span class="line">                System.out.println(<span class="string">"线程2完成打印!!!!!"</span>);</span><br><span class="line">            }</span><br><span class="line">        };</span><br><span class="line"></span><br><span class="line">        thread2.start();</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">synchronized</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">printString</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"begin"</span>);</span><br><span class="line">        <span class="keyword">if</span> (Thread.currentThread().getName().equals(<span class="string">"a"</span>)) {</span><br><span class="line">            System.out.println(<span class="string">"线程a进入永远暂停"</span>);</span><br><span class="line">            Thread.currentThread().suspend();</span><br><span class="line">        }</span><br><span class="line">        System.out.println(<span class="string">"end"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>打印结果：</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">线程a启动</span><br><span class="line">线程2启动</span><br><span class="line">begin</span><br><span class="line">线程a进入永远暂停</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
-
-<p>a线程把 printString() 方法锁定了，造成 thread2 无法进入 printString()。</p>
-<h2 id="三、缺点——数据不完整"><a href="#三、缺点——数据不完整" class="headerlink" title="三、缺点——数据不完整"></a>三、缺点——数据不完整</h2><p>在使用suspend()方法和resume()方法时，容易出现线程暂停进而导致数不完整的情况。下面这个案例就是一个数据不完整的实例：</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SuspendResumeDealLock_3</span> {</span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> <span class="string">"1"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">password</span> <span class="operator">=</span> <span class="string">"11"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setValue</span><span class="params">(String u, String p)</span> {</span><br><span class="line">        <span class="built_in">this</span>.username = u;</span><br><span class="line">        <span class="keyword">if</span> (Thread.currentThread().getName().equals(<span class="string">"a"</span>)) {</span><br><span class="line">            System.out.println(<span class="string">"暂停线程a"</span>);</span><br><span class="line">            Thread.currentThread().suspend();</span><br><span class="line">        }</span><br><span class="line">        <span class="built_in">this</span>.password = p;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">printUsernamePassword</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(username + <span class="string">" "</span> + password);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException {</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Run</span>();</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Run</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Run</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException {</span><br><span class="line">        <span class="keyword">final</span> <span class="type">SuspendResumeDealLock_3</span> <span class="variable">myObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SuspendResumeDealLock_3</span>();</span><br><span class="line"></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>() {</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> {</span><br><span class="line">                myObject.setValue(<span class="string">"a"</span>, <span class="string">"aa"</span>);</span><br><span class="line">            }</span><br><span class="line">        };</span><br><span class="line"></span><br><span class="line">        thread.setName(<span class="string">"a"</span>);</span><br><span class="line">        thread.start();</span><br><span class="line"></span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>() {</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> {</span><br><span class="line">                myObject.printUsernamePassword();</span><br><span class="line">            }</span><br><span class="line">        };</span><br><span class="line">        thread1.start();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>运行结果：</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">暂停线程a</span><br><span class="line">a 11</span><br></pre></td></tr></tbody></table></figure>
-
-<p>线程的暂停和唤醒应当使用 wait()、notify()、notifyAll()方法。</p>
 </body></html>]]></content>
       <tags>
         <tag>JUC并发包</tag>
@@ -3188,6 +3188,435 @@ signalAll();
       </tags>
   </entry>
   <entry>
+    <title>JVM 垃圾回收</title>
+    <url>/p/d6094941.html</url>
+    <content><![CDATA[<html><head></head><body><p>当Java程序运行时，没有任何指针指向的对象就是垃圾，JVM会对内存进行自动分配与回收，其中GC的主要作用就是清除这些垃圾，自动释放内存。</p>
+<h2 id="垃圾回收的相关概念"><a href="#垃圾回收的相关概念" class="headerlink" title="垃圾回收的相关概念"></a>垃圾回收的相关概念</h2><h3 id="FGC-FULL-GC"><a href="#FGC-FULL-GC" class="headerlink" title="FGC(FULL GC)"></a>FGC(FULL GC)</h3><p>收集整个堆，包括新生代，老年代，永久代或元数据空间。</p>
+<h3 id="System-gc"><a href="#System-gc" class="headerlink" title="System.gc()"></a>System.gc()</h3><p>调用<code>System.gc()</code>或者<code>Runtime.getRuntime().gc()</code>会显式触发fgc(Full GC)，但Java语言规范了，并不保证GC一定会执行。jvm有自己的gc策略，一般情况下，无需手动触发。</p>
+<h3 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h3><p>在程序运行过程中，给一个对象分配内存空间时，无法申请到足够的内存。对应的异常是OutOfMemoryError，简称OOM。</p>
+<h3 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h3><p>不再使用的对象，持续占有内存得不到及时的释放（GC无法回收这些不再使用的对象），从而造成内存空间的浪费成为内存泄漏。</p>
+<h3 id="STW-Stop-The-World"><a href="#STW-Stop-The-World" class="headerlink" title="STW(Stop The World)"></a>STW(Stop The World)</h3><p>GC事件发生过程中，会产生应用程序的停顿，整个应用程序都会被暂停。下面即将介绍的可达性分析算法会导致STW，因为：</p>
+<ol>
+<li>分析工作必须在一个能确保一致性的快照中进行；</li>
+<li>一致性指整个分析期间整个执行系统看起来像被冻结在某个时间点上；</li>
+<li>如果分析过程中对象引用关系还在不断变化，则分析结果的准确性无法保证。</li>
+</ol>
+<p>GC完成之后，STW便随之结束。</p>
+<h2 id="Java中的引用类型-Reference"><a href="#Java中的引用类型-Reference" class="headerlink" title="Java中的引用类型(Reference)"></a>Java中的引用类型(Reference)</h2><p>JDK1.2之后，Java对引用的概念进行了扩充，分为强引用（Strong Reference）、软引用（Soft Reference）、弱引用（Weak Reference）、虚引用（Phantom Reference）和终结器引用（Final Reference）：</p>
+<p><img src="/p/d6094941/image-20230713004444156.png" alt="image-20230713004444156"></p>
+<h3 id="强引用：不回收"><a href="#强引用：不回收" class="headerlink" title="强引用：不回收"></a>强引用：不回收</h3><p>最传统的引用定义，程序中普遍存在的引用赋值，类似<code>Object o = new Object()</code>这种引用关系。无论在任何情况下，只要强引用关系还在，垃圾回收器就永远不会回收掉被引用的对象。所以，<strong>强引用是造成Java内存泄露的主要原因之一</strong>。</p>
+<h3 id="软引用：内存不足即回收"><a href="#软引用：内存不足即回收" class="headerlink" title="软引用：内存不足即回收"></a>软引用：内存不足即回收</h3><p>软引用是用来描述一些还有用，但非必需的对象。只被软引用关联着的对象，在系统即将要发生内存溢出异常前，会被放入到Reference Queue，进行二次回收。简而言之就是内存不足时回收。</p>
+<p>软引用常用来实现内存敏感的缓存，比如内存充足时，就是用缓存，内存不足时就清除缓存，避免程序OOM。</p>
+<p>软引用例子：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">SoftReference&lt;Object&gt; softReference = <span class="keyword">new</span> <span class="title class_">SoftReference</span>&lt;&gt;(obj);</span><br><span class="line">obj = <span class="literal">null</span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="弱引用：发现即回收"><a href="#弱引用：发现即回收" class="headerlink" title="弱引用：发现即回收"></a>弱引用：发现即回收</h3><p>弱引用关联的对象只能生存到下一次垃圾收集发生为止。在系统GC时，只要发生弱引用，不管系统堆空间是否充足，都会回收。简而言之就是发现即回收。</p>
+<p>弱引用例子：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">WeakReference&lt;Object&gt; weakReference = <span class="keyword">new</span> <span class="title class_">WeakReference</span>&lt;&gt;(obj);</span><br><span class="line">obj = <span class="literal">null</span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="虚引用：对象回收跟踪"><a href="#虚引用：对象回收跟踪" class="headerlink" title="虚引用：对象回收跟踪"></a>虚引用：对象回收跟踪</h3><ul>
+<li><p>一个对象是否有虚引用的存在，完全不会决定对象的生命周期。如果一个对象仅存在虚引用，那么它和没有引用几乎是一样的，随时都可能被垃圾回收器回收。</p>
+</li>
+<li><p>虚引用不能单独使用，也无法通过虚引用来获取被引用的对象，当调用虚引用的get方法获取对象时，将返回null。</p>
+</li>
+<li><p>为一个对象设置虚引用关联的唯一目的在于跟踪垃圾回收过程。比如：能在这个对象被收集器回收时收到一个系统通知。</p>
+</li>
+</ul>
+<p>虚引用必须和引用队列一起使用：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">ReferenceQueue&lt;Object&gt; referenceQueue = <span class="keyword">new</span> <span class="title class_">ReferenceQueue</span>&lt;&gt;();</span><br><span class="line">PhantomReference&lt;Object&gt; phantomReference = <span class="keyword">new</span> <span class="title class_">PhantomReference</span>&lt;&gt;(obj, referenceQueue);</span><br><span class="line">obj = <span class="literal">null</span>;</span><br><span class="line">phantomReference.get(); <span class="comment">// null</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>虚引用对象被垃圾回收器回收后，会将这个虚引用加入引用队列，已通知应用程序对象回收情况。虚引用的唯一作用是用于跟踪垃圾回收过程（通过观察引用队列里是否有对应的虚引用）。</p>
+<h3 id="终结器引用"><a href="#终结器引用" class="headerlink" title="终结器引用"></a>终结器引用</h3><ul>
+<li>它用于实现对象的finalize（）方法，也可以称为终结器引用。</li>
+<li>无需手动编码，<strong>其内部配合引用队列使用。</strong></li>
+<li>在GC时， 终结器引用入队。由Finalizer线程通过终结器引用找到被引用对象并调用它的finalize（）方法，第二次GC时才能回收被引用对象。</li>
+</ul>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> java.lang.ref;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Final references, used to implement finalization</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FinalReference</span>&lt;T&gt; <span class="keyword">extends</span> <span class="title class_">Reference</span>&lt;T&gt; {</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">FinalReference</span><span class="params">(T referent, ReferenceQueue&lt;? <span class="built_in">super</span> T&gt; q)</span> {</span><br><span class="line">        <span class="built_in">super</span>(referent, q);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h2 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h2><p>垃圾回收分为<strong>标记阶段</strong>（对象存活判断）和<strong>清除阶段</strong>（垃圾对象回收）。</p>
+<ol>
+<li>标记阶段</li>
+</ol>
+<p>在堆中存放这几乎所有的Java对象实例，在GC执行垃圾回收之前，首先需要区分出内存中哪些是存活对象，哪些是已死亡对象。只有被标记为已经死亡的对象，GC才会进行回收。这个阶段的算法包括<strong>引用计数法</strong>和<strong>可达性分析算法</strong>；</p>
+<ol start="2">
+<li>清除阶段</li>
+</ol>
+<p>当成功分出存活和死亡对象之后，GC接下来的任务就是执行垃圾回收，释放内存。目前JVM中比较常见的三种垃圾算法分别是<strong>标记清除算法</strong>、<strong>复制算法</strong>、<strong>标记压缩算法</strong>。</p>
+<h3 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h3><p>引用计数算法（Reference Counting）算法对每个对象保存一个整型的引用计数器属性，用于记录对象被引用的情况。对于一个对象Object，只要有任何一个对象引用了它，则它的引用计数器加1，引用失效时，引用计数器就减1。所以当一个对象的引用计数器值为0时，说明该对象不再被引用，可进行回收。</p>
+<p>优点：实现简单，效率高，垃圾回收没有延迟；</p>
+<p>缺点：</p>
+<ol>
+<li>计数器的存在增加了存储空间的开销；</li>
+<li>每次赋值都需要更新计数器，增加了程序时间开销；</li>
+<li>致命问题：无法处理循环引用的情况（正因为如此，Java压根没有使用该算法）。</li>
+</ol>
+<p>举个循环引用的例子：</p>
+<p><img src="/p/d6094941/QQ20200903-100656@2x.png" alt="QQ20200903-100656@2x"></p>
+<p>上面例子中，Object1的引用计数器值为1，但实际可能这三个对象都已经不再被使用，它们的引用计数器的值都不为0，无法被回收，这就导致了内存泄露。</p>
+<h3 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h3><p>可达性分析算法同样具备实现简单执行高效等特点，并且还解决了引用计数算法无法处理的循环引用问题，可达性分析算法也叫根搜索算法、追踪性垃圾收集算法。</p>
+<h4 id="可达性分析算法的基本思路"><a href="#可达性分析算法的基本思路" class="headerlink" title="可达性分析算法的基本思路"></a>可达性分析算法的基本思路</h4><ol>
+<li>以根对象集合（GC Roots）为起点，从上至下搜索被根对象连接的目标对象是否可达，搜索走过的路径称为引用链；</li>
+<li>如果目标对象没有任何引用链相连，则是不可达的，意味着对象已经死亡属于垃圾；</li>
+<li>只有那些能够被根对象集合直接或者间接连接的对象才是存活对象。</li>
+</ol>
+<p>如下图所示：</p>
+<p><img src="/p/d6094941/QQ20200903-102802@2x.png" alt="QQ20200903-102802@2x"></p>
+<p>绿色对象为存活对象，它们直接或间接与GC Roots相连，橙色对象为可回收对象。</p>
+<p>那么哪些对象可以作为GC Roots呢？Java中，GC Roots包括以下几类元素：</p>
+<ol>
+<li>虚拟机栈中引用的对象；</li>
+<li>本地方法栈内引用的对象；</li>
+<li>方法区中类静态属性引用的对象，如Java类的引用类型静态变量；</li>
+<li>方法区中常量引用的对象；</li>
+<li>所有被synchronized持有的对象；</li>
+<li>Java虚拟机内部引用；</li>
+<li>反映Java虚拟机内部情况的JMXBean、JVMTI中注册的回调、本地代码缓存等。</li>
+</ol>
+<p>在使用可达性分析算法判断内存是否可回收时，分析工作必须在一个能保障一致性的快照中进行。这点也是导致GC进行时必须STW的一个重要原因。</p>
+<h4 id="对象复活演示"><a href="#对象复活演示" class="headerlink" title="对象复活演示"></a>对象复活演示</h4><p>对象的finalization机制：当垃圾回收器回收一个垃圾对象之前，总会先调用这个对象的<code>finalize()</code>方法，用于在对象回收时进行资源释放。</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable { }</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>finalize()</code>方法为Object的一个非final方法，所以子类可以进行重写。</p>
+<p>因为<code>finalize()</code>方法的存在，Java中一个对象可能处于三种状态：</p>
+<ol>
+<li>可触及的，从GC Roots开始可以到达该对象；</li>
+<li>可复活的，对象的所有引用都被释放，但对象可能在<code>finalize()</code>方法中复活；</li>
+<li>不可触及的，对象的<code>finalize()</code>方法被调用，并且没有复活。不可触及的对象不可能被复活，<strong>因为<code>finalize()</code>方法只会被调用一次</strong>。</li>
+</ol>
+<p>判断一个对象是否可回收需要经历两次标记过程：</p>
+<ol>
+<li>如果对象到GC Roots没有引用链，那么进行第一次标记；</li>
+<li>对已经标记了的对象进行筛选，判断对象是否有必要执行<code>finalize()</code>方法：<ul>
+<li>如果对象没有重写<code>finalize()</code>方法，或者<code>finalize()</code>方法已经被调用过，则该对象是不可触及的；</li>
+<li>如果重写了，但还没执行过，则该对象会被放入F-Queue队列；</li>
+<li>GC对F-Queue队列中的对象进行遍历，如果对象在<code>finalize()</code>方法中与引用链上的任意一个对象建立了联系，那么该对象被复活，从F-Queue队列中移出。当该对象再次出现没有引用的情况时，<code>finalize()</code>方法不会再被调用，该对象直接被判定为不可触及。</li>
+</ul>
+</li>
+</ol>
+<p><code>finalize()</code>方法执行是由虚拟机自动创建的低优先级的Finalizer线程触发，举个例子：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException {</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">1200</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>启动main线程，让程序阻塞，然后用jvisualvm观察线程状态：</p>
+<p><img src="/p/d6094941/image-20230713010613556.png" alt="image-20230713010613556"></p>
+<p>举个对象通过<code>finalize()</code>方法复活的例子：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> {</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 静态类变量，属于GC Roots</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Main obj;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">finalize</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"finalize方法中不做任何事情"</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        <span class="keyword">try</span> {</span><br><span class="line">            obj = <span class="keyword">new</span> <span class="title class_">Main</span>();</span><br><span class="line">            <span class="comment">// 移除对象引用链</span></span><br><span class="line">            obj = <span class="literal">null</span>;</span><br><span class="line">            System.gc();</span><br><span class="line">            System.out.println(<span class="string">"第一次GC"</span>);</span><br><span class="line">            <span class="comment">// 因为Finalizer线程优先级很低，让程序暂停2秒，确保finalize()方法调用</span></span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">2</span>);</span><br><span class="line">            isAlive(obj);</span><br><span class="line"></span><br><span class="line">            obj = <span class="literal">null</span>;</span><br><span class="line">            System.gc();</span><br><span class="line">            System.out.println(<span class="string">"第二次GC"</span>);</span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">2</span>);</span><br><span class="line">            isAlive(obj);</span><br><span class="line">        } <span class="keyword">catch</span> (Exception e) {</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">isAlive</span><span class="params">(Object obj)</span> {</span><br><span class="line">        <span class="keyword">if</span> (obj == <span class="literal">null</span>) {</span><br><span class="line">            System.out.println(<span class="string">"对象已死"</span>);</span><br><span class="line">        } <span class="keyword">else</span> {</span><br><span class="line">            System.out.println(<span class="string">"对象还活着"</span>);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>上面代码中，Main类重写了finalize()方法，但方法内没有可以让对象复活的逻辑。程序输出如下：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">finalize方法中不做任何事情</span><br><span class="line">第一次GC</span><br><span class="line">对象已死</span><br><span class="line">第二次GC</span><br><span class="line">对象已死</span><br></pre></td></tr></tbody></table></figure>
+
+<p>可以看到，将obj置为null后，第一次GC，该对象就已经被回收。</p>
+<p>下面往<code>finalize()</code>方法中添加逻辑，让对象复活：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">finalize</span><span class="params">()</span> {</span><br><span class="line">    System.out.println(<span class="string">"复活obj"</span>);</span><br><span class="line">    <span class="comment">// 复活对象</span></span><br><span class="line">    obj = <span class="built_in">this</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>程序输出如下：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">第一次GC</span><br><span class="line">复活obj</span><br><span class="line">对象还活着</span><br><span class="line">第二次GC</span><br><span class="line">对象已死</span><br></pre></td></tr></tbody></table></figure>
+
+<p>上面例子也证明了<code>finalize()</code>方法最多只被执行一次。</p>
+<p>严禁主动调用某个对象的finalize()方法，应该交给垃圾回收机制调用，因为：</p>
+<ol>
+<li>在finalize()方法里可能导致对象复活； </li>
+<li>finalize()方法执行时间没有保障，如果对象不被回收，finalize()方法没有执行机会；</li>
+<li>一个糟糕的finalize()方法会严重影响GC性能。</li>
+</ol>
+<h3 id="标记清除算法"><a href="#标记清除算法" class="headerlink" title="标记清除算法"></a>标记清除算法</h3><p>标记清除算法执行过程：当内存快被耗尽时，会停止整个程序（STW），进行两项工作：</p>
+<ul>
+<li>标记：回收器从GC Roots开始遍历，标记所有可达对象（在对象头中进行标记）；</li>
+<li>清除：回收器对堆内存进行从头到尾线性遍历，如果对象头中没有标记，则说明是不可达对象，进行回收（回收细节：JVM会维护一个空闲地址列表，把可回收对象的地址存放进来，这个时候对象并没有真正被删掉，下次新对象进行分配时候直接覆盖可回收对象）。</li>
+</ul>
+<p>缺点：</p>
+<ol>
+<li>效率不是很高，因为要进行两次遍历工作；</li>
+<li>STW会影响用户体验；</li>
+<li>这种方式整理出来的内存不是连续的，碎片化。</li>
+</ol>
+<h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p>为了解决标记清除算法的缺点，复制算法提出了新思路。</p>
+<p>复制算法的基本思想：将内存一分为二，每次只使用其中一块。GC时，将存活的对象复制到另一块未使用的内存中，然后当前内存块的对象全部清除，两个内存块交互角色，如次循环反复（堆内存中的幸存者0区和1区就是这么搞的）。</p>
+<p>优点：</p>
+<ol>
+<li>不需要进行两次遍历，效率更高；</li>
+<li>复制算法可以保证空间连续性，没有碎片问题。</li>
+</ol>
+<p>当然也有缺点：</p>
+<ol>
+<li>内存只有一半是可用的，浪费了内存空间；</li>
+<li>对象复制后，地址肯定变了，那么栈中对象的引用地址也要改变，这就增加了时间开销；</li>
+<li>极端情况下，假如当前内存块中没有垃圾，那么需要将所有存活对象都复制到另一块内存，费力不讨好。</li>
+</ol>
+<h3 id="标记压缩算法"><a href="#标记压缩算法" class="headerlink" title="标记压缩算法"></a>标记压缩算法</h3><p>标记压缩算法是标记清除算法的改进版本，基本思路是：</p>
+<ul>
+<li>标记：和标记清除算法的标记阶段一致；</li>
+<li>压缩：将存活的对象压缩（移动）到内存的一端，按顺序排放，之后清理边界外的所有空间。</li>
+</ul>
+<p>使用标记压缩算法后，我们就没必要维护一个内存空闲列表了，只需要记录内存使用的末端地址即可，有新对象需要分配内存时，只需要从这个末端地址开始继续往后排，然后更新这个末端地址即可（这种分配方式也称为指针碰撞）。</p>
+<p>优点：</p>
+<ol>
+<li>没有碎片化问题；</li>
+<li>不会像复制算法那样，浪费一半的内存空间。</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>从效率上来看，因为多了压缩对象过程，所以不及标记清除算法；</li>
+<li>涉及到对象的移动，所以栈中的引用地址也要变，也会增加时间开销；</li>
+<li>压缩过程中，也需要STW。</li>
+</ol>
+<h3 id="算法比较与实际应用"><a href="#算法比较与实际应用" class="headerlink" title="算法比较与实际应用"></a>算法比较与实际应用</h3><p>可以看到，没有完美的垃圾回收算法，大家都有优缺点：</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">标记清除</th>
+<th align="left">标记压缩</th>
+<th align="left">复制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">速度</td>
+<td align="left">中等</td>
+<td align="left">最慢</td>
+<td align="left">最快</td>
+</tr>
+<tr>
+<td align="left">内存开销</td>
+<td align="left">少，但有碎片</td>
+<td align="left">少，没有碎片</td>
+<td align="left">多，没有碎片</td>
+</tr>
+<tr>
+<td align="left">移动对象</td>
+<td align="left">否</td>
+<td align="left">是</td>
+<td align="left">是</td>
+</tr>
+</tbody></table>
+<p>没有最完美的算法，只有最合适的算法。我们可以在堆内存中针对不同区域的特性使用不同的回收算法，取长补短（分代收集）：</p>
+<ul>
+<li>新生代：该区域的对象大多朝生夕死，存活率低，回收频繁，所以复制算法非常适合用于该区域；</li>
+<li>老年代：老年代内存区域较大，对象生命周期长，回收不那么频繁，所以这个区域一般使用标记清除或者标记压缩算法。</li>
+</ul>
+<h3 id="增量收集算法"><a href="#增量收集算法" class="headerlink" title="增量收集算法*"></a>增量收集算法*</h3><p>上述的三种垃圾回收算法都要进行STW，如果一次性将所有的垃圾进行处理，会造成系统长时间的停顿，为了改善这个问题，增量收集算法应运而生。</p>
+<p>增量收集算法让垃圾收集线程和应用程序交替执行，每次垃圾收集线程只收集一小片区域的内存，接着切换到应用程序线程，以此反复，直到垃圾收集完成。但该算法的基础还是传统的标记清除算法和复制算法。</p>
+<p>优点：没有长时间的STW；</p>
+<p>缺点：线程切换会使得垃圾回收的总体成本上升，造成系统吞吐量下降。</p>
+<h2 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h2><h3 id="垃圾回收器性能指标"><a href="#垃圾回收器性能指标" class="headerlink" title="垃圾回收器性能指标"></a>垃圾回收器性能指标</h3><ul>
+<li>吞吐量：程序运行时间占总运行时间（总运行时间=程序运行时间+垃圾回收时间）的比例，垃圾回收时间越少，吞吐量越高；</li>
+<li>暂停时间：STW的时间；</li>
+<li>内存占用：Java堆所占的大小。</li>
+</ul>
+<p>以上三点构成不可能三角，即一款垃圾回收器不可能同时满足三点。随着硬件水平的提升，内存占用不再是我们关注的重点，评估垃圾回收器性能时，重点关注吞吐量和暂停时间。吞吐量和暂停时间是相互矛盾的，目前我们追求的效果是：在最大吞吐量优先的情况下，减小暂停时间。</p>
+<h3 id="垃圾回收器发展历史"><a href="#垃圾回收器发展历史" class="headerlink" title="垃圾回收器发展历史"></a>垃圾回收器发展历史</h3><ul>
+<li>1999年JDK 1.3.1 发布第一款串行方式的Serial GC，ParNew垃圾回收器是Serial回收器的多线程版本；</li>
+<li>2002年2月26，Parallel GC和Concurrent Mark Sweep GC（CMS）跟随JDK 1.4.2一起发布；</li>
+<li>Parallel GC在JDK 1.6后称为HotSpot默认GC；</li>
+<li>2012年，在JDK 1.7u4版本中，G1可用；</li>
+<li>2017年，JDK 9中，G1成为默认垃圾回收器，CMS被标记为过时；</li>
+<li>2018年3月，JDK 10中提升G1并行性；</li>
+<li>2018年9月，JDK 11引入了Epsilon垃圾回收器，同时引入ZGC（实验版本）；</li>
+<li>2019年3月，JDK 12发布，增强G1，并引入Shenandoah GC（实验版本）；</li>
+<li>2019年9月，JDK 13发布，增强ZGC；</li>
+<li>2020年3月，JDK 14发布，删除CMS，拓展ZGC在MAC和Windows上的应用。</li>
+</ul>
+<h3 id="垃圾回收器组合"><a href="#垃圾回收器组合" class="headerlink" title="垃圾回收器组合"></a>垃圾回收器组合</h3><p>7款经典垃圾回收器间的组合关系：</p>
+<p><img src="/p/d6094941/QQ20200915-095724@2x.png" alt="QQ20200915-095724@2x"></p>
+<p>说明：</p>
+<ol>
+<li>两个回收器间有连线，说明它们可以搭配使用；</li>
+<li>Serial Old作为CMS出现“Concurrent Mode Failure”失败的后备预案；</li>
+<li>G1可用于新生代和老年代；</li>
+<li>红色虚线连线：JDK 8将这两组组合声明为废弃，并在JDK 9中完全移除；</li>
+<li>绿色虚线连线：JDK 14中，弃用了该组合；</li>
+<li>绿色虚线边框：JDK 14中，删除了CMS。</li>
+</ol>
+<h3 id="默认垃圾回收器查看"><a href="#默认垃圾回收器查看" class="headerlink" title="默认垃圾回收器查看"></a>默认垃圾回收器查看</h3><p>编写一段简单的java程序：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        System.out.println(<span class="string">"hello"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>添加<code>-XX:+PrintCommandLineFlags</code>JVM参数配置，在JDK 8环境下程序输出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">-XX:InitialHeapSize=536870912 -XX:MaxHeapSize=8589934592 -XX:+PrintCommandLineFlags -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseParallelGC </span><br><span class="line">hello</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>-XX:+UseParallelGC</code>说明JDK 8默认的垃圾回收器为Parallel。</p>
+<p>在JDK 9环境下输出：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">-XX:G1ConcRefinementThreads=10 -XX:InitialHeapSize=536870912 -XX:MaxHeapSize=8589934592 -XX:+PrintCommandLineFlags -XX:ReservedCodeCacheSize=251658240 -XX:+SegmentedCodeCache -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseG1GC </span><br><span class="line">hello</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>-XX:+UseG1GC</code>说明JDK 9默认的垃圾回收器为G1。</p>
+<h3 id="经典垃圾回收器介绍"><a href="#经典垃圾回收器介绍" class="headerlink" title="经典垃圾回收器介绍"></a>经典垃圾回收器介绍</h3><h4 id="Serial、Serial-Old回收器"><a href="#Serial、Serial-Old回收器" class="headerlink" title="Serial、Serial Old回收器"></a>Serial、Serial Old回收器</h4><p>Serial垃圾回收器是单线程<strong>串行回收器</strong>，作为HotSpot中Client模式下的默认新生代垃圾收集器。采用<strong>复制算法</strong>、<strong>串行回收</strong>和<strong>STW机制</strong>的方式执行内存回收。</p>
+<p>Serial Old垃圾回收器为Serial提供的老年代垃圾回收器，采用<strong>标记压缩算法</strong>、<strong>串行回收</strong>和<strong>STW机制</strong>进行内存回收：</p>
+<ul>
+<li><p>Serial Old是运行在Client模式下默认的老年代垃圾回收器；</p>
+</li>
+<li><p>Serial Old在Server模式下主要有两个用途：</p>
+<p>a. 与新生代的Parallel Scavenge配合使用；</p>
+<p>b. 作为老年代CMS回收器的后备垃圾收集方案。</p>
+</li>
+</ul>
+<p>Serial适用于运行在Client模式下的虚拟机或者内存不大（几十MB到一两百MB）的环境下，因为是串行的，有较长时间的STW，所以并不适用于要求快响应、交互较强的应用。</p>
+<p>可以通过<code>XX:+UseSerialGC</code>参数启用Serial回收器，表示新生代使用Serial，老年代使用Serial Old。</p>
+<h4 id="ParNew回收器"><a href="#ParNew回收器" class="headerlink" title="ParNew回收器"></a>ParNew回收器</h4><p>ParNew是Parallel New两个词的简写，是Serial的多线程版本垃圾回收器。ParNew是很多JVM运行在Server模式下新生代的默认垃圾回收器，采用<strong>复制算法</strong>、<strong>并行回收</strong>和<strong>STW机制</strong>进行内存回收。</p>
+<p>可以通过<code>XX:+UseParNewGC</code>参数启用ParNew回收器，表示新生代使用ParNew，老年代不受影响。</p>
+<p>Serial、ParNew搭配Serial Old回收器示意图：</p>
+<p><img src="/p/d6094941/mVbDKEFY82.jpg" alt="mVbDKEFY82"></p>
+<h4 id="Parallel、Parallel-Old回收器"><a href="#Parallel、Parallel-Old回收器" class="headerlink" title="Parallel、Parallel Old回收器"></a>Parallel、Parallel Old回收器</h4><p>Parallel Scavenge回收器也是作用于新生代，同样采用复制算法，并行回收和STW机制。</p>
+<p>Parallel Scavenge和ParNew对比：</p>
+<ul>
+<li>Parallel Scavenge为吞吐量优先的垃圾回收器；</li>
+<li>Parallel Scavenge具有自适应调节策略。</li>
+</ul>
+<p>JDK 1.6提供了用于老年代的并行垃圾回收器 —— Parallel Old回收器，用于替代Serial Old回收器。Parallel采用标记压缩、并行回收和STW机制。</p>
+<p>可以通过<code>-XX:+UseParallelGC</code>指定新生代使用Parallel Scavenge回收器；<code>-XX:+UseParallelOldGC</code>指定老年代使用Parallel Old回收器，它们是成对存在的，开启一个另一个也会开启。</p>
+<p>此外还可以通过<code>-XX:ParallelGCThreads=</code>设置并行回收器的线程数：</p>
+<ul>
+<li>默认情况下，当CPU数量小于8个时，<code>-XX:ParallelGCThreads=</code>的值等于CPU数量；</li>
+<li>当CPU数量大于8个，<code>-XX:ParallelGCThreads=</code>的值等于<code>3+5*CPU_COUNT/8</code>。</li>
+</ul>
+<p><code>-XX:+UseAdaptiveSizePolicy</code>开启Parallel Scavenge的自适应调节策略：</p>
+<p>该模式下，年轻代大小、伊甸园区和幸存者区的比例、晋升老年代的对象年龄阈值都会自动调整，以达到在堆大小、吞吐量和停顿时间之间的平衡点。</p>
+<h4 id="CMS回收器"><a href="#CMS回收器" class="headerlink" title="CMS回收器"></a>CMS回收器</h4><p>JDK 1.5 HotSpot推出了一款真正意义上的并发回收器 —— CMS（Concurrent-Mark-Sweep），第一次实现了让垃圾回收线程和用户线程同时工作。CMS的关注点在于尽可能缩短垃圾收集时用户线程停顿的时间。</p>
+<p>CMS作为一款老年代的垃圾回收器，不能和新生代垃圾回收器Parallel Scavenge搭配使用，只能和ParNew或者Serial搭配使用。</p>
+<p>CMS回收器示意图：</p>
+<p><img src="/p/d6094941/AB4KDE85OF.png" alt="AB4KDE85OF"></p>
+<p>主要分为以下几个步骤：</p>
+<ol>
+<li>初始标记（Initial-Mark）：所有用户线程暂停（STW），这个阶段仅仅标记出GC Roots能直接关联到的对象，所以速度非常快，STW时间很短；</li>
+<li>并发标记（Concurrent-Mark）：该阶段从GC Roots直接关联对象开始遍历整个对象链，虽然这个过程耗时较长，但并不需要暂停用户线程，并发执行，没有STW；</li>
+<li>重新标记（Remark）：由于上一步用户线程也在执行，所以这一步用于修正因用户线程继续运行而导致标记发生变动的那一部分对象的标记记录。这个阶段会比初始标记阶段耗时长一点，但远比并发标记阶段低；</li>
+<li>并发清除（Concurrent-Sweep）：该阶段清理删除垃圾，回收空间。由于没有移动对象，所以该阶段也不需要STW。</li>
+</ol>
+<p>CMS的优缺点都很明显：</p>
+<p>优点：</p>
+<ul>
+<li>并发收集；</li>
+<li>低延迟。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>会产生碎片。因为清理阶段用户线线程还在执行，所以只能采用不移动对象的标记-清除算法，而该算法会产生碎片问题；</li>
+<li>对CPU资源敏感。CPU资源除了用于用户线程外，还需分配一部分用于处理垃圾回收，降低了吞吐量；</li>
+<li>无法处理浮动垃圾。并发标记阶段，用户线程并未停止，该阶段也会产生垃圾， CMS无法对这些垃圾进行标记，只能留到下次GC时处理。</li>
+</ul>
+<p>此外，CMS在回收过程中，因为用户线程并没有中断，所以还需确保用户线程有足够的内存可用。换句话说，CMS回收器不能等老年代即将被填满时才去回收，而应当堆内存使用率到达一定阈值时，便开始进行回收。如果CMS运行期间预留内存不足，就会出现一次“Concurrent Mode Failure”失败，虚拟机会启动后备方案，临时启用Serial Old回收器来完成老年代的垃圾回收。</p>
+<p>CMS回收器可设置参数：</p>
+<ul>
+<li><code>-XX:+UseConcMarkSweepGC</code>，开启CMS GC，开启后，<code>-XX:+UseParNewGC</code>会自动打开；</li>
+<li><code>-XX:CMSInitiatingOccupanyFraction=</code>，设置堆内存使用率阈值，一旦达到这个阈值，CMS开始进行回收（JDK5及之前，默认值为68，JDK6及以上版本默认值为92%）；</li>
+<li><code>-XX:+UseCMSCompactAtFullCollection</code>，指定在CMS回收完老年代后，对内存空间进行压缩处理，以避免碎片化问题；</li>
+<li><code>-XX:CMSFullGCsBeforeCompaction</code>，设置执行多少次CMS GC后，对内存空间进行压缩整理；</li>
+<li><code>-XX:ParallelCMSThreads=</code>，设置CMS的线程数。默认启动的线程数为<code>(ParallelGCThreads+3)/4</code>。我们知道，当CPU个数小于8时，ParallelGCThreads的默认值为CPU个数，所以对于一个8核CPU，默认启动的CMS线程数为3，换句话说只有62.5%的CPU资源用于处理用户线程。所以CMS不适合吞吐量要求高的场景。</li>
+</ul>
+<h4 id="G1回收器"><a href="#G1回收器" class="headerlink" title="G1回收器"></a>G1回收器</h4><p>G1（Garbage First）回收器把堆内存分割成很多不相关的区域（region，物理上不连续），使用不同区域来表示伊甸园区，幸存者区和老年代。</p>
+<p>G1会避免对整个Java堆进行垃圾收集，它会跟踪各个region里垃圾回收的价值大小（回收所获得的空间大小及所需时间的经验值），在后台维护一个优先列表，每次根据允许收集时间，优先回收价值最大的region。</p>
+<p><strong>region的说明</strong></p>
+<p><img src="/p/d6094941/QQ20200922-143837@2x.png" alt="QQ20200922-143837@2x"></p>
+<ul>
+<li>E表示伊甸园区，S表示幸存者区、O表示老年代，空白表示未使用的内存区域；</li>
+<li>一个region在同一时间内只能属于一种角色；</li>
+<li>G1新增了一个全新的内存区域——Humongous，主要用于存放大对象。</li>
+</ul>
+<p>G1回收垃圾过程如下图所示：</p>
+<p><img src="/p/d6094941/QQ20200922-142231@2x.png" alt="QQ20200922-142231@2x"></p>
+<ol>
+<li><strong>初始标记</strong>：仅仅是标记GC Roots能直接关联的对象，需要STW，但这个过程非常快；</li>
+<li><strong>并发标记</strong>：从GC Roots出发，对堆中对象进行可达性分析，找出存活对象，该阶段耗时较长，但是可与用户线程并发执行；</li>
+<li><strong>最终标记</strong>：主要修正在并发标记阶段因为用户线程继续运行而导致标记记录产生变动的那一部分对象的标记记录，需要STW；</li>
+<li><strong>筛选回收</strong>：将各个region分区的回收价值和成本进行排序，根据用户所期望的停顿时间制定回收计划。这阶段停顿用户线程，STW。</li>
+</ol>
+<p>G1回收器的优缺点：</p>
+<p>优点：</p>
+<ul>
+<li>并行与并发；</li>
+<li>分代收集，可以采用不同的算法处理不同的对象；</li>
+<li>空间整合，标记压缩算法意味着不会产生内存碎片；</li>
+<li>可预测的停顿时间，能让使用者明确指定一个长度为M毫秒时间片段内，消耗在垃圾回收的时间不超过N毫秒（根据优先列表优先回收价值最大的region）。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>在小内存环境下和CMS相比没有优势，G1适合大的堆内存；</li>
+<li>在用户程序运行过程中，G1无论是为了垃圾回收产生的内存占用，还是程序运行时的额外执行负载都要比CMS高。</li>
+</ul>
+<p>G1回收器相关参数设置：</p>
+<ul>
+<li><code>-XX:+UseG1GC</code>，开启G1 GC；</li>
+<li><code>-XX:G1HeapRegionSize=</code>，设置region的大小。值为2的幂，范围是1MB到32MB之间，目标是根据最小堆内存大小划分出约2048个区域。所以如果这个值设置为2MB，那么堆最小内存大约为4GB；</li>
+<li><code>-XX:MaxGCPauseMillis=</code>，设置期望达到的最大GC停顿时间指标（JVM会尽力实现，但不保证达到），默认值为200ms；</li>
+<li><code>-XX:ParallelGCThread=</code>，设置STW时GC线程数值，最多设置为8；</li>
+<li><code>-XX:ConcGCThreads=</code>，设置并发标记的线程数，推荐值为ParallelGCThread的1/4左右；</li>
+<li><code>-XX:InitiatingHeapOccupancyPercent=</code>，设置触发并发GC周期的Java堆占用率阈值，超过这个值就触发GC，默认值为45。</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>上面这几款经典的垃圾回收器各有特点，具体使用的时候需要根据具体的情况选用不同的垃圾回收器：</p>
+<p><img src="/p/d6094941/QQ20200915-104531@2x.png" alt="QQ20200915-104531@2x"></p>
+<table>
+<thead>
+<tr>
+<th align="left">垃圾回收器</th>
+<th align="left">分类</th>
+<th align="left">作用位置</th>
+<th align="left">使用算法</th>
+<th align="left">特点</th>
+<th align="left">适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Serial</td>
+<td align="left">串行</td>
+<td align="left">新生代</td>
+<td align="left">复制算法</td>
+<td align="left">响应速度优先</td>
+<td align="left">适用于单CPU环境下的Client模式</td>
+</tr>
+<tr>
+<td align="left">ParNew</td>
+<td align="left">并行</td>
+<td align="left">新生代</td>
+<td align="left">复制算法</td>
+<td align="left">响应速度优先</td>
+<td align="left">多CPU环境Server模式下与CMS配合使用</td>
+</tr>
+<tr>
+<td align="left">Parallel</td>
+<td align="left">并行</td>
+<td align="left">新生代</td>
+<td align="left">复制算法</td>
+<td align="left">吞吐量优先</td>
+<td align="left">适用于后台运算而不需要太多交互的场景</td>
+</tr>
+<tr>
+<td align="left">Serial Old</td>
+<td align="left">串行</td>
+<td align="left">老年代</td>
+<td align="left">标记-压缩算法</td>
+<td align="left">响应速度优先</td>
+<td align="left">单CPU环境下的Client模式</td>
+</tr>
+<tr>
+<td align="left">Parallel Old</td>
+<td align="left">并行</td>
+<td align="left">老年代</td>
+<td align="left">标记-压缩算法</td>
+<td align="left">吞吐量优先</td>
+<td align="left">适用于后台运算而不需要太多交互的场景</td>
+</tr>
+<tr>
+<td align="left">CMS</td>
+<td align="left">并发</td>
+<td align="left">老年代</td>
+<td align="left">标记-压缩算法</td>
+<td align="left">响应速度优先</td>
+<td align="left">适用于互联网或B/S业务</td>
+</tr>
+<tr>
+<td align="left">G1</td>
+<td align="left">并行与并发</td>
+<td align="left">新生代、老年代</td>
+<td align="left">复制算法 标记-压缩算法</td>
+<td align="left">响应速度优先</td>
+<td align="left">面向服务端应用</td>
+</tr>
+</tbody></table>
+</body></html>]]></content>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JVM整体结构</title>
     <url>/p/4868cbd5.html</url>
     <content><![CDATA[<html><head></head><body><h2 id="Java程序运行流程"><a href="#Java程序运行流程" class="headerlink" title="Java程序运行流程"></a>Java程序运行流程</h2><p>在计算机系统体系中并不认识高级语言，需要转成汇编，再由转机器指令。</p>
@@ -3492,6 +3921,22 @@ signalAll();
       </tags>
   </entry>
   <entry>
+    <title>TLAB(Thread Local Allocation Buffer)</title>
+    <url>/p/5bb29d6f.html</url>
+    <content><![CDATA[<html><head></head><body><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>堆区是一块线程共享区域，非线程安全。如果需要保证线程安全，需要借助锁，但会影响内存的分配速度。</p>
+<p>多线程同时分配内存时，使用 TLAB 可以避免一系列的非线程安全问题，同时还能提升内存分配的吞吐量，因此我们可以将这种内存分配方式称之为<strong>快速分配策略</strong>。</p>
+<h2 id="什么是TLAB？"><a href="#什么是TLAB？" class="headerlink" title="什么是TLAB？"></a>什么是TLAB？</h2><p>从内存模型的角度，在Eden区中划分的一个区域叫做TLAB（TLAB 全称 Thread Local Allocation Buffer），本地分配缓存区，是JVM为每个线程分配了一个私有的缓存区域，占用内存是整个Eden的1%，占用空间非常小。</p>
+<h2 id="实际应用TLAB"><a href="#实际应用TLAB" class="headerlink" title="实际应用TLAB"></a>实际应用TLAB</h2><p>尽管不是所有对象实例都能够在TLAB中成功分配内存（因为TLAB内存很小），但JVM确实是将TLAB作为内存分配的首选。</p>
+<p>当然，也可以通过参数 <code>-XX:TLABWasteTargetPercent</code>来设置TLAB空间所占用 Eden 空间的百分比大小。</p>
+<p>一旦对象在TLAB空间分配失败时（例如空间不足），JVM就会尝试通过使用加锁机制来确保数据操作的原子性，从而直接在Eden空间中分配内存。</p>
+<p><img src="/p/5bb29d6f/JVM-TLAB.png" alt="JVM-TLAB"></p>
+<p>现在new一个对象，然后TLAB分配，如果TLAB空间够用，那么就对象实例化，如果不够用就只能用Eden公共的部分，如果还不够用，那么就会触发GC。</p>
+</body></html>]]></content>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JVM栈及栈帧</title>
     <url>/p/79c43ec4.html</url>
     <content><![CDATA[<html><head></head><body><h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><h3 id="是什么？"><a href="#是什么？" class="headerlink" title="是什么？"></a>是什么？</h3><p>Java虚拟机栈(Java virtual Machine stack) ，早期也叫Java栈。每个线程在创建时都会创建一个虚拟机栈,其内部保存一个个的栈帧(stack Frame) ,对应着一次次的Java方法调用，每个方法被调用执行的时候，Java虚拟机都会同步创建一个栈帧（Stack Frame）。</p>
@@ -3746,22 +4191,6 @@ signalAll();
 <td>x</td>
 </tr>
 </tbody></table>
-</body></html>]]></content>
-      <tags>
-        <tag>JVM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>TLAB(Thread Local Allocation Buffer)</title>
-    <url>/p/5bb29d6f.html</url>
-    <content><![CDATA[<html><head></head><body><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>堆区是一块线程共享区域，非线程安全。如果需要保证线程安全，需要借助锁，但会影响内存的分配速度。</p>
-<p>多线程同时分配内存时，使用 TLAB 可以避免一系列的非线程安全问题，同时还能提升内存分配的吞吐量，因此我们可以将这种内存分配方式称之为<strong>快速分配策略</strong>。</p>
-<h2 id="什么是TLAB？"><a href="#什么是TLAB？" class="headerlink" title="什么是TLAB？"></a>什么是TLAB？</h2><p>从内存模型的角度，在Eden区中划分的一个区域叫做TLAB（TLAB 全称 Thread Local Allocation Buffer），本地分配缓存区，是JVM为每个线程分配了一个私有的缓存区域，占用内存是整个Eden的1%，占用空间非常小。</p>
-<h2 id="实际应用TLAB"><a href="#实际应用TLAB" class="headerlink" title="实际应用TLAB"></a>实际应用TLAB</h2><p>尽管不是所有对象实例都能够在TLAB中成功分配内存（因为TLAB内存很小），但JVM确实是将TLAB作为内存分配的首选。</p>
-<p>当然，也可以通过参数 <code>-XX:TLABWasteTargetPercent</code>来设置TLAB空间所占用 Eden 空间的百分比大小。</p>
-<p>一旦对象在TLAB空间分配失败时（例如空间不足），JVM就会尝试通过使用加锁机制来确保数据操作的原子性，从而直接在Eden空间中分配内存。</p>
-<p><img src="/p/5bb29d6f/JVM-TLAB.png" alt="JVM-TLAB"></p>
-<p>现在new一个对象，然后TLAB分配，如果TLAB空间够用，那么就对象实例化，如果不够用就只能用Eden公共的部分，如果还不够用，那么就会触发GC。</p>
 </body></html>]]></content>
       <tags>
         <tag>JVM</tag>
@@ -4200,30 +4629,6 @@ signalAll();
       </tags>
   </entry>
   <entry>
-    <title>RabbitMQ消息的不公平分发</title>
-    <url>/p/3700606c.html</url>
-    <content><![CDATA[<html><head></head><body><p>在最开始的时候我们学习到 RabbitMQ 分发消息采用的轮询分发，但是在某种场景下这种策略并不是很好，比方说有两个消费者在处理任务，其中有个消费者 1 处理任务的速度非常快，而另外一个消费者 2 处理速度却很慢，这个时候我们还是采用轮训分发的化就会到这处理速度快的这个消费者很大一部分时间处于空闲状态，而处理慢的那个消费者一直在干活，这种分配方式在这种情况下其实就不太好，但是RabbitMQ 并不知道这种情况它依然很公平的进行分发。</p>
-<p>为了避免上述情况，强烈建议使用不公平分发（能者多劳），生产者和消费者都需要设置参数 channel.basicQos(1);</p>
-<p><img src="/p/3700606c/RabbitMQ-%E6%B6%88%E6%81%AF%E7%9A%84%E4%B8%8D%E5%85%AC%E5%B9%B3%E5%88%86%E5%8F%91.png" alt="image-20210620163005387"></p>
-<p>意思就是如果这个任务我还没有处理完或者我还没有应答你，你先别分配给我，我目前只能处理一个任务，然后rabbitmq就会把该任务分配给没有那么忙的那个空闲消费者，当然如果所有的消费者都没有完成手上任务，队列还在不停的添加新任务，队列有可能就会遇到队列被撑满的情况，这个时候就只能添加新的worker或者改变其他存储任务的策略。</p>
-<p><strong>示例代码</strong></p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MessageQosProducer</span> {</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">QUEUE_NAME</span> <span class="operator">=</span> QOS_QUEUE_NAME;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">        <span class="type">ConnectionFactory</span> <span class="variable">connectionFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ConnectionFactory</span>();</span><br><span class="line">        connectionFactory.setHost(<span class="string">"192.168.19.128"</span>);</span><br><span class="line">        connectionFactory.setPort(<span class="number">5672</span>);</span><br><span class="line">        connectionFactory.setUsername(<span class="string">"admin"</span>);</span><br><span class="line">        connectionFactory.setPassword(<span class="string">"admin"</span>);</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> connectionFactory.newConnection();</span><br><span class="line">        <span class="type">Channel</span> <span class="variable">channel</span> <span class="operator">=</span> connection.createChannel();</span><br><span class="line">        <span class="comment">// 设置为不公平分发</span></span><br><span class="line">        channel.basicQos(<span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 队列持久化</span></span><br><span class="line">        channel.queueDeclare(QUEUE_NAME, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) {</span><br><span class="line">            <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> <span class="string">"message_"</span> + i;</span><br><span class="line">            <span class="comment">// 消息持久化</span></span><br><span class="line">            channel.basicPublish(<span class="string">""</span>, QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, (msg).getBytes(StandardCharsets.UTF_8));</span><br><span class="line">            System.out.println(<span class="string">"消息["</span> + msg + <span class="string">"]发送完成"</span>);</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        channel.close();</span><br><span class="line">        connection.close();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p> 消费者1处理任务时间为5s，消费者2处理任务时间为1s，所以2处理的任务比1更多。</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MessageQosConsumer1</span> {</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">QUEUE_NAME</span> <span class="operator">=</span> QOS_QUEUE_NAME;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">        <span class="type">ConnectionFactory</span> <span class="variable">connectionFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ConnectionFactory</span>();</span><br><span class="line">        connectionFactory.setHost(<span class="string">"192.168.19.128"</span>);</span><br><span class="line">        connectionFactory.setPort(<span class="number">5672</span>);</span><br><span class="line">        connectionFactory.setUsername(<span class="string">"admin"</span>);</span><br><span class="line">        connectionFactory.setPassword(<span class="string">"admin"</span>);</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> connectionFactory.newConnection();</span><br><span class="line">        <span class="type">Channel</span> <span class="variable">channel</span> <span class="operator">=</span> connection.createChannel();</span><br><span class="line">        <span class="comment">// 设置持久化</span></span><br><span class="line">        channel.queueDeclare(QUEUE_NAME, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">null</span>);</span><br><span class="line">        channel.basicQos(<span class="number">1</span>);</span><br><span class="line">        <span class="type">Consumer</span> <span class="variable">callback</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultConsumer</span>(channel) {</span><br><span class="line">            <span class="meta">@SneakyThrows</span></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleDelivery</span><span class="params">(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, <span class="type">byte</span>[] body)</span> <span class="keyword">throws</span> IOException {</span><br><span class="line">                <span class="comment">//路由的key</span></span><br><span class="line">                <span class="type">String</span> <span class="variable">routingKey</span> <span class="operator">=</span> envelope.getRoutingKey();</span><br><span class="line">                <span class="comment">//获取交换机信息</span></span><br><span class="line">                <span class="type">String</span> <span class="variable">exchange</span> <span class="operator">=</span> envelope.getExchange();</span><br><span class="line">                <span class="comment">//获取消息ID</span></span><br><span class="line">                <span class="type">long</span> <span class="variable">deliveryTag</span> <span class="operator">=</span> envelope.getDeliveryTag();</span><br><span class="line">                <span class="comment">//获取消息信息</span></span><br><span class="line">                <span class="type">String</span> <span class="variable">message</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(body, StandardCharsets.UTF_8);</span><br><span class="line">                System.out.println(<span class="string">"routingKey:"</span> + routingKey +</span><br><span class="line">                        <span class="string">",exchange:"</span> + exchange +</span><br><span class="line">                        <span class="string">",deliveryTag:"</span> + deliveryTag +</span><br><span class="line">                        <span class="string">",message:"</span> + message);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 模拟处理任务的时间</span></span><br><span class="line">                <span class="comment">// 消费者1设置为5s，消费者2设置为1s</span></span><br><span class="line">                TimeUnit.SECONDS.sleep(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// deliveryTag是消息标记tag ,设置为不批量应答</span></span><br><span class="line">                channel.basicAck(deliveryTag, <span class="literal">false</span>);</span><br><span class="line">            }</span><br><span class="line">        };</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用手动应答</span></span><br><span class="line">        channel.basicConsume(QUEUE_NAME, <span class="literal">false</span>, callback);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<h2 id="预取值（prefetchCount）"><a href="#预取值（prefetchCount）" class="headerlink" title="预取值（prefetchCount）"></a>预取值（prefetchCount）</h2><p>在上面案例中通过设置生产者和消费者的 channel.basicQos(1) 来实现消息的不公平分发。那么这个1是什么含义呢？这个就是当前消费者理论上获取的消息条数。</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Request a specific prefetchCount "quality of service" settings</span></span><br><span class="line"><span class="comment"> * for this channel.</span></span><br><span class="line"><span class="comment"> * Note the prefetch count must be between 0 and 65535 (unsigned short in AMQP 0-9-1).</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> prefetchCount maximum number of messages that the server</span></span><br><span class="line"><span class="comment"> *                      will deliver, 0 if unlimited</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> java.io.IOException if an error is encountered</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> #basicQos(int, int, boolean)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">basicQos</span><span class="params">(<span class="type">int</span> prefetchCount)</span> <span class="keyword">throws</span> IOException;</span><br></pre></td></tr></tbody></table></figure>
-
-<p>本身消息的发送就是异步发送的，所以在任何时候，channel 上肯定不止只有一个消息另外来自消费者的手动确认本质上也是异步的。因此这里就存在一个未确认的消息缓冲区，因此希望开发人员能<strong>限制此缓冲区的大小，以避免缓冲区里面无限制的未确认消息问题</strong>。这个时候就可以通过使用 basic.qos 方法设置“预取计数”值来完成的。<strong>该值定义通道上允许的未确认消息的最大数量</strong>。一旦数量达到配置的数量，RabbitMQ 将停止在通道上传递更多消息，除非至少有一个未处理的消息被确认，例如，假设在通道上有未确认的消息 5、6、7，8，并且通道的预取计数设置为 4，此时 RabbitMQ 将不会在该通道上再传递任何消息，除非至少有一个未应答的消息被 ack。比方说 tag=6 这个消息刚刚被确认 ACK，RabbitMQ 将会感知这个情况到并再发送一条消息。消息应答和 QoS 预取值对用户吞吐量有重大影响。通常，增加预取将提高向消费者传递消息的速度。<strong>虽然自动应答传输消息速率是最佳的，但是，在这种情况下已传递但尚未处理的消息的数量也会增加，从而增加了消费者的RAM</strong> <strong>消耗</strong>(随机存取存储器)应该小心使用具有无限预处理的自动确认模式或手动确认模式，消费者消费了大量的消息如果没有确认的话，会导致消费者连接节点的内存消耗变大，所以找到合适的预取值是一个反复试验的过程，不同的负载该值取值也不同 100 到 300 范围内的值通常可提供最佳的吞吐量，并且不会给消费者带来太大的风险。预取值为 1 是最保守的。当然这将使吞吐量变得很低，特别是消费者连接延迟很严重的情况下，特别是在消费者连接等待时间较长的环境中。对于大多数应用来说，稍微高一点的值将是最佳的。</p>
-<p><img src="/p/3700606c/RabbitMQ-%E9%A2%84%E5%8F%96%E5%80%BC.png" alt="image-20210620164043190"></p>
-</body></html>]]></content>
-      <tags>
-        <tag>消息中间件</tag>
-        <tag>RabbitMQ</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>RabbitMQ优先级队列</title>
     <url>/p/87548d77.html</url>
     <content><![CDATA[<html><head></head><body><p>在优先级队列中，针对生产者给消息设置的优先级进行排序，优先级越大的越先被消费者消费。如果在消费者的消费速度大于生产者的速度，且Broker中没有消息堆积的情况下，对发送的消息设置优先级没有意义。</p>
@@ -4242,6 +4647,30 @@ signalAll();
 <p>消费者</p>
 <figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MessagePriorityConsumer</span> {</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">QUEUE_NAME</span> <span class="operator">=</span> <span class="string">"priority"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">        <span class="type">ConnectionFactory</span> <span class="variable">connectionFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ConnectionFactory</span>();</span><br><span class="line">        connectionFactory.setHost(<span class="string">"192.168.19.128"</span>);</span><br><span class="line">        connectionFactory.setPort(<span class="number">5672</span>);</span><br><span class="line">        connectionFactory.setUsername(<span class="string">"admin"</span>);</span><br><span class="line">        connectionFactory.setPassword(<span class="string">"admin"</span>);</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> connectionFactory.newConnection();</span><br><span class="line">        <span class="type">Channel</span> <span class="variable">channel</span> <span class="operator">=</span> connection.createChannel();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置优先级最大值，取值范围为0-255</span></span><br><span class="line">        Map&lt;String,Object&gt; arguments = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;(<span class="number">1</span>);</span><br><span class="line">        arguments.put(<span class="string">"x-max-priority"</span>,<span class="number">10</span>);</span><br><span class="line">        <span class="comment">// 声明优先级队列</span></span><br><span class="line">        channel.queueDeclare(QUEUE_NAME, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>, arguments);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"等待接收消息..."</span>);</span><br><span class="line">        channel.basicConsume(QUEUE_NAME, <span class="literal">true</span>, (consumerTag, delivery) -&gt; {</span><br><span class="line">            <span class="type">byte</span>[] msgBytes = delivery.getBody();</span><br><span class="line">            System.out.println(<span class="string">"接收到消息：消息ID="</span> + consumerTag + <span class="string">"===&gt;"</span> + <span class="keyword">new</span> <span class="title class_">String</span>(msgBytes));</span><br><span class="line">        }, consumerTag -&gt; {</span><br><span class="line">            System.out.println(<span class="string">"消息被中断：消息ID="</span> + consumerTag);</span><br><span class="line">        });</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
+</body></html>]]></content>
+      <tags>
+        <tag>消息中间件</tag>
+        <tag>RabbitMQ</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>RabbitMQ消息的不公平分发</title>
+    <url>/p/3700606c.html</url>
+    <content><![CDATA[<html><head></head><body><p>在最开始的时候我们学习到 RabbitMQ 分发消息采用的轮询分发，但是在某种场景下这种策略并不是很好，比方说有两个消费者在处理任务，其中有个消费者 1 处理任务的速度非常快，而另外一个消费者 2 处理速度却很慢，这个时候我们还是采用轮训分发的化就会到这处理速度快的这个消费者很大一部分时间处于空闲状态，而处理慢的那个消费者一直在干活，这种分配方式在这种情况下其实就不太好，但是RabbitMQ 并不知道这种情况它依然很公平的进行分发。</p>
+<p>为了避免上述情况，强烈建议使用不公平分发（能者多劳），生产者和消费者都需要设置参数 channel.basicQos(1);</p>
+<p><img src="/p/3700606c/RabbitMQ-%E6%B6%88%E6%81%AF%E7%9A%84%E4%B8%8D%E5%85%AC%E5%B9%B3%E5%88%86%E5%8F%91.png" alt="image-20210620163005387"></p>
+<p>意思就是如果这个任务我还没有处理完或者我还没有应答你，你先别分配给我，我目前只能处理一个任务，然后rabbitmq就会把该任务分配给没有那么忙的那个空闲消费者，当然如果所有的消费者都没有完成手上任务，队列还在不停的添加新任务，队列有可能就会遇到队列被撑满的情况，这个时候就只能添加新的worker或者改变其他存储任务的策略。</p>
+<p><strong>示例代码</strong></p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MessageQosProducer</span> {</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">QUEUE_NAME</span> <span class="operator">=</span> QOS_QUEUE_NAME;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">        <span class="type">ConnectionFactory</span> <span class="variable">connectionFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ConnectionFactory</span>();</span><br><span class="line">        connectionFactory.setHost(<span class="string">"192.168.19.128"</span>);</span><br><span class="line">        connectionFactory.setPort(<span class="number">5672</span>);</span><br><span class="line">        connectionFactory.setUsername(<span class="string">"admin"</span>);</span><br><span class="line">        connectionFactory.setPassword(<span class="string">"admin"</span>);</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> connectionFactory.newConnection();</span><br><span class="line">        <span class="type">Channel</span> <span class="variable">channel</span> <span class="operator">=</span> connection.createChannel();</span><br><span class="line">        <span class="comment">// 设置为不公平分发</span></span><br><span class="line">        channel.basicQos(<span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 队列持久化</span></span><br><span class="line">        channel.queueDeclare(QUEUE_NAME, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) {</span><br><span class="line">            <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> <span class="string">"message_"</span> + i;</span><br><span class="line">            <span class="comment">// 消息持久化</span></span><br><span class="line">            channel.basicPublish(<span class="string">""</span>, QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, (msg).getBytes(StandardCharsets.UTF_8));</span><br><span class="line">            System.out.println(<span class="string">"消息["</span> + msg + <span class="string">"]发送完成"</span>);</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        channel.close();</span><br><span class="line">        connection.close();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p> 消费者1处理任务时间为5s，消费者2处理任务时间为1s，所以2处理的任务比1更多。</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MessageQosConsumer1</span> {</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">QUEUE_NAME</span> <span class="operator">=</span> QOS_QUEUE_NAME;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">        <span class="type">ConnectionFactory</span> <span class="variable">connectionFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ConnectionFactory</span>();</span><br><span class="line">        connectionFactory.setHost(<span class="string">"192.168.19.128"</span>);</span><br><span class="line">        connectionFactory.setPort(<span class="number">5672</span>);</span><br><span class="line">        connectionFactory.setUsername(<span class="string">"admin"</span>);</span><br><span class="line">        connectionFactory.setPassword(<span class="string">"admin"</span>);</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> connectionFactory.newConnection();</span><br><span class="line">        <span class="type">Channel</span> <span class="variable">channel</span> <span class="operator">=</span> connection.createChannel();</span><br><span class="line">        <span class="comment">// 设置持久化</span></span><br><span class="line">        channel.queueDeclare(QUEUE_NAME, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">null</span>);</span><br><span class="line">        channel.basicQos(<span class="number">1</span>);</span><br><span class="line">        <span class="type">Consumer</span> <span class="variable">callback</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultConsumer</span>(channel) {</span><br><span class="line">            <span class="meta">@SneakyThrows</span></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleDelivery</span><span class="params">(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, <span class="type">byte</span>[] body)</span> <span class="keyword">throws</span> IOException {</span><br><span class="line">                <span class="comment">//路由的key</span></span><br><span class="line">                <span class="type">String</span> <span class="variable">routingKey</span> <span class="operator">=</span> envelope.getRoutingKey();</span><br><span class="line">                <span class="comment">//获取交换机信息</span></span><br><span class="line">                <span class="type">String</span> <span class="variable">exchange</span> <span class="operator">=</span> envelope.getExchange();</span><br><span class="line">                <span class="comment">//获取消息ID</span></span><br><span class="line">                <span class="type">long</span> <span class="variable">deliveryTag</span> <span class="operator">=</span> envelope.getDeliveryTag();</span><br><span class="line">                <span class="comment">//获取消息信息</span></span><br><span class="line">                <span class="type">String</span> <span class="variable">message</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(body, StandardCharsets.UTF_8);</span><br><span class="line">                System.out.println(<span class="string">"routingKey:"</span> + routingKey +</span><br><span class="line">                        <span class="string">",exchange:"</span> + exchange +</span><br><span class="line">                        <span class="string">",deliveryTag:"</span> + deliveryTag +</span><br><span class="line">                        <span class="string">",message:"</span> + message);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 模拟处理任务的时间</span></span><br><span class="line">                <span class="comment">// 消费者1设置为5s，消费者2设置为1s</span></span><br><span class="line">                TimeUnit.SECONDS.sleep(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// deliveryTag是消息标记tag ,设置为不批量应答</span></span><br><span class="line">                channel.basicAck(deliveryTag, <span class="literal">false</span>);</span><br><span class="line">            }</span><br><span class="line">        };</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用手动应答</span></span><br><span class="line">        channel.basicConsume(QUEUE_NAME, <span class="literal">false</span>, callback);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="预取值（prefetchCount）"><a href="#预取值（prefetchCount）" class="headerlink" title="预取值（prefetchCount）"></a>预取值（prefetchCount）</h2><p>在上面案例中通过设置生产者和消费者的 channel.basicQos(1) 来实现消息的不公平分发。那么这个1是什么含义呢？这个就是当前消费者理论上获取的消息条数。</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Request a specific prefetchCount "quality of service" settings</span></span><br><span class="line"><span class="comment"> * for this channel.</span></span><br><span class="line"><span class="comment"> * Note the prefetch count must be between 0 and 65535 (unsigned short in AMQP 0-9-1).</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> prefetchCount maximum number of messages that the server</span></span><br><span class="line"><span class="comment"> *                      will deliver, 0 if unlimited</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> java.io.IOException if an error is encountered</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> #basicQos(int, int, boolean)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">basicQos</span><span class="params">(<span class="type">int</span> prefetchCount)</span> <span class="keyword">throws</span> IOException;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>本身消息的发送就是异步发送的，所以在任何时候，channel 上肯定不止只有一个消息另外来自消费者的手动确认本质上也是异步的。因此这里就存在一个未确认的消息缓冲区，因此希望开发人员能<strong>限制此缓冲区的大小，以避免缓冲区里面无限制的未确认消息问题</strong>。这个时候就可以通过使用 basic.qos 方法设置“预取计数”值来完成的。<strong>该值定义通道上允许的未确认消息的最大数量</strong>。一旦数量达到配置的数量，RabbitMQ 将停止在通道上传递更多消息，除非至少有一个未处理的消息被确认，例如，假设在通道上有未确认的消息 5、6、7，8，并且通道的预取计数设置为 4，此时 RabbitMQ 将不会在该通道上再传递任何消息，除非至少有一个未应答的消息被 ack。比方说 tag=6 这个消息刚刚被确认 ACK，RabbitMQ 将会感知这个情况到并再发送一条消息。消息应答和 QoS 预取值对用户吞吐量有重大影响。通常，增加预取将提高向消费者传递消息的速度。<strong>虽然自动应答传输消息速率是最佳的，但是，在这种情况下已传递但尚未处理的消息的数量也会增加，从而增加了消费者的RAM</strong> <strong>消耗</strong>(随机存取存储器)应该小心使用具有无限预处理的自动确认模式或手动确认模式，消费者消费了大量的消息如果没有确认的话，会导致消费者连接节点的内存消耗变大，所以找到合适的预取值是一个反复试验的过程，不同的负载该值取值也不同 100 到 300 范围内的值通常可提供最佳的吞吐量，并且不会给消费者带来太大的风险。预取值为 1 是最保守的。当然这将使吞吐量变得很低，特别是消费者连接延迟很严重的情况下，特别是在消费者连接等待时间较长的环境中。对于大多数应用来说，稍微高一点的值将是最佳的。</p>
+<p><img src="/p/3700606c/RabbitMQ-%E9%A2%84%E5%8F%96%E5%80%BC.png" alt="image-20210620164043190"></p>
 </body></html>]]></content>
       <tags>
         <tag>消息中间件</tag>
@@ -5781,39 +6210,6 @@ signalAll();
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot注解@Conditional</title>
-    <url>/p/dc1803fb.html</url>
-    <content><![CDATA[<html><head></head><body><h2 id="Conditional"><a href="#Conditional" class="headerlink" title="@Conditional"></a>@Conditional</h2><p>作用：按照一定的条件进行判断，满足条件才在容器注册bean。</p>
-<p>这是Spring4新提供的注解，定义：</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">//此注解可以标注在类和方法上</span></span><br><span class="line"><span class="meta">@Target({ElementType.TYPE, ElementType.METHOD})</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span> </span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Conditional {</span><br><span class="line">    Class&lt;? <span class="keyword">extends</span> <span class="title class_">Condition</span>&gt;[] value();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>需要写一个类去继承 Condition 接口，并实现里面的 matches 方法：</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Condition</span> {</span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> var1:判断条件能使用的上下文环境</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> var2:注解所在位置的注释信息</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">matches</span><span class="params">(ConditionContext var1, AnnotatedTypeMetadata var2)</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>获取容器的上下文环境，conditionContext提供了多种方法，方便获取各种信息：</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyCondition</span> <span class="keyword">implements</span> <span class="title class_">Condition</span> {</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">matches</span><span class="params">(ConditionContext conditionContext, AnnotatedTypeMetadata annotatedTypeMetadata)</span> {</span><br><span class="line">        <span class="comment">// 获取ioc使用的 beanFactory</span></span><br><span class="line">        <span class="type">ConfigurableListableBeanFactory</span> <span class="variable">beanFactory</span> <span class="operator">=</span> conditionContext.getBeanFactory();</span><br><span class="line">        <span class="comment">//获取类加载器</span></span><br><span class="line">        <span class="type">ClassLoader</span> <span class="variable">classLoader</span> <span class="operator">=</span> conditionContext.getClassLoader();</span><br><span class="line">        <span class="comment">//获取当前环境信息</span></span><br><span class="line">        <span class="type">Environment</span> <span class="variable">environment</span> <span class="operator">=</span> conditionContext.getEnvironment();</span><br><span class="line">        <span class="comment">//获取bean定义的注册类</span></span><br><span class="line">        <span class="type">BeanDefinitionRegistry</span> <span class="variable">registry</span> <span class="operator">=</span> conditionContext.getRegistry();</span><br><span class="line">        <span class="comment">//获得当前系统名</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">property</span> <span class="operator">=</span> environment.getProperty(<span class="string">"os.name"</span>);</span><br><span class="line">        <span class="comment">// 例如：当前环境是否windows系统，返回true</span></span><br><span class="line">        <span class="keyword">if</span> (property.contains(<span class="string">"Windows"</span>)){</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="单个判断条件"><a href="#单个判断条件" class="headerlink" title="单个判断条件"></a>单个判断条件</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// 放在类上，若当前条件在MyCondition中mathes的方法为true，将会向容器注入一个或多个bean</span></span><br><span class="line"><span class="meta">@Conditional({MyCondition.class})</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span>{</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean1</span><span class="params">()</span>{}</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean2</span><span class="params">()</span>{}</span><br><span class="line">    ...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="多个判断条件的应用"><a href="#多个判断条件的应用" class="headerlink" title="多个判断条件的应用"></a>多个判断条件的应用</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// A和B都返回true,才会注入容器</span></span><br><span class="line"><span class="meta">@Conditional({ACondition.class,BCondition.class})</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span>{</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean1</span><span class="params">()</span>{}</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean2</span><span class="params">()</span>{}</span><br><span class="line">    ...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>继@Conditional注解后，派生出 @ConditionalOnBean、@ConditionalOnMissingBean、@ConditionalOnExpression、@ConditionalOnClass 等</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">@ConditionalOnBean</span>         <span class="comment">//	当给定的在bean存在时,则实例化当前Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean</span>  <span class="comment">//	当给定的在bean不存在时,则实例化当前Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnClass</span>        <span class="comment">//	当给定的类名在类路径上存在，则实例化当前Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingClass</span> <span class="comment">//	当给定的类名在类路径上不存在，则实例化当前Bean</span></span><br></pre></td></tr></tbody></table></figure>
-
-<h2 id="ConditionalOnBean"><a href="#ConditionalOnBean" class="headerlink" title="@ConditionalOnBean"></a>@ConditionalOnBean</h2><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span>{</span><br><span class="line">    <span class="meta">@Bean(name="bean1")</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean1</span><span class="params">()</span>{}</span><br><span class="line">   </span><br><span class="line">    <span class="meta">@Bean(name="bean2")</span></span><br><span class="line">    <span class="comment">// 如果bean1已经注入容器，则bean2也将注入</span></span><br><span class="line">    <span class="meta">@ConditionalOnBean(name="bean1")</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean2</span><span class="params">()</span>{}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<h2 id="ConditionalOnMissingBean"><a href="#ConditionalOnMissingBean" class="headerlink" title="@ConditionalOnMissingBean"></a>@ConditionalOnMissingBean</h2><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span>{</span><br><span class="line">    <span class="meta">@Bean(name="bean1")</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean1</span><span class="params">()</span>{}</span><br><span class="line">   </span><br><span class="line">    <span class="meta">@Bean(name="bean2")</span></span><br><span class="line">    <span class="comment">// 如果bean1已经注入容器，则不会将bean2注入</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean(name="bean1")</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean2</span><span class="params">()</span>{}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>在 @ConditionalOnMissingBean 的声明中，使用的也是@Conditional注解，实现了一些常用的功能：</p>
-<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">@Target({ElementType.TYPE, ElementType.METHOD})</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="comment">// 判断条件为 OnBeanCondition，能够按bean名、bean类名等多种类型判断bean是否在容器</span></span><br><span class="line"><span class="meta">@Conditional({OnBeanCondition.class})</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ConditionalOnBean {</span><br><span class="line">    Class&lt;?&gt;[] value() <span class="keyword">default</span> {};</span><br><span class="line"></span><br><span class="line">    String[] type() <span class="keyword">default</span> {};</span><br><span class="line"></span><br><span class="line">    Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt;[] annotation() <span class="keyword">default</span> {};</span><br><span class="line"></span><br><span class="line">    String[] name() <span class="keyword">default</span> {};</span><br><span class="line"></span><br><span class="line">    SearchStrategy <span class="title function_">search</span><span class="params">()</span> <span class="keyword">default</span> SearchStrategy.ALL;</span><br><span class="line"></span><br><span class="line">    Class&lt;?&gt;[] parameterizedContainer() <span class="keyword">default</span> {};</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>其它两个注解同理。</p>
-</body></html>]]></content>
-      <tags>
-        <tag>SpringBoot</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SpringBoot自动装配的原理</title>
     <url>/p/b2efd41c.html</url>
     <content><![CDATA[<html><head></head><body><h2 id="Spring-Boot中的自动装配"><a href="#Spring-Boot中的自动装配" class="headerlink" title="Spring Boot中的自动装配"></a>Spring Boot中的自动装配</h2><p>添加Starter依赖</p>
@@ -5862,6 +6258,39 @@ signalAll();
 <figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties(</span></span><br><span class="line"><span class="meta">    prefix = "server",</span></span><br><span class="line"><span class="meta">    ignoreUnknownFields = true</span></span><br><span class="line"><span class="meta">)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ServerProperties</span> {}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>@ConfigurationProperties 将配置文件的属性对应的值读入到 ServerProperties 这个类中，prefix=“server” 会读取 application.properties 中前缀为 server 的属性和值。</p>
+</body></html>]]></content>
+      <tags>
+        <tag>SpringBoot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot注解@Conditional</title>
+    <url>/p/dc1803fb.html</url>
+    <content><![CDATA[<html><head></head><body><h2 id="Conditional"><a href="#Conditional" class="headerlink" title="@Conditional"></a>@Conditional</h2><p>作用：按照一定的条件进行判断，满足条件才在容器注册bean。</p>
+<p>这是Spring4新提供的注解，定义：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">//此注解可以标注在类和方法上</span></span><br><span class="line"><span class="meta">@Target({ElementType.TYPE, ElementType.METHOD})</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span> </span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Conditional {</span><br><span class="line">    Class&lt;? <span class="keyword">extends</span> <span class="title class_">Condition</span>&gt;[] value();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>需要写一个类去继承 Condition 接口，并实现里面的 matches 方法：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Condition</span> {</span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> var1:判断条件能使用的上下文环境</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> var2:注解所在位置的注释信息</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">matches</span><span class="params">(ConditionContext var1, AnnotatedTypeMetadata var2)</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>获取容器的上下文环境，conditionContext提供了多种方法，方便获取各种信息：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyCondition</span> <span class="keyword">implements</span> <span class="title class_">Condition</span> {</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">matches</span><span class="params">(ConditionContext conditionContext, AnnotatedTypeMetadata annotatedTypeMetadata)</span> {</span><br><span class="line">        <span class="comment">// 获取ioc使用的 beanFactory</span></span><br><span class="line">        <span class="type">ConfigurableListableBeanFactory</span> <span class="variable">beanFactory</span> <span class="operator">=</span> conditionContext.getBeanFactory();</span><br><span class="line">        <span class="comment">//获取类加载器</span></span><br><span class="line">        <span class="type">ClassLoader</span> <span class="variable">classLoader</span> <span class="operator">=</span> conditionContext.getClassLoader();</span><br><span class="line">        <span class="comment">//获取当前环境信息</span></span><br><span class="line">        <span class="type">Environment</span> <span class="variable">environment</span> <span class="operator">=</span> conditionContext.getEnvironment();</span><br><span class="line">        <span class="comment">//获取bean定义的注册类</span></span><br><span class="line">        <span class="type">BeanDefinitionRegistry</span> <span class="variable">registry</span> <span class="operator">=</span> conditionContext.getRegistry();</span><br><span class="line">        <span class="comment">//获得当前系统名</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">property</span> <span class="operator">=</span> environment.getProperty(<span class="string">"os.name"</span>);</span><br><span class="line">        <span class="comment">// 例如：当前环境是否windows系统，返回true</span></span><br><span class="line">        <span class="keyword">if</span> (property.contains(<span class="string">"Windows"</span>)){</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="单个判断条件"><a href="#单个判断条件" class="headerlink" title="单个判断条件"></a>单个判断条件</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// 放在类上，若当前条件在MyCondition中mathes的方法为true，将会向容器注入一个或多个bean</span></span><br><span class="line"><span class="meta">@Conditional({MyCondition.class})</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span>{</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean1</span><span class="params">()</span>{}</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean2</span><span class="params">()</span>{}</span><br><span class="line">    ...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="多个判断条件的应用"><a href="#多个判断条件的应用" class="headerlink" title="多个判断条件的应用"></a>多个判断条件的应用</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// A和B都返回true,才会注入容器</span></span><br><span class="line"><span class="meta">@Conditional({ACondition.class,BCondition.class})</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span>{</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean1</span><span class="params">()</span>{}</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean2</span><span class="params">()</span>{}</span><br><span class="line">    ...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>继@Conditional注解后，派生出 @ConditionalOnBean、@ConditionalOnMissingBean、@ConditionalOnExpression、@ConditionalOnClass 等</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">@ConditionalOnBean</span>         <span class="comment">//	当给定的在bean存在时,则实例化当前Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean</span>  <span class="comment">//	当给定的在bean不存在时,则实例化当前Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnClass</span>        <span class="comment">//	当给定的类名在类路径上存在，则实例化当前Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingClass</span> <span class="comment">//	当给定的类名在类路径上不存在，则实例化当前Bean</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="ConditionalOnBean"><a href="#ConditionalOnBean" class="headerlink" title="@ConditionalOnBean"></a>@ConditionalOnBean</h2><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span>{</span><br><span class="line">    <span class="meta">@Bean(name="bean1")</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean1</span><span class="params">()</span>{}</span><br><span class="line">   </span><br><span class="line">    <span class="meta">@Bean(name="bean2")</span></span><br><span class="line">    <span class="comment">// 如果bean1已经注入容器，则bean2也将注入</span></span><br><span class="line">    <span class="meta">@ConditionalOnBean(name="bean1")</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean2</span><span class="params">()</span>{}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="ConditionalOnMissingBean"><a href="#ConditionalOnMissingBean" class="headerlink" title="@ConditionalOnMissingBean"></a>@ConditionalOnMissingBean</h2><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span>{</span><br><span class="line">    <span class="meta">@Bean(name="bean1")</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean1</span><span class="params">()</span>{}</span><br><span class="line">   </span><br><span class="line">    <span class="meta">@Bean(name="bean2")</span></span><br><span class="line">    <span class="comment">// 如果bean1已经注入容器，则不会将bean2注入</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean(name="bean1")</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">bean2</span><span class="params">()</span>{}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在 @ConditionalOnMissingBean 的声明中，使用的也是@Conditional注解，实现了一些常用的功能：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">@Target({ElementType.TYPE, ElementType.METHOD})</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="comment">// 判断条件为 OnBeanCondition，能够按bean名、bean类名等多种类型判断bean是否在容器</span></span><br><span class="line"><span class="meta">@Conditional({OnBeanCondition.class})</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ConditionalOnBean {</span><br><span class="line">    Class&lt;?&gt;[] value() <span class="keyword">default</span> {};</span><br><span class="line"></span><br><span class="line">    String[] type() <span class="keyword">default</span> {};</span><br><span class="line"></span><br><span class="line">    Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt;[] annotation() <span class="keyword">default</span> {};</span><br><span class="line"></span><br><span class="line">    String[] name() <span class="keyword">default</span> {};</span><br><span class="line"></span><br><span class="line">    SearchStrategy <span class="title function_">search</span><span class="params">()</span> <span class="keyword">default</span> SearchStrategy.ALL;</span><br><span class="line"></span><br><span class="line">    Class&lt;?&gt;[] parameterizedContainer() <span class="keyword">default</span> {};</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>其它两个注解同理。</p>
 </body></html>]]></content>
       <tags>
         <tag>SpringBoot</tag>
