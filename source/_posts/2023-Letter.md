@@ -1,14 +1,15 @@
 ---
 title: 2023年写给自己的一封信
-date: 2024-01-18 20:28:03
 password: hellomrdjun
 theme: Up
 message: "文章已加密，请输入密码 \U0001F61B："
 wrong_pass_message: "密码错误 \U0001F62D"
 wrong_hash_message: "当前文章不能校验\U0001F62D"
 tags:
- - 总结篇
+  - 总结篇
 description: 2023年写给自己的一封信
+abbrlink: 401ea0bb
+date: 2024-01-18 20:28:03
 ---
 
 亲爱的邓俊：

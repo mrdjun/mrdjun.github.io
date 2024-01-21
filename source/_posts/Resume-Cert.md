@@ -9,6 +9,7 @@ wrong_hash_message: "当前简历证书无法查询\U0001F62D"
 clear_mode: true
 tags:
   - Java
+abbrlink: 1f48a54
 date: 1997-11-08 02:00:00
 ---
 
