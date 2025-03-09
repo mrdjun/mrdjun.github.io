@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-  <meta name="description" content="协程是一种轻量级的线程，由用户控制调度，可以在单线程内实现并发。与线程相比，协程的切换开销更小，更适合处理 I&#x2F;O 密集型任务。">
+  <meta name="description" content="协程是一种轻量级的线程，由用户控制调度，可以在单线程内实现并发。与线程相比，协程的切换开销更小，更适合处理 I&#x2F;O 密集型任务。&#96;asyncio&#96; 提供了事件循环、任务、Future 等机制，方便开发者编写异步代码。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Python Asyncio">
 <meta property="og:url" content="https://mrdjun.github.io/p/28e3b42f.html">
 <meta property="og:site_name" content="MrDJun">
-<meta property="og:description" content="协程是一种轻量级的线程，由用户控制调度，可以在单线程内实现并发。与线程相比，协程的切换开销更小，更适合处理 I&#x2F;O 密集型任务。">
+<meta property="og:description" content="协程是一种轻量级的线程，由用户控制调度，可以在单线程内实现并发。与线程相比，协程的切换开销更小，更适合处理 I&#x2F;O 密集型任务。&#96;asyncio&#96; 提供了事件循环、任务、Future 等机制，方便开发者编写异步代码。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-03-08T07:13:40.000Z">
-<meta property="article:modified_time" content="2025-03-08T15:45:25.235Z">
+<meta property="article:modified_time" content="2025-03-08T16:08:40.437Z">
 <meta property="article:author" content="MrDJun">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
@@ -297,7 +297,7 @@
 <p>Python版本：3.9</p>
 <p>协程（Coroutine）是一种轻量级的线程，由用户控制调度，可以在单线程内实现并发。与线程相比，协程的切换开销更小，更适合处理 I/O 密集型任务。<code>asyncio</code> 提供了事件循环、任务、Future 等机制，方便开发者编写异步代码。</p>
 </blockquote>
-<p>从实际案例学习入手，引用一个<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/asyncio.html">官方的示例</a>：</p>
+<p>从实际案例学习入手，引用一个<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/asyncio.html">官方的示例</a>，更多<a target="_blank" rel="noopener" href="https://github.com/python/asyncio/tree/master/examples">asyncio示例直通车</a>。</p>
 <h2 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h2><p>事件循环（Event Loop）是 <code>asyncio</code> 的核心，负责调度和执行协程。Python 3.9 推荐使用 <code>asyncio.run()</code> 来运行协程，它会自动管理事件循环。</p>
 <figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">'Hello ...'</span>)</span><br><span class="line">    <span class="comment"># 模拟IO操作</span></span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">'... World!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 asyncio.run() 运行协程</span></span><br><span class="line">asyncio.run(main()) </span><br></pre></td></tr></tbody></table></figure>
 
@@ -413,8 +413,8 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/p/2288491f.html" rel="next" title="Python Elasticsearch">
-                  Python Elasticsearch <i class="fa fa-chevron-right"></i>
+                <a href="/p/d2a40328.html" rel="next" title="Python 解包">
+                  Python 解包 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
