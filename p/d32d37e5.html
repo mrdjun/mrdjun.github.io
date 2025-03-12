@@ -21,7 +21,7 @@
 
   <meta name="description" content="开源的搜索引擎，介于应用和数据之间：应用  ES  数据，只要将数据写入ES，应用就可以通过一些关键字搜索到数据。">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Elasticsearch">
+<meta property="og:title" content="Elasticsearch基础篇">
 <meta property="og:url" content="https://mrdjun.github.io/p/d32d37e5.html">
 <meta property="og:site_name" content="MrDJun">
 <meta property="og:description" content="开源的搜索引擎，介于应用和数据之间：应用  ES  数据，只要将数据写入ES，应用就可以通过一些关键字搜索到数据。">
@@ -36,6 +36,7 @@
 <meta property="og:image" content="https://mrdjun.github.io/p/d32d37e5/image-20250309224205272.png">
 <meta property="og:image" content="https://mrdjun.github.io/p/d32d37e5/image-20250309224451263.png">
 <meta property="og:image" content="https://mrdjun.github.io/p/d32d37e5/image-20250309224546328.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/d32d37e5/d0fc8e42-387f-41c8-8288-c7d135b864e8.png">
 <meta property="og:image" content="https://mrdjun.github.io/p/d32d37e5/image-20250309225008058.png">
 <meta property="og:image" content="https://mrdjun.github.io/p/d32d37e5/image-20250309225201104.png">
 <meta property="og:image" content="https://mrdjun.github.io/p/d32d37e5/image-20250309225648685.png">
@@ -47,9 +48,8 @@
 <meta property="og:image" content="https://mrdjun.github.io/p/d32d37e5/image-20250309231840287.png">
 <meta property="og:image" content="https://mrdjun.github.io/p/d32d37e5/image-20250309232103467.png">
 <meta property="article:published_time" content="2025-03-09T13:50:06.000Z">
-<meta property="article:modified_time" content="2025-03-09T15:30:37.986Z">
+<meta property="article:modified_time" content="2025-03-12T06:01:09.957Z">
 <meta property="article:author" content="MrDJun">
-<meta property="article:tag" content="中间件">
 <meta property="article:tag" content="Elasticsearch">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://mrdjun.github.io/p/d32d37e5/image-20250309221212876.png">
@@ -59,11 +59,11 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.github.io/p/d32d37e5.html","path":"p/d32d37e5.html","title":"Elasticsearch"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.github.io/p/d32d37e5.html","path":"p/d32d37e5.html","title":"Elasticsearch基础篇"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>
-      Elasticsearch | MrDJun
+      Elasticsearch基础篇 | MrDJun
     </title>
     
 
@@ -169,7 +169,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ElasticSearch%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">ElasticSearch简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85ES%E5%92%8CKibana"><span class="nav-number">2.</span> <span class="nav-text">安装ES和Kibana</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E6%B5%85%E5%85%A5%E6%B7%B1"><span class="nav-number">3.</span> <span class="nav-text">从浅入深</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95"><span class="nav-number">4.</span> <span class="nav-text">倒排索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Term-Index"><span class="nav-number">5.</span> <span class="nav-text">Term Index</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stored-Fields"><span class="nav-number">6.</span> <span class="nav-text">Stored Fields</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#doc-values"><span class="nav-number">7.</span> <span class="nav-text">doc-values</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#segment"><span class="nav-number">8.</span> <span class="nav-text">segment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lucene"><span class="nav-number">9.</span> <span class="nav-text">lucene</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E6%80%A7%E8%83%BD"><span class="nav-number">10.</span> <span class="nav-text">高性能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Index-Name"><span class="nav-number">10.1.</span> <span class="nav-text">Index Name</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shard"><span class="nav-number">10.2.</span> <span class="nav-text">shard</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E6%89%A9%E5%B1%95%E6%80%A7"><span class="nav-number">11.</span> <span class="nav-text">高扩展性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E5%8F%AF%E7%94%A8"><span class="nav-number">12.</span> <span class="nav-text">高可用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node%E8%A7%92%E8%89%B2%E5%88%86%E5%8C%96"><span class="nav-number">13.</span> <span class="nav-text">Node角色分化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96"><span class="nav-number">14.</span> <span class="nav-text">去中心化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">15.</span> <span class="nav-text">ES是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES-%E5%92%8C-Kafka-%E7%9A%84%E6%9E%B6%E6%9E%84%E5%B7%AE%E5%BC%82"><span class="nav-number">16.</span> <span class="nav-text">ES 和 Kafka 的架构差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES-%E7%9A%84%E5%86%99%E5%85%A5%E6%B5%81%E7%A8%8B"><span class="nav-number">17.</span> <span class="nav-text">ES 的写入流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES-%E7%9A%84%E6%90%9C%E7%B4%A2%E6%B5%81%E7%A8%8B"><span class="nav-number">18.</span> <span class="nav-text">ES 的搜索流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E9%98%B6%E6%AE%B5"><span class="nav-number">19.</span> <span class="nav-text">查询阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E9%98%B6%E6%AE%B5"><span class="nav-number">20.</span> <span class="nav-text">获取阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">21.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ElasticSearch%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">ElasticSearch简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E6%B5%85%E5%85%A5%E6%B7%B1"><span class="nav-number">2.</span> <span class="nav-text">从浅入深</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95"><span class="nav-number">3.</span> <span class="nav-text">倒排索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Term-Index"><span class="nav-number">4.</span> <span class="nav-text">Term Index</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stored-Fields"><span class="nav-number">5.</span> <span class="nav-text">Stored Fields</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#doc-values"><span class="nav-number">6.</span> <span class="nav-text">doc-values</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#segment"><span class="nav-number">7.</span> <span class="nav-text">segment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lucene"><span class="nav-number">8.</span> <span class="nav-text">lucene</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E6%80%A7%E8%83%BD"><span class="nav-number">9.</span> <span class="nav-text">高性能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Index-Name"><span class="nav-number">9.1.</span> <span class="nav-text">Index Name</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shard"><span class="nav-number">9.2.</span> <span class="nav-text">shard</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E6%89%A9%E5%B1%95%E6%80%A7"><span class="nav-number">10.</span> <span class="nav-text">高扩展性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E5%8F%AF%E7%94%A8"><span class="nav-number">11.</span> <span class="nav-text">高可用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node%E8%A7%92%E8%89%B2%E5%88%86%E5%8C%96"><span class="nav-number">12.</span> <span class="nav-text">Node角色分化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96"><span class="nav-number">13.</span> <span class="nav-text">去中心化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">14.</span> <span class="nav-text">ES是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES-%E5%92%8C-Kafka-%E7%9A%84%E6%9E%B6%E6%9E%84%E5%B7%AE%E5%BC%82"><span class="nav-number">15.</span> <span class="nav-text">ES 和 Kafka 的架构差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES-%E7%9A%84%E5%86%99%E5%85%A5%E6%B5%81%E7%A8%8B"><span class="nav-number">16.</span> <span class="nav-text">ES 的写入流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES-%E7%9A%84%E6%90%9C%E7%B4%A2%E6%B5%81%E7%A8%8B"><span class="nav-number">17.</span> <span class="nav-text">ES 的搜索流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E9%98%B6%E6%AE%B5"><span class="nav-number">18.</span> <span class="nav-text">查询阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E9%98%B6%E6%AE%B5"><span class="nav-number">19.</span> <span class="nav-text">获取阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">20.</span> <span class="nav-text">总结</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -283,7 +283,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Elasticsearch
+          Elasticsearch基础篇
         </h1>
 
         <div class="post-meta-container">
@@ -319,11 +319,6 @@
 <li>开源的搜索引擎</li>
 <li>介于应用和数据之间：应用 &lt;-&gt; ES &lt;-&gt; 数据，只要将数据写入ES，应用就可以通过一些关键字搜索到数据</li>
 </ul>
-<h2 id="安装ES和Kibana"><a href="#安装ES和Kibana" class="headerlink" title="安装ES和Kibana"></a>安装ES和Kibana</h2><p>使用docker安装，挂载配置文件到本机即可。</p>
-<blockquote>
-<p>docker run -d –name elasticsearch –net elastic -p 9200:9200 -it -m 1GB -e “xpack.ml.use_auto_machine_memory_percent=true” elasticsearch:7.4.2</p>
-<p>docker run -d –name kibana –privileged=true -p 5601:5601 -v /mydata/kibana:/usr/share/kibana –restart=always -d kibana:7.4.2</p>
-</blockquote>
 <h2 id="从浅入深"><a href="#从浅入深" class="headerlink" title="从浅入深"></a>从浅入深</h2><p>现在有三段文本，id 分别是 0、1、2，你需要快速找到哪段文本里含有关键词”xiaobai”.</p>
  <figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">I like xiaobai  </span><br><span class="line">I follow xiaobai  </span><br><span class="line">I forward the video</span><br></pre></td></tr></tbody></table></figure>
 
@@ -411,12 +406,12 @@
 <td>0, 1</td>
 </tr>
 </tbody></table>
-<p>将这堆排好序的词项，称为<strong>Term Dictionary</strong>，而词项对应的文档 id 等信息的集合，就叫 <strong>Posting List</strong>。它们共同构成了一个用于搜索的数据结构，它就是**倒排索引(Inverted Index)**。</p>
+<p>将这堆排好序的词项，称为<strong>Term Dictionary</strong>，而词项对应的文档 id 等信息的集合，就叫 <strong>Posting List</strong>。它们共同构成了一个用于搜索的数据结构，它就是 <strong>倒排索引(Inverted Index)</strong> 。</p>
 <p><img src="/p/d32d37e5/image-20250309222549081.png" alt="倒排索引"></p>
 <blockquote>
 <p>注意，Posting List 其实还包含<strong>词频</strong>和<strong>词项在文本里的偏移量</strong>等信息，但为了方便理解，我在上图中去掉了这部分内容。</p>
 </blockquote>
-<p>但倒排索引还有个问题，Term Dictionary 数据量很大，放<strong>内存</strong>并不现实，因此必须放在<strong>磁盘</strong>中。但查询磁盘是个较慢的过程。<br>有优化手段吗？有，我们聊下 <strong>Term Index</strong>。</p>
+<p>但倒排索引还有个问题，Term Dictionary 数据量很大，放 <strong>内存</strong> 并不现实，因此必须放在<strong>磁盘</strong>中。但查询磁盘是个较慢的过程。<br>有优化手段吗？有，我们聊下 <strong>Term Index</strong>。</p>
 <h2 id="Term-Index"><a href="#Term-Index" class="headerlink" title="Term Index"></a>Term Index</h2><p>可以发现，词项（Term）和词项之间，有些<strong>前缀</strong>是一致的，比如 <code>follow</code> 和 <code>forward</code> 前面的 <code>fo</code> 是一致的，如果将部分 term 前缀提取出来，像下图一样，就可以用更少的空间表达更多的 <strong>term</strong>。<br>基于这个原理，可以将 Term Dictionary 的<strong>部分</strong>词项提取出来，用这些 词项（Term） 的前缀信息，构建出一个<strong>精简的目录树</strong>。目录树的节点中存放这些词项在磁盘中的偏移量，也就是指向磁盘中的位置。这个目录树结构，体积小，适合放内存中，它就是所谓的 <strong>Term Index</strong>。可以用它来加速搜索。</p>
 <p><img src="/p/d32d37e5/image-20250309223054264.png" alt="Term Index是什么"></p>
 <p>当需要查找某个词项的时候，只需要搜索 Term Index，就能快速获得词项在 Term Dictionary 中的大概位置。再跳转到 Term Dictionary，通过少量的检索，定位到词项内容。</p>
@@ -436,6 +431,7 @@
 <p>但这也引入了新问题，随着数据量增大，segment 文件越写越多，文件句柄被耗尽那是指日可待啊。<br>是的，但这个也好解决，我们可以不定期合并多个小 segment，变成一个大 segment，也就是<strong>段合并</strong>(segment merging)。这样文件数量就可控了。</p>
 <p><img src="/p/d32d37e5/image-20250309224546328.png" alt="合并多个小segment"></p>
 <p>到这里，上面提到的多个 segment，就共同构成了一个<strong>单机文本检索库</strong>，它其实就是非常有名的开源基础搜索库 <strong>lucene</strong>。</p>
+<p><img src="/p/d32d37e5/d0fc8e42-387f-41c8-8288-c7d135b864e8.png" alt="Lucene结构"></p>
 <p>不少知名搜索引擎都是基于它构建的，比如我们今天介绍的 ES。<br>但这个 lucene 属实过于简陋，像什么高性能，高扩展性，高可用，它是一个都不沾。<br>接下来看下怎么优化它。</p>
 <h2 id="高性能"><a href="#高性能" class="headerlink" title="高性能"></a>高性能</h2><h3 id="Index-Name"><a href="#Index-Name" class="headerlink" title="Index Name"></a>Index Name</h3><p>lucene 作为一个搜索库，可以写入大量数据，并对外提供搜索能力。<br>多个调用方<strong>同时读写</strong>同一个 lucene 必然导致争抢计算资源。抢不到资源的一方就得等待，这不纯纯浪费时间吗！<br>有解决方案吗？有！<br>首先是对写入 lucene 的数据进行分类，比如体育新闻和八卦新闻数据算两类，每一类是一个 <strong>Index Name</strong>，然后根据 Index Name 新增 lucene 的数量，将不同类数据写入到不同的 lucene 中，读取数据时，根据需要搜索不同的 Index Name 。这就大大降低了单个 lucene 的压力。</p>
 <p><img src="/p/d32d37e5/image-20250309225008058.png" alt="Index-Name是什么"></p>
@@ -470,7 +466,7 @@
 <li>最后，<strong>协调节点</strong>响应<strong>客户端应用</strong>写入完成。</li>
 </ul>
 <p><img src="/p/d32d37e5/image-20250309231308553.png" alt="ES 的写入流程"></p>
-<h2 id="ES-的搜索流程"><a href="#ES-的搜索流程" class="headerlink" title="ES 的搜索流程"></a>ES 的搜索流程</h2><p>ES 的搜索流程分为两个阶段：分别是**查询阶段（Query Phase）*<em>和*<em>获取阶段（Fetch Phase）</em></em></p>
+<h2 id="ES-的搜索流程"><a href="#ES-的搜索流程" class="headerlink" title="ES 的搜索流程"></a>ES 的搜索流程</h2><p>ES 的搜索流程分为两个阶段：分别是 <strong>查询阶段（Query Phase）</strong> 和 <strong>获取阶段（Fetch Phase）</strong></p>
 <h2 id="查询阶段"><a href="#查询阶段" class="headerlink" title="查询阶段"></a>查询阶段</h2><ul>
 <li>当<strong>客户端应用</strong>发起<strong>搜索</strong>请求，请求会先发到集群中的<strong>协调节点</strong>。</li>
 <li>协调节点根据 <strong>index name</strong> 的信息，可以了解到 index name 被分为了几个 <strong>分片</strong>，以及这些分片 分散哪个<strong>数据节点</strong>上，将请求转发到这些数据节点的 分片 上面。</li>
@@ -525,7 +521,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>Post link: </strong>
-      <a href="https://mrdjun.github.io/p/d32d37e5.html" title="Elasticsearch">https://mrdjun.github.io/p/d32d37e5.html</a>
+      <a href="https://mrdjun.github.io/p/d32d37e5.html" title="Elasticsearch基础篇">https://mrdjun.github.io/p/d32d37e5.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
@@ -534,7 +530,6 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag"># 中间件</a>
               <a href="/tags/Elasticsearch/" rel="tag"># Elasticsearch</a>
           </div>
 
@@ -547,6 +542,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/p/642dba5b.html" rel="next" title="Elasticsearch 常用Api">
+                  Elasticsearch 常用Api <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>

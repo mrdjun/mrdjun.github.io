@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="DSL查询语法、数据聚合、ES集合">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Elasticsearch 常用Api">
+<meta property="og:url" content="https://mrdjun.github.io/p/642dba5b.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="DSL查询语法、数据聚合、ES集合">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-03-12T09:28:38.000Z">
+<meta property="article:modified_time" content="2025-03-12T16:23:58.086Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="Elasticsearch">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://mrdjun.github.io/p/642dba5b.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.github.io/p/642dba5b.html","path":"p/642dba5b.html","title":"Elasticsearch 常用Api"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      Elasticsearch 常用Api | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#mapping%E6%98%A0%E5%B0%84%E5%B1%9E%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">mapping映射属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E6%AE%B5%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">字段数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%AF%E5%90%A6%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="nav-number">1.2.</span> <span class="nav-text">是否创建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E8%AF%8D%E5%99%A8"><span class="nav-number">1.3.</span> <span class="nav-text">分词器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#properties"><span class="nav-number">1.4.</span> <span class="nav-text">properties</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E5%BA%93%E6%93%8D%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">索引库操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%A1%A3%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">文档操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E"><span class="nav-number">3.1.</span> <span class="nav-text">新增</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2"><span class="nav-number">3.2.</span> <span class="nav-text">查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4"><span class="nav-number">3.3.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9"><span class="nav-number">3.4.</span> <span class="nav-text">修改</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DSL%E6%9F%A5%E8%AF%A2%E6%96%87%E6%A1%A3"><span class="nav-number">4.</span> <span class="nav-text">DSL查询文档</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E5%85%A8%E9%83%A8"><span class="nav-number">4.1.</span> <span class="nav-text">查询全部</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2%E6%9F%A5%E8%AF%A2"><span class="nav-number">4.2.</span> <span class="nav-text">全文检索查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B2%BE%E7%A1%AE%E5%8C%B9%E9%85%8D"><span class="nav-number">4.3.</span> <span class="nav-text">精确匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%B0%E7%90%86%E6%9F%A5%E8%AF%A2"><span class="nav-number">4.4.</span> <span class="nav-text">地理查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%90%88%E6%9F%A5%E8%AF%A2"><span class="nav-number">4.5.</span> <span class="nav-text">复合查询</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.github.io/p/642dba5b.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Elasticsearch 常用Api
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2025-03-12 17:28:38" itemprop="dateCreated datePublished" datetime="2025-03-12T17:28:38+08:00">2025-03-12</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><h2 id="mapping映射属性"><a href="#mapping映射属性" class="headerlink" title="mapping映射属性"></a>mapping映射属性</h2><p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html">官方文档链接</a>。<code>mapping</code>用于约束es中索引库中的文档，定义文档中的字段如何存储和索引的过程。</p>
+<h3 id="字段数据类型"><a href="#字段数据类型" class="headerlink" title="字段数据类型"></a>字段数据类型</h3><p>type：字段数据类型。每一个类型都可以作为数组使用。</p>
+<h4 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h4><table>
+<thead>
+<tr>
+<th>type</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>text</td>
+<td>可分词的文本</td>
+</tr>
+<tr>
+<td>keyword</td>
+<td>精确值，不可分词，例如：品牌、链接、国家、ip地址等，存储和查询时效率较高</td>
+</tr>
+</tbody></table>
+<h4 id="数值"><a href="#数值" class="headerlink" title="数值"></a>数值</h4><table>
+<thead>
+<tr>
+<th>type</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>long</td>
+<td>带符号的 64 位整数，最小值为 <code>-2⁶³</code>，最大值为 <code>2⁶³-1</code>。</td>
+</tr>
+<tr>
+<td>integer</td>
+<td>带符号的 32 位整数，最小值为 <code>-2³¹</code>，最大值为 <code>2³¹-1</code>。</td>
+</tr>
+<tr>
+<td>short</td>
+<td>带符号的 16 位整数，最小值为 <code>-32,768</code>，最大值为 <code>32,767</code>。</td>
+</tr>
+<tr>
+<td>byte</td>
+<td>带符号的 8 位整数，最小值为 <code>-128</code>，最大值为 <code>127</code>。</td>
+</tr>
+<tr>
+<td>double</td>
+<td>双精度 64 位 IEEE 754 浮点数，限制为有限值。</td>
+</tr>
+<tr>
+<td>float</td>
+<td>单精度 32 位 IEEE 754 浮点数，限制为有限值。</td>
+</tr>
+<tr>
+<td>half_float</td>
+<td>半精度 16 位 IEEE 754 浮点数，限制为有限值。</td>
+</tr>
+<tr>
+<td>scaled_float</td>
+<td>一个浮点数，由一个固定的 <code>double</code> 比例因子缩放的 <code>long</code> 支持。通过比例因子将浮点数转换为整数存储，节省磁盘空间，适合精度要求不高的场景。</td>
+</tr>
+<tr>
+<td>unsigned_long</td>
+<td>无符号 64 位整数，最小值为 0，最大值为 2⁶⁴-1。</td>
+</tr>
+</tbody></table>
+<h4 id="布尔"><a href="#布尔" class="headerlink" title="布尔"></a>布尔</h4><p>boolean：true / false</p>
+<h4 id="日期"><a href="#日期" class="headerlink" title="日期"></a>日期</h4><p>不支持 <code>yyyy-MM-dd HH:mm:ss</code> 等日期格式。</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>date</td>
+<td>yyyy-MM-dd 或 yyyyMMdd</td>
+</tr>
+<tr>
+<td>date_time</td>
+<td>yyyyMMddHHmmss 或 yyyy-MM-ddTHH:mm:ss 或 yyyy-MM-ddTHH:mm:ss.SSS 或 yyyy-MM-ddTHH:mm:ss.SSSZ</td>
+</tr>
+</tbody></table>
+<h4 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h4><p>Object 是type的默认值。假设定义name字段为对象类型，不需要显式定义type的属性值。</p>
+<h3 id="是否创建索引"><a href="#是否创建索引" class="headerlink" title="是否创建索引"></a>是否创建索引</h3><p>表示字段是否需要用于搜索。index：是否创建索引，默认为true。</p>
+<h3 id="分词器"><a href="#分词器" class="headerlink" title="分词器"></a>分词器</h3><p>analyzer：使用哪个分词器。</p>
+<h3 id="properties"><a href="#properties" class="headerlink" title="properties"></a>properties</h3><p>子字段的定义。</p>
+<h2 id="索引库操作"><a href="#索引库操作" class="headerlink" title="索引库操作"></a>索引库操作</h2><p>ES中通过restful请求操作索引库、文档。请求内容用DSL（Domain Specific Language）语句来表示。</p>
+<ul>
+<li>创建索引库</li>
+</ul>
+<figure class="highlight http"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">PUT  /索引库名称</span><br><span class="line">{</span><br><span class="line">    "mappings": {</span><br><span class="line">        "properties":{</span><br><span class="line">            "字段名1": {</span><br><span class="line">                "type": "text",       // 可分词的</span><br><span class="line">                "analyzer":"ik_smart" // 指定ik_smart分词器</span><br><span class="line">            },</span><br><span class="line">            "字段名2": {</span><br><span class="line">                "type": "keyword",    // 精确值，不可分词的</span><br><span class="line">                "index": "false"</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>查询索引库</li>
+</ul>
+<figure class="highlight http"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /索引库名称</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>删除索引库</li>
+</ul>
+<figure class="highlight http"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE /索引库名称</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>修改索引库</li>
+</ul>
+<p>索引库和mapping一但创建无法修改，支持添加新的字段，语法如下：</p>
+<figure class="highlight http"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">PUT /索引库名/_mapping</span><br><span class="line">{</span><br><span class="line"> "properties": {</span><br><span class="line"> 	"新字段名": { ... }</span><br><span class="line"> }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="文档操作"><a href="#文档操作" class="headerlink" title="文档操作"></a>文档操作</h2><h3 id="新增"><a href="#新增" class="headerlink" title="新增"></a>新增</h3><p>如果不指定文档ID，ES会随机生成一个。</p>
+<figure class="highlight http"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">POST /索引库名/_doc/文档ID</span><br><span class="line">{</span><br><span class="line">	"字段1": "值",</span><br><span class="line">	"字段2": {</span><br><span class="line">		"子字段1":"值",</span><br><span class="line">		"子字段2": 0</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><figure class="highlight http"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /索引库名/_doc/文档ID</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><figure class="highlight http"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE /索引库名/_doc/文档ID</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h3><p>全量修改，先删除旧文档，再添加新文档。</p>
+<figure class="highlight http"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PUT /索引库名/_doc/文档ID</span><br><span class="line">{</span><br><span class="line">   "字段1": "v1",</span><br><span class="line">   "字段2": "v2",</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>局部修改，修改指定字段。</p>
+<figure class="highlight http"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">PUT /索引库名/_doc/文档ID</span><br><span class="line">{</span><br><span class="line">  "doc": {</span><br><span class="line">   "字段1": "v2"</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="DSL查询文档"><a href="#DSL查询文档" class="headerlink" title="DSL查询文档"></a>DSL查询文档</h2><p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html">官方文档链接</a>。ES基于JSON的DSL（Domain Specific Language）来定义查询语法。</p>
+<figure class="highlight http"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /索引库名称/_search</span><br><span class="line">{</span><br><span class="line">  "query": {</span><br><span class="line">     "查询类型": {</span><br><span class="line">        "查询条件": "条件值"</span><br><span class="line">     }</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="查询全部"><a href="#查询全部" class="headerlink" title="查询全部"></a>查询全部</h3><p>匹配全部</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"query"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"match_all"</span><span class="punctuation">:</span> <span class="punctuation">{</span><span class="punctuation">}</span></span><br><span class="line">    <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>除此以外</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"query"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"match_none"</span><span class="punctuation">:</span> <span class="punctuation">{</span><span class="punctuation">}</span></span><br><span class="line">    <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="全文检索查询"><a href="#全文检索查询" class="headerlink" title="全文检索查询"></a>全文检索查询</h3><p>根据用户输入的内容进行分词，再进行匹配。</p>
+<ul>
+<li><strong>match_query</strong></li>
+</ul>
+<p>简单匹配：在指定字段中查找包含查询文本的文档，对查询文本进行分词后再匹配。此查询会返回标题中包含 “Rises” 或 “knight” 或两者都包含的电影，因为默认 <code>operator</code> 是 <code>or</code>。</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"query"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">      <span class="attr">"match"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"title"</span><span class="punctuation">:</span> <span class="string">"Knight Rises"</span></span><br><span class="line">      <span class="punctuation">}</span></span><br><span class="line">    <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>精确匹配：match_phrase要求文档中必须同时包含查询文本的所有分词结果。此查询要求标题中同时包含 “Knight” 和 “Rises”</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"query"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">      <span class="attr">"match_phrase"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"title"</span><span class="punctuation">:</span> <span class="string">"Knight Rises"</span></span><br><span class="line">      <span class="punctuation">}</span></span><br><span class="line">    <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>模糊匹配：fuzzy 允许一定程度的拼写错误。该查询会匹配 “this is a test” 等类似文本，即使存在拼写错误。</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"query"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">	<span class="attr">"fuzzy"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">		<span class="attr">"first_name.keyword"</span><span class="punctuation">:</span> <span class="string">"张三"</span></span><br><span class="line">	  <span class="punctuation">}</span></span><br><span class="line">   <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>通配符检索：wildcard 查询类似于 SQL 中的 LIKE 操作，可以使用通配符 * 来表示任意字符。</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"query"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"wildcard"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">            <span class="attr">"first_name.keyword"</span><span class="punctuation">:</span> <span class="string">"张三*"</span></span><br><span class="line">        <span class="punctuation">}</span></span><br><span class="line">    <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><strong>multi_match_query</strong></li>
+</ul>
+<h3 id="精确匹配"><a href="#精确匹配" class="headerlink" title="精确匹配"></a>精确匹配</h3><ul>
+<li>ids</li>
+</ul>
+<ul>
+<li>range</li>
+</ul>
+<ul>
+<li>term</li>
+</ul>
+<h3 id="地理查询"><a href="#地理查询" class="headerlink" title="地理查询"></a>地理查询</h3><p>根据地理(geo)经纬度查询。</p>
+<ul>
+<li>geo_distance</li>
+</ul>
+<ul>
+<li>geo_bunding_box</li>
+</ul>
+<h3 id="复合查询"><a href="#复合查询" class="headerlink" title="复合查询"></a>复合查询</h3><p>可以将各种查询条件组合，合并查询。</p>
+<ul>
+<li>bool</li>
+</ul>
+<ul>
+<li>function_score</li>
+</ul>
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.github.io/p/642dba5b.html" title="Elasticsearch 常用Api">https://mrdjun.github.io/p/642dba5b.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Elasticsearch/" rel="tag"># Elasticsearch</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/d32d37e5.html" rel="prev" title="Elasticsearch基础篇">
+                  <i class="fa fa-chevron-left"></i> Elasticsearch基础篇
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>
