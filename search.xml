@@ -6868,4 +6868,80 @@ signalAll();
         <tag>SpringBoot</tag>
       </tags>
   </entry>
+  <entry>
+    <title>安装Elasticsearch Kibana Head</title>
+    <url>/p/cda7441.html</url>
+    <content><![CDATA[<html><head></head><body><h2 id="安装ES-Kibana-Head"><a href="#安装ES-Kibana-Head" class="headerlink" title="安装ES+Kibana+Head"></a>安装ES+Kibana+Head</h2><p>使用docker安装，挂载配置文件到本机。<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html">安装ES官方文档</a>。</p>
+<h3 id="安装ES"><a href="#安装ES" class="headerlink" title="安装ES"></a>安装ES</h3><p>创建elastic网络</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">docker network create elastic</span><br></pre></td></tr></tbody></table></figure>
+
+<p>启动容器，介于个人原因，这里使用的老版本es，最好使用最新版。我机器上docker容器的的映射文件都是放在<code>/mydata</code>里面的，按需修改。</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">docker run -p 9200:9200 -p 9300:9300 \</span><br><span class="line">--name es \</span><br><span class="line">--restart=always --net elastic \</span><br><span class="line">-v /mydata/elasticsearch/data:/usr/share/elasticsearch/data \</span><br><span class="line">-v /mydata/elasticsearch/config:/usr/share/elasticsearch/config \</span><br><span class="line">-v /mydata/elasticsearch/plugins:/usr/share/elasticsearch/plugins \</span><br><span class="line">-v /mydata/elasticsearch/logs:/usr/share/elasticsearch/logs \</span><br><span class="line">-it -m 1GB -e <span class="string">"ES_JAVA_OPTS=-Xms512m -Xmx512m"</span> \</span><br><span class="line">-e <span class="string">"discovery.type=single-node"</span> \</span><br><span class="line">--privileged \</span><br><span class="line">-d elasticsearch:7.4.2 </span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="ES跨域配置"><a href="#ES跨域配置" class="headerlink" title="ES跨域配置"></a>ES跨域配置</h3><p>按需配置，一般是不需要跨域的，我这里是测试环境，倒图个方便。没有<code>elasticsearch.yml</code>文件的，建议启动一下es容器，先拷贝出来。下面是es中的几个文件，按需所取。</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">docker <span class="built_in">cp</span> elasticsearch:/usr/share/elasticsearch/config /mydata/elasticsearch</span><br><span class="line">docker <span class="built_in">cp</span> elasticsearch:/usr/share/elasticsearch/logs /mydata/elasticsearch</span><br><span class="line">docker <span class="built_in">cp</span> elasticsearch:/usr/share/elasticsearch/data /mydata/elasticsearch</span><br><span class="line">docker <span class="built_in">cp</span> elasticsearch:/usr/share/elasticsearch/plugins /mydata/elasticsearch</span><br></pre></td></tr></tbody></table></figure>
+
+<p>修改配置</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">vi /mydata/elasticsearch/config/elasticsearch.yml</span><br></pre></td></tr></tbody></table></figure>
+
+<p>增加以下内容后，重启容器</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="安装Kibana"><a href="#安装Kibana" class="headerlink" title="安装Kibana"></a>安装Kibana</h3><p>版本需要和es版本对应。</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">docker run -p 5601:5601 --name kibana --restart=always \</span><br><span class="line">--privileged=<span class="literal">true</span> -v /mydata/kibana:/usr/share/kibana \</span><br><span class="line">-d kibana:7.4.2</span><br></pre></td></tr></tbody></table></figure>
+
+<p>修改一下连接es的地址</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">vi /mydata/kibana/kibana.yml</span><br></pre></td></tr></tbody></table></figure>
+
+<p>hosts中填写elasticsearch节点地址</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">server.name:</span> <span class="string">kibana</span></span><br><span class="line"><span class="attr">server.host:</span> <span class="string">"0.0.0.0"</span></span><br><span class="line"><span class="attr">elasticsearch.hosts:</span> [ <span class="string">"http://192.168.248.88:9200"</span> ]</span><br><span class="line"><span class="attr">xpack.monitoring.ui.container.elasticsearch.enabled:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="安装elasticsearch-head"><a href="#安装elasticsearch-head" class="headerlink" title="安装elasticsearch-head"></a>安装elasticsearch-head</h3><p>我选用源码的方式安装，<a href="https://github.com/mobz/elasticsearch-head">项目地址</a>。</p>
+<p>先安装编译环境nodejs，npm源最好配置个国内的，例如淘宝源，还可以安装个cnpm。<code>npm install -g cnpm --registry=https://registry.npm.taobao.org</code></p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">yum install -y gcc gcc-c++</span><br><span class="line">yum install -y nodejs</span><br><span class="line">node -v  </span><br><span class="line">npm -v</span><br></pre></td></tr></tbody></table></figure>
+
+<p>跟着<code>README</code>操作：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/mobz/elasticsearch-head.git</span><br><span class="line"><span class="built_in">cd</span> elasticsearch-head</span><br><span class="line">npm install</span><br><span class="line">npm run start</span><br></pre></td></tr></tbody></table></figure>
+
+<p>打开链接：<a href="http://localhost:9100/">http://localhost:9100/</a>  即安装完成。</p>
+<p>如果需要跨域连接ES，下面将修改默认连接es的地址。</p>
+<p>修改es节点地址：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">vi /mydata/elasticsearch-head/Gruntfile.js</span><br></pre></td></tr></tbody></table></figure>
+
+<p>增加<code>hostname:'*'</code>配置：</p>
+<figure class="highlight js"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">connect</span>: {</span><br><span class="line">    <span class="attr">server</span>: {</span><br><span class="line">        <span class="attr">options</span>: {</span><br><span class="line">            <span class="attr">port</span>: <span class="number">9100</span>,</span><br><span class="line">            <span class="attr">base</span>: <span class="string">'.'</span>,</span><br><span class="line">            <span class="comment">// 增加个HostName</span></span><br><span class="line">            <span class="attr">hostname</span>: <span class="string">'*'</span>,</span><br><span class="line">            <span class="attr">keepalive</span>: <span class="literal">true</span></span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>修改默认连接地址：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">vi vi /mydata/elasticsearch-head/_site/app.js</span><br></pre></td></tr></tbody></table></figure>
+
+<p>搜索一下关键字:<code>localhost</code>，将原来的 ：<code>this.base_uri = this.config.base_uri || this.prefs.get("app-base_uri") || "http://localhost:9200";</code>修改为ES的节点地址。</p>
+<figure class="highlight js"><table><tbody><tr><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="property">base_uri</span> = <span class="variable language_">this</span>.<span class="property">config</span>.<span class="property">base_uri</span> || <span class="variable language_">this</span>.<span class="property">prefs</span>.<span class="title function_">get</span>(<span class="string">"app-base_uri"</span>) || <span class="string">"http://192.168.248.88:9200"</span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="安装Ik分词器"><a href="#安装Ik分词器" class="headerlink" title="安装Ik分词器"></a>安装Ik分词器</h2><p>使用Github开源的中文分词器，<a href="https://github.com/infinilabs/analysis-ik">链接在此</a>。下载到本机上传至服务器的 <code>/mydata/elasticsearch/plugins</code>中解压出来。</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> /mydata/elasticsearch/plugins</span><br><span class="line"></span><br><span class="line">&gt; ik-7.4.2 </span><br></pre></td></tr></tbody></table></figure>
+
+<p>重启es容器后，通过命令查看启动日志。</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">docker logs es | grep alysis-ik</span><br><span class="line"></span><br><span class="line">&gt; {<span class="string">"type"</span>: <span class="string">"server"</span>, <span class="string">"timestamp"</span>: <span class="string">"2025-03-12T08:55:16,790Z"</span>, <span class="string">"level"</span>: <span class="string">"INFO"</span>, <span class="string">"component"</span>: <span class="string">"o.e.p.PluginsService"</span>, <span class="string">"cluster.name"</span>: <span class="string">"docker-cluster"</span>, <span class="string">"node.name"</span>: <span class="string">"071151ebe748"</span>, <span class="string">"message"</span>: <span class="string">"loaded plugin [analysis-ik]"</span> }</span><br></pre></td></tr></tbody></table></figure>
+
+<p>测试IK分词器，打开Kibana的devtools页面：<code>http://192.168.248.88:5601/app/kibana#/dev_tools/console</code></p>
+<figure class="highlight json"><table><tbody><tr><td class="code"><pre><span class="line">POST /_analyze</span><br><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"text"</span><span class="punctuation">:</span><span class="string">"中华人民共和国"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"analyzer"</span><span class="punctuation">:</span> <span class="string">"ik_smart"</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight json"><table><tbody><tr><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"tokens"</span> <span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">{</span></span><br><span class="line">      <span class="attr">"token"</span> <span class="punctuation">:</span> <span class="string">"中华人民共和国"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"start_offset"</span> <span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"end_offset"</span> <span class="punctuation">:</span> <span class="number">7</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"type"</span> <span class="punctuation">:</span> <span class="string">"CN_WORD"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"position"</span> <span class="punctuation">:</span> <span class="number">0</span></span><br><span class="line">    <span class="punctuation">}</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+</body></html>]]></content>
+      <tags>
+        <tag>Elasticsearch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python Elasticsearch</title>
+    <url>/p/2288491f.html</url>
+    <content><![CDATA[<html><head></head><body><p>待更新…</p>
+</body></html>]]></content>
+      <tags>
+        <tag>Elasticsearch</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
 </search>
