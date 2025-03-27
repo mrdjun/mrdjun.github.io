@@ -27,7 +27,7 @@
 <meta property="og:description" content="lsblk（list block devices）会列出所有可用的硬盘、U盘、光驱等块设备的信息，以及分区和挂载点等。常用于查看磁盘的挂载情况、磁盘分区、磁盘的文件系统类型(ext4、xfs、ntfs等)、排查存储设备问题。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-03-26T02:06:22.000Z">
-<meta property="article:modified_time" content="2025-03-27T17:08:15.661Z">
+<meta property="article:modified_time" content="2025-03-27T17:22:46.686Z">
 <meta property="article:author" content="MrDJun">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -426,10 +426,10 @@
 <p><strong>参数含义</strong>.</p>
 <p><code>brw-rw----</code>解释：</p>
 <ul>
-<li>**<code>b</code>**：表示这是一个块设备（block device）。</li>
-<li>**<code>rw-</code>**：表示所有者（<code>root</code>）对该设备有读写权限。</li>
-<li>**<code>rw-</code>**：表示所属组（<code>disk</code>）对该设备有读写权限。</li>
-<li>**<code>----</code>**：表示其他用户对该设备没有权限。</li>
+<li><code>b</code>：表示这是一个块设备（block device）。</li>
+<li><code>rw-</code>：表示所有者（<code>root</code>）对该设备有读写权限。</li>
+<li><code>rw-</code>：表示所属组（<code>disk</code>）对该设备有读写权限。</li>
+<li><code>----</code>：表示其他用户对该设备没有权限。</li>
 </ul>
 <table>
 <thead>
