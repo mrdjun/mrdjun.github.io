@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="lsblk（list block devices）会列出所有可用的硬盘、U盘、光驱等块设备的信息，以及分区和挂载点等。常用于查看磁盘的挂载情况、磁盘分区、磁盘的文件系统类型(ext4、xfs、ntfs等)、排查存储设备问题。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Linux lsblk命令">
+<meta property="og:url" content="https://mrdjun.github.io/p/da8acf6b.html">
+<meta property="og:site_name" content="MrDJun">
+<meta property="og:description" content="lsblk（list block devices）会列出所有可用的硬盘、U盘、光驱等块设备的信息，以及分区和挂载点等。常用于查看磁盘的挂载情况、磁盘分区、磁盘的文件系统类型(ext4、xfs、ntfs等)、排查存储设备问题。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-03-26T02:06:22.000Z">
+<meta property="article:modified_time" content="2025-03-27T17:08:15.661Z">
+<meta property="article:author" content="MrDJun">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://mrdjun.github.io/p/da8acf6b.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.github.io/p/da8acf6b.html","path":"p/da8acf6b.html","title":"Linux lsblk命令"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>
+      Linux lsblk命令 | MrDJun
+    </title>
+    
+
+
+
+
+
+    <noscript>
+      <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <script src="/js/jquery.js"></script>
+    <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <style is="theme"></style>
+  </head>
+
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">MrDJun</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">mrdjun</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        🔍
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-🏠-home"><a href="/" rel="section">🏠 Home</a></li>
+        <li class="menu-item menu-item-📦-archives"><a href="/archives/" rel="section">📦 Archives</a></li>
+        <li class="menu-item menu-item-🔖-labels"><a href="/tags/" rel="section">🔖 Labels</a></li>
+        <li class="menu-item menu-item-👬-friends"><a href="/friends/" rel="section">👬 Friends</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">🔍 Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    🔍
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Site Preview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">基本语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD"><span class="nav-number">3.</span> <span class="nav-text">基本功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lsblk-a"><span class="nav-number">3.1.</span> <span class="nav-text">lsblk -a</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <i id="btn_darkmode"></i>
+    <img class="site-author-image" itemprop="image" alt="MrDJun"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">MrDJun</p>
+  <div class="site-description" itemprop="description">Live with your heart,please be bold.</div>
+</div>
+  <div class="site-menu-wrap site-overview-item animated">
+    <ur class="menu_urls">
+        <li>
+          <a href="/">🏠 Home</a>
+        </li>
+        <li>
+          <a href="/archives/">📦 Archives</a>
+        </li>
+        <li>
+          <a href="/tags/">🔖 Labels</a>
+        </li>
+        <li>
+          <a href="/friends/">👬 Friends</a>
+        </li>
+        <li>
+          <a class="popup-trigger" href="javascript:;">🔍
+            Search
+          </a>
+        </li>
+    </ur>
+  </div>
+
+
+
+<div class="asider-footer">
+  <div id="links">
+    <li>
+      <a href="https://www.funpeak.cn/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-diamond fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.gitee.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-skyatlas fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://www.github.com/mrdjun/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-github-alt fa-fw"></i>
+      </a>
+    </li>
+    <li>
+      <a href="https://mrdjun.blog.csdn.net/" target="_blank" itemprop="url" class="ignore-href">
+        <i class="fa fa-codepen fa-fw"></i>
+      </a>
+    </li>
+    
+  </div>
+  <div class="copyright">
+  &copy; 2019 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="author" itemprop="copyrightHolder">MrDJun</span>
+  </div>
+  <div>
+    UV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_uv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span> &nbsp;&nbsp;PV&nbsp;<span class="busuanzi-value" id="busuanzi_value_site_pv" style="cursor:pointer" title="统计开始时间：2019年7月5日"></span>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <span id='scrollpercent'>0</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.github.io/p/da8acf6b.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="MrDJun">
+      <meta itemprop="description" content="Live with your heart,please be bold.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MrDJun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux lsblk命令
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-time">
+        <span class="post-meta-item-icon">
+          <i class="fa fa-calendar-o"></i>
+        </span>
+        <span class="post-meta-item-text hidden">Posted on</span>
+        <time title="Created: 2025-03-26 10:06:22" itemprop="dateCreated datePublished" datetime="2025-03-26T10:06:22+08:00">2025-03-26</time>
+      </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Visit count" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-laptop"></i>
+      </span>
+      <span class="post-meta-item-text">Visit count: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <html><head></head><body><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>lsblk（list block devices）会列出所有可用的硬盘、U盘、光驱等<strong>块设备</strong>的信息，以及分区和挂载点等。常用于查看磁盘的挂载情况、磁盘分区、磁盘的文件类型(ext4、xfs、ntfs等)、排查存储设备问题。</p>
+<h2 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h2><p>lsblk [OPTIONS]</p>
+<ul>
+<li>OPTIONS：选项参数</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>选项参数</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-a</code>(all)</td>
+<td>显示所有块设备(包括没有挂载的设备)。在单独使用lsblk命令时，会忽略没有分区的设备，通过<code>-a</code>参数可以确保列出所有设备。</td>
+</tr>
+<tr>
+<td><code>-f</code>(filesystem)</td>
+<td>显示文件系统信息（设备使用情况、挂载点、文件系统类型等）。</td>
+</tr>
+<tr>
+<td><code>-m</code>(permissions)</td>
+<td>显示设备的权限信息。例如，设备的读写权限。</td>
+</tr>
+<tr>
+<td><code>-o</code>(output)</td>
+<td>自定义输出的列。例如，<code>lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT</code> 只会显示设备名称、大小、文件系统类型和挂载点。</td>
+</tr>
+<tr>
+<td><code>-d</code>(device)</td>
+<td>只显示原始设备，不显示分区信息。例如，只想看硬盘本身，不想看分区。</td>
+</tr>
+</tbody></table>
+<h2 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h2><h3 id="lsblk-a"><a href="#lsblk-a" class="headerlink" title="lsblk -a"></a><code>lsblk -a</code></h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># lsblk -a</span></span><br><span class="line">NAME                      MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS</span><br><span class="line">sda                         8:0    0 232.9G 0 disk</span><br><span class="line">├─sda1                      8:1    0 512M   0 part /boot/efi</span><br><span class="line">├─sda2                      8:2    0 128M   0 part /boot</span><br><span class="line">└─sda3                      8:3    0 232.3G 0 part /</span><br><span class="line">sdv                        65:80   0 14.6T  0 disk /root/disks/25</span><br><span class="line">sdw                        65:96   0 14.6T  0 disk /root/disks/28</span><br><span class="line">sdx                        65:112  0 14.6T  0 disk /root/disks/26</span><br><span class="line">sdy                        65:128  0 14.6T  0 disk /root/disks/27</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>参数含义</strong></p>
+<p>sda的树状结构：<code>sda1</code>、<code>sda2</code>、<code>sda3</code> 是 <code>sda</code> 硬盘的分区。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NAME</td>
+<td>设备名称</td>
+</tr>
+<tr>
+<td>MAJ:MIN</td>
+<td>设备的主设备号和次设备号，Linux系统中设备的唯一标识，用户侧不关心。</td>
+</tr>
+<tr>
+<td>RM</td>
+<td>表示设备是否是可移动设备。<code>1</code> 表示是可移动设备（比如 U 盘），<code>0</code> 表示不是可移动设备（比如内置硬盘）。</td>
+</tr>
+<tr>
+<td>SIZE</td>
+<td>设备的存储大小，例如14.6T代表硬盘的大小。</td>
+</tr>
+<tr>
+<td>RO</td>
+<td>表示设备是否是只读的。<code>0</code> 表示可以读写，<code>1</code> 表示只读。</td>
+</tr>
+<tr>
+<td>TYPE</td>
+<td>设备的类型，<code>disk</code> 表示这是一个硬盘（或者类似硬盘的设备），<code>part</code> 表示这是一个分区。</td>
+</tr>
+<tr>
+<td>MOUNTPOINTS</td>
+<td>设备的挂载点。如果一个设备被挂载到了某个目录，这里就会显示挂载的路径。比如 <code>/</code> 表示根目录，设备<code>sdv</code>被挂载到了<code>/root/disks/25</code>目录下。如果设备没有挂载，这里会显示为空。</td>
+</tr>
+</tbody></table>
+<p><code>lsblk -f</code></p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># lsblk -f</span></span><br><span class="line">NAME   FSTYPE   FSVER   LABEL UUID                                   FSAVAIL FSUSE% MOUNTPOINTS</span><br><span class="line">sdv    ext4     1.0           e9833d5b-20fd-44de-a8bd-76e8e4582901      9.6T    34% /root/disks/25</span><br><span class="line">sdw    ext4     1.0           eba1d424-0e27-440d-92a0-4f53a36357e6      5.1T    65% /root/disks/28</span><br><span class="line">sdx    ext4     1.0           bc6a6972-9749-4daa-b014-912545f9d4e5      1.6T    89% /root/disks/26</span><br><span class="line">sdy    ext4     1.0           f91546ca-2547-4fa2-951b-fe06a5151409      6.5T    56% /root/disks/27</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>参数含义</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>NAME</code></td>
+<td align="left">设备名称，比如硬盘（<code>sda</code>）、分区（<code>sda1</code>）等</td>
+</tr>
+<tr>
+<td align="left"><code>FSTYPE</code>(FileSystem Type)</td>
+<td align="left">文件系统类型，比如 <code>ext4</code>、<code>xfs</code>、<code>ntfs</code> 等</td>
+</tr>
+<tr>
+<td align="left"><code>FSVER</code>(FileSystem Version)</td>
+<td align="left">文件系统的版本号</td>
+</tr>
+<tr>
+<td align="left"><code>LABEL</code></td>
+<td align="left">设备的标签，用户可以给设备自定义名称</td>
+</tr>
+<tr>
+<td align="left"><code>UUID</code></td>
+<td align="left">设备的唯一标识符，每个设备都有一个唯一的 UUID</td>
+</tr>
+<tr>
+<td align="left"><code>FSAVAIL</code></td>
+<td align="left">文件系统中可用的空间大小</td>
+</tr>
+<tr>
+<td align="left"><code>FSUSE%</code>(FileSystem Use Percentage)</td>
+<td align="left">文件系统的使用率，以百分比表示</td>
+</tr>
+<tr>
+<td align="left"><code>MOUNTPOINTS</code></td>
+<td align="left">设备的挂载点，显示设备挂载到的目录路径</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>文件系统类型。了解文件系统类型可以帮助你判断设备的用途，以及是否需要特定的工具来操作它。常见的文件系统类型有：</p>
+<ul>
+<li><code>ext4</code>：Linux 系统常用的文件系统。</li>
+<li><code>xfs</code>：另一种高性能的文件系统，也常用于 Linux。</li>
+<li><code>ntfs</code>：Windows 系统常用的文件系统。</li>
+<li><code>vfat</code>：常用于 U 盘等移动存储设备。</li>
+</ul>
+</blockquote>
+<p><code>lsblk -m</code></p>
+<p><code>sdv</code>、<code>sdw</code>、<code>sdx</code>、<code>sdy</code> 都是硬盘设备的名称，如果有分区，可能会看到类似 <code>sdv1</code>、<code>sdv2</code> 等。</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># lsblk -m</span></span><br><span class="line">NAME                       SIZE OWNER GROUP MODE</span><br><span class="line">sdv                       14.6T root  disk  brw-rw----</span><br><span class="line">sdw                       14.6T root  disk  brw-rw----</span><br><span class="line">sdx                       14.6T root  disk  brw-rw----</span><br><span class="line">sdy                       14.6T root  disk  brw-rw----</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>参数含义</strong>.</p>
+<p><code>brw-rw----</code>解释：</p>
+<ul>
+<li>**<code>b</code>**：表示这是一个块设备（block device）。</li>
+<li>**<code>rw-</code>**：表示所有者（<code>root</code>）对该设备有读写权限。</li>
+<li>**<code>rw-</code>**：表示所属组（<code>disk</code>）对该设备有读写权限。</li>
+<li>**<code>----</code>**：表示其他用户对该设备没有权限。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">列名</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>NAME</code></td>
+<td align="left">设备名称，比如硬盘（<code>sda</code>）、分区（<code>sda1</code>）等。</td>
+</tr>
+<tr>
+<td align="left"><code>SIZE</code></td>
+<td align="left">设备的大小，单位通常是字节（B）、千字节（K）、兆字节（M）、吉字节（G）或太字节（T）。</td>
+</tr>
+<tr>
+<td align="left"><code>OWNER</code></td>
+<td align="left">设备的所有者用户名。</td>
+</tr>
+<tr>
+<td align="left"><code>GROUP</code></td>
+<td align="left">设备所属的用户组名。</td>
+</tr>
+<tr>
+<td align="left"><code>MODE</code></td>
+<td align="left">设备的访问权限模式。</td>
+</tr>
+</tbody></table>
+<p><code>lsblk -d</code></p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># lsblk -d</span></span><br><span class="line">NAME  MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS</span><br><span class="line">sda     8:0    1 57.6G  0 disk </span><br><span class="line">sdv    65:80   0 14.6T  0 disk /root/disks/25</span><br><span class="line">sdw    65:96   0 14.6T  0 disk /root/disks/28</span><br><span class="line">sdx    65:112  0 14.6T  0 disk /root/disks/26</span><br><span class="line">sdy    65:128  0 14.6T  0 disk /root/disks/27</span><br></pre></td></tr></tbody></table></figure>
+
+</body></html>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <span class="reward-comment">请作者喝瓶肥宅水🥤</span>
+  <button class="reward-btn">
+    ￥
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="MrDJun WeChat Pay">
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="MrDJun Alipay">
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>MrDJun
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mrdjun.github.io/p/da8acf6b.html" title="Linux lsblk命令">https://mrdjun.github.io/p/da8acf6b.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p/f8dac049.html" rel="prev" title="Python进程 线程 协程">
+                  <i class="fa fa-chevron-left"></i> Python进程 线程 协程
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer hidden">
+      <div class="footer-inner">
+
+  <div class="busuanzi-count">
+  </div>
+      </div>
+    </footer>
+
+    
+  <script src="/js/third-party/anime.min.js"></script>
+  <script src="/js/third-party/pjax.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+    
+<script src="/js/third-party/search/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+    
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+      <div id="mouse_explode"></div>
+      <script src="/js/mo.min.js"></script>
+      <script type="text/javascript" src="/js/mouse-explode.js"></script>
+    <script type="text/javascript" src="/js/dark-theme.js"></script>
+    <script type="text/javascript" src="/js/third-party/zoomify.min.js"></script>
+    <script type="text/javascript" src="/js/zoom-img.js"></script>
+    <script type="text/javascript" src="/js/encrypt-button.js"></script>
+  </body>
+</html>

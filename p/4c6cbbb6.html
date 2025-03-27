@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://mrdjun.github.io/p/4c6cbbb6/image-20250316172656385.png">
 <meta property="article:published_time" content="2025-03-16T09:19:31.000Z">
-<meta property="article:modified_time" content="2025-03-16T13:49:25.686Z">
+<meta property="article:modified_time" content="2025-03-23T11:35:09.904Z">
 <meta property="article:author" content="MrDJun">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -312,20 +312,99 @@
 
 <h4 id="CPU的使用率"><a href="#CPU的使用率" class="headerlink" title="CPU的使用率"></a>CPU的使用率</h4><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%Cpu(s):  0.0 us,  0.1 sy,  0.0 ni, 99.8 <span class="built_in">id</span>,  0.0 wa,  0.0 hi,  0.1 si,  0.0 st</span><br></pre></td></tr></tbody></table></figure>
 
-<blockquote>
-<p>us：用户空间占用CPU百分比<br>sy：内核空间占用CPU百分比<br>ni：用户进程空间内改变过优先级的进程占用CPU百分比<br>id：空闲CPU百分比<br>wa：等待输入输出的CPU时间百分比<br>hi：硬中断（Hardware IRQ）占用CPU的百分比<br>si：软中断（Software Interrupts）占用CPU的百分比<br>st：用于有虚拟cpu的情况，用来指示被虚拟机偷掉的cpu时间</p>
-</blockquote>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>us</td>
+<td>用户空间占用CPU百分比</td>
+</tr>
+<tr>
+<td>sy</td>
+<td>内核空间占用CPU百分比</td>
+</tr>
+<tr>
+<td>ni</td>
+<td>用户进程空间内改变过优先级的进程占用CPU百分比</td>
+</tr>
+<tr>
+<td>id</td>
+<td>空闲CPU百分比</td>
+</tr>
+<tr>
+<td>wa</td>
+<td>等待输入输出的CPU时间百分比</td>
+</tr>
+<tr>
+<td>hi</td>
+<td>硬中断（Hardware IRQ）占用CPU的百分比</td>
+</tr>
+<tr>
+<td>si</td>
+<td>软中断（Software Interrupts）占用CPU的百分比</td>
+</tr>
+<tr>
+<td>st</td>
+<td>用于有虚拟cpu的情况，用来指示被虚拟机偷掉的cpu时间</td>
+</tr>
+</tbody></table>
 <h4 id="内存使用情况"><a href="#内存使用情况" class="headerlink" title="内存使用情况"></a>内存使用情况</h4><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KiB Mem :  2895276 total,   531200 free,  1752092 used,   611984 buff/cache</span><br></pre></td></tr></tbody></table></figure>
 
-<blockquote>
-<p>total：内存总量<br>used：已使用内存<br>free：内存空闲量<br>buffers：用作内核缓存的内存量</p>
-</blockquote>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>total</td>
+<td>内存总量</td>
+</tr>
+<tr>
+<td>used</td>
+<td>已使用内存</td>
+</tr>
+<tr>
+<td>free</td>
+<td>内存空闲量</td>
+</tr>
+<tr>
+<td>buffers</td>
+<td>用作内核缓存的内存量</td>
+</tr>
+</tbody></table>
 <h4 id="交换使用情况"><a href="#交换使用情况" class="headerlink" title="交换使用情况"></a>交换使用情况</h4><p>交换空间是磁盘上的一块区域，当系统的物理内存（RAM）不足时，系统会将一些不常用的内存页面移动到交换空间中，以释放物理内存供其他进程使用。</p>
 <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KiB Swap:  2097148 total,  1878780 free,   218368 used.   947784 avail Mem</span><br></pre></td></tr></tbody></table></figure>
 
-<blockquote>
-<p>total：系统分配的总交换空间大小<br>free：当前未使用的交换空间大小<br>used：已使用的空间大小<br>avail Mem：当前可用的物理内存大小</p>
-</blockquote>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>total</td>
+<td>系统分配的总交换空间大小</td>
+</tr>
+<tr>
+<td>free</td>
+<td>当前未使用的交换空间大小</td>
+</tr>
+<tr>
+<td>used</td>
+<td>已使用的空间大小</td>
+</tr>
+<tr>
+<td>avail Mem</td>
+<td>当前可用的物理内存大小</td>
+</tr>
+</tbody></table>
 <h3 id="进程列表区域"><a href="#进程列表区域" class="headerlink" title="进程列表区域"></a>进程列表区域</h3><p>列表中的进程是按照CPU的占用量来排序。</p>
 <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND</span><br><span class="line">41168 1000      20   0 4282368 870172  22536 S   0.7 30.1   6:26.60 java</span><br><span class="line">  480 root      20   0       0      0      0 S   0.3  0.0   0:52.01 xfsaild/dm-0</span><br></pre></td></tr></tbody></table></figure>
 
