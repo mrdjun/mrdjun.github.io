@@ -15,7 +15,7 @@ date: 1997-11-08 02:00:00
 
 # 邓俊
 
-男 ｜27岁 ｜成都 ｜Java ｜4年经验 ｜本科｜党员 ｜18683827876 ｜mr.djun@qq.com
+男 ｜27岁 ｜成都 ｜Java ｜4年经验 ｜本科 ｜党员 ｜ 18683827876 ｜mr.djun@qq.com
 
 博客: mrdjun.blog.csdn.net ｜ GITEE: mrdjun.gitee.io ｜ GITHUB: github.com/mrdjun
 

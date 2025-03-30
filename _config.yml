@@ -13,7 +13,8 @@ timezone: 'Asia/Shanghai'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://mrdjun.gitee.io
+#url: https://mrdjun.gitee.io
+url: https://mrdjun.github.io/
 #permalink: :year/:month/:day/:title/
 # npm install hexo-abbrlink --save
 permalink: p/:abbrlink.html
@@ -125,7 +126,8 @@ theme: next
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repository: https://gitee.com/mrdjun/mrdjun.git
+  #  repository: https://gitee.com/mrdjun/mrdjun.git
+  repository: https://github.com/mrdjun/mrdjun.github.io.git
   branch: master
 
 # localSearch

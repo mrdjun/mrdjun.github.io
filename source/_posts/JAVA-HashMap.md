@@ -26,15 +26,14 @@ description: >-
 
 ### 与、或、异或运算
 
-& 又叫做and（与运算），例：3 & 5 = 1 (000011 & 000101 = 000001)。3的二进制和5的二进制位相对应，壹壹比较，都为1的位上才为1。
+& 又叫做and（与运算），例：3 & 5 = 1 (000011 & 000101 = 000001)。3的二进制和5的二进制位相对应，一一比较，都为1的位上才为1。
 
 | 也叫做or，例：3 | 5 = 7 (0000011 | 00000101 = 0000111)。
 
 ^ 也叫xor (以后做题会遇到xor,就是异或)，两个比较的二进制的位上相同为0，不同为1。例：3^5 = 6(0000 0011 ^ 0000 0101=0000 0110)。特别的任意数 ^ 0 = 任意数。
 
 取反运算符(~)，二进制位0变为1,1变为0
-![与或非表格](https://img-blog.csdnimg.cn/20210402154702645.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNjQ3OTk5,size_16,color_FFFFFF,t_70)
-
+![与或非表格](JAVA-HashMap/HashMap-And-Xor.png)
 ### "<<" 和 ">>" 运算符
 
 箭头向左叫左移，向右叫右移。
@@ -110,7 +109,7 @@ HashMap 基于哈希表的 Map 接口的实现，key和value都允许为null，�
 
 ## HashMap的继承关系
 
-![HashMap的继承关系](https://img-blog.csdnimg.cn/20210402154821479.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNjQ3OTk5,size_16,color_FFFFFF,t_70)
+![HashMap的继承关系](JAVA-HashMap/image-20250221142202514.png)
 
 ```java
 public class HashMap<K,V> extends AbstractMap<K,V>
@@ -545,10 +544,10 @@ HashMap 在进行扩容时，使用的 rehash 方式非常巧妙，因为每次�
 
 通过 (n-1)&hash 计算出下标，n是数组的容量大小（2的n次幂），n-1等于2的n次幂-1，二进制就是n个1。HashMap 每次扩容是在原来的容量上x2，扩容后的数组容量大小为2的n+1次幂，n-1就等于2的n+1次幂-1，二进制上就相当于比2的n次幂就多了一个bit位。计算出下标的二进制要么不变，要么多一个bit位。
 
-![rehash](https://img-blog.csdnimg.cn/20210402154845682.png)
+![rehash](JAVA-HashMap/HashMap-rehash.png)
 		因此，在扩容的时候，不需要重新计算 hash，只需要看看原来的 hash 值新增的那个 bit 是 1 还是 0 就可以了，是 0 的话索引没变，是 1 的话索引变成 **“原位置 + 旧容量”** 。可以看看下图为 16 扩充为 32 的 resize 示意图：
 
-![resize](https://img-blog.csdnimg.cn/20210402154912579.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNjQ3OTk5,size_16,color_FFFFFF,t_70)
+![resize](JAVA-HashMap/HashMap-resize.png)
 		正是因为这样巧妙的 rehash 方式，既省去了重新计算 hash 值的时间，而且同时，由于新增的 1 bit 是 0 还是 1 可以认为是随机的，在 resize 的过程中保证了 rehash 之后每个桶上的结点数一定小于等于原来桶上的结点数，保证了 rehash 之后不会出现更严重的 hash 冲突，均匀的把之前的冲突的结点分散到新的桶中了。
 
 ```java
