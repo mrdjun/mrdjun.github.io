@@ -17,50 +17,50 @@
 
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.gitee.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mrdjun.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","toggle":false,"width":300,"display":"always","padding":18,"offset":12,"display_links":true,"links":{"love":"https://www.funpeak.cn/ || fa fa-diamond","gitee":"https://www.gitee.com/mrdjun/ || fa fa-skyatlas","github":"https://www.github.com/mrdjun/ || fa fa-github-alt","csdn":"https://mrdjun.blog.csdn.net/ || fa fa-codepen"}},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
   <meta name="description" content="class文件包含JAVA程序执行的字节码;数据严格按照格式紧凑排列在class文件中的二进制流，中间无任何分隔符;文件开头有一个0xcafebabe(16进制)特殊的一个标志。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="JVM分区与程序运行原理">
-<meta property="og:url" content="https://mrdjun.gitee.io/p/df88bc10.html">
+<meta property="og:url" content="https://mrdjun.github.io/p/df88bc10.html">
 <meta property="og:site_name" content="MrDJun">
 <meta property="og:description" content="class文件包含JAVA程序执行的字节码;数据严格按照格式紧凑排列在class文件中的二进制流，中间无任何分隔符;文件开头有一个0xcafebabe(16进制)特殊的一个标志。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/image-20220306165204228.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/image-20220306165242400.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/image-20220306165302672.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/JVM虚拟机栈区.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/JVM本地方法栈.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/JVM程序计数器-16465568468561.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/Java程序编译原理（1）-16465568468572.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/%E5%AD%97%E8%8A%82%E7%A0%81%E6%96%87%E4%BB%B6%E8%AE%BF%E9%97%AE%E6%A0%87%E5%BF%97-16465568468573.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/%E5%AD%97%E8%8A%82%E7%A0%81%E5%86%85%E5%AE%B9-%E5%B8%B8%E9%87%8F%E6%B1%A0-16465568468574.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89-16465568468575.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89-16465568468576.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89-16465568468577.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89-16465568468578.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89-16465568468579.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AD%EF%BC%89-164655684685810.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89-164655684685811.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89-164655684685812.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E4%B9%9D%EF%BC%89-164655684685813.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E5%8D%81%EF%BC%89-164655684685814.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89-164655684685815.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89-164655684685816.png">
-<meta property="og:image" content="https://mrdjun.gitee.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89-164655684685817.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/image-20220306165204228.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/image-20220306165242400.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/image-20220306165302672.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/JVM虚拟机栈区.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/JVM本地方法栈.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/JVM程序计数器-16465568468561.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/Java程序编译原理（1）-16465568468572.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/%E5%AD%97%E8%8A%82%E7%A0%81%E6%96%87%E4%BB%B6%E8%AE%BF%E9%97%AE%E6%A0%87%E5%BF%97-16465568468573.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/%E5%AD%97%E8%8A%82%E7%A0%81%E5%86%85%E5%AE%B9-%E5%B8%B8%E9%87%8F%E6%B1%A0-16465568468574.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89-16465568468575.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89-16465568468576.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89-16465568468577.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89-16465568468578.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89-16465568468579.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AD%EF%BC%89-164655684685810.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89-164655684685811.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89-164655684685812.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E4%B9%9D%EF%BC%89-164655684685813.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E5%8D%81%EF%BC%89-164655684685814.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89-164655684685815.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89-164655684685816.png">
+<meta property="og:image" content="https://mrdjun.github.io/p/df88bc10/%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89-164655684685817.png">
 <meta property="article:published_time" content="2021-08-28T08:49:11.000Z">
 <meta property="article:modified_time" content="2025-03-27T17:23:53.894Z">
 <meta property="article:author" content="MrDJun">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://mrdjun.gitee.io/p/df88bc10/image-20220306165204228.png">
+<meta name="twitter:image" content="https://mrdjun.github.io/p/df88bc10/image-20220306165204228.png">
 
 
-<link rel="canonical" href="https://mrdjun.gitee.io/p/df88bc10.html">
+<link rel="canonical" href="https://mrdjun.github.io/p/df88bc10.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.gitee.io/p/df88bc10.html","path":"p/df88bc10.html","title":"JVM分区与程序运行原理"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.github.io/p/df88bc10.html","path":"p/df88bc10.html","title":"JVM分区与程序运行原理"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>
@@ -271,7 +271,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://mrdjun.gitee.io/p/df88bc10.html">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.github.io/p/df88bc10.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -407,7 +407,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>Post link: </strong>
-      <a href="https://mrdjun.gitee.io/p/df88bc10.html" title="JVM分区与程序运行原理">https://mrdjun.gitee.io/p/df88bc10.html</a>
+      <a href="https://mrdjun.github.io/p/df88bc10.html" title="JVM分区与程序运行原理">https://mrdjun.github.io/p/df88bc10.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
