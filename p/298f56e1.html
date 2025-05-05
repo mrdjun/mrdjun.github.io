@@ -21,27 +21,27 @@
 
   <meta name="description" content="tmux(Terminal Multiplexer)是一个功能比screen更强大的终端复用器。tmux 的配置和使用更加直观，支持更丰富的快捷键和窗口管理功能，支持更灵活的窗口拆分（水平和垂直）、会话同步、复制模式等。允许用户在一个终端窗口中管理多个终端会话。它的核心功能是将终端会话与窗口解绑，即使关闭终端窗口，会话仍然可以继续运行，用户可以在需要时重新连接到会话。">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Linux tmux命令">
-<meta property="og:url" content="https://mrdjun.github.io/p/41c36989.html">
+<meta property="og:title" content="LINUX-tmux">
+<meta property="og:url" content="https://mrdjun.github.io/p/298f56e1.html">
 <meta property="og:site_name" content="MrDJun">
 <meta property="og:description" content="tmux(Terminal Multiplexer)是一个功能比screen更强大的终端复用器。tmux 的配置和使用更加直观，支持更丰富的快捷键和窗口管理功能，支持更灵活的窗口拆分（水平和垂直）、会话同步、复制模式等。允许用户在一个终端窗口中管理多个终端会话。它的核心功能是将终端会话与窗口解绑，即使关闭终端窗口，会话仍然可以继续运行，用户可以在需要时重新连接到会话。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-04-14T08:03:57.000Z">
-<meta property="article:modified_time" content="2025-04-14T13:41:15.536Z">
+<meta property="article:modified_time" content="2025-05-05T05:47:58.404Z">
 <meta property="article:author" content="MrDJun">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://mrdjun.github.io/p/41c36989.html">
+<link rel="canonical" href="https://mrdjun.github.io/p/298f56e1.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.github.io/p/41c36989.html","path":"p/41c36989.html","title":"Linux tmux命令"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://mrdjun.github.io/p/298f56e1.html","path":"p/298f56e1.html","title":"LINUX-tmux"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>
-      Linux tmux命令 | MrDJun
+      LINUX-tmux | MrDJun
     </title>
     
 
@@ -248,7 +248,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://mrdjun.github.io/p/41c36989.html">
+    <link itemprop="mainEntityOfPage" href="https://mrdjun.github.io/p/298f56e1.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -261,7 +261,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Linux tmux命令
+          LINUX-tmux
         </h1>
 
         <div class="post-meta-container">
@@ -313,14 +313,14 @@
 <li><strong>连接会话</strong>：<code>tmux attach -t &lt;session_name&gt;</code> 连接到指定会话。</li>
 <li><strong>切换会话</strong>：<code>tmux switch -t &lt;session-name&gt;</code> 切换到指定会话。</li>
 <li><strong>分离会话</strong>：在会话中按 <code>Ctrl+b d</code> ，也可以通过命令<code>tmux detach</code>分离当前会话。</li>
-<li><strong>杀死会话</strong>：<code>tmux kill-session -t &lt;session_name&gt;</code> 杀死指定会话。</li>
+<li><strong>杀死会话</strong>：<code>tmux kill-session -t &lt;session_name&gt;</code> 杀死指定会话，在程序中使用<code>kill-session</code>关闭整个会话。</li>
 </ul>
 </li>
 <li><strong>窗口管理</strong><ul>
 <li><strong>创建窗口</strong>：在会话中按 <code>Ctrl+b c</code> ，也可以通过命令<code>tmux new-window -n &lt;window-name&gt;</code>创建新窗口。</li>
-<li><strong>切换窗口</strong>：<code>Ctrl+b n</code> 切换到下一个窗口，<code>Ctrl+b p</code> 切换到上一个窗口。</li>
+<li><strong>切换窗口</strong>：<code>Ctrl+b n</code> <strong>切换到下一个窗口</strong>，<code>Ctrl+b p</code> 切换到上一个窗口。</li>
 <li><strong>重命名窗口</strong>：<code>Ctrl+b ,</code> 也可以通过命令 tmux rename-window -t <old_name> <new_name>，重命名当前窗口。</new_name></old_name></li>
-<li><strong>关闭窗口</strong>：<code>Ctrl+b &amp;</code> 关闭当前窗口。</li>
+<li><strong>关闭窗口</strong>：<code>Ctrl+b &amp;</code> 也可以通过命令<code>kill-window</code>关闭当前窗口。</li>
 <li><strong>从列表中选择窗口</strong>：<code>ctrl+b w</code></li>
 </ul>
 </li>
@@ -328,6 +328,7 @@
 <li><strong>创建窗格</strong>：<code>Ctrl+b %</code> 垂直分割窗格，<code>Ctrl+b "</code> 水平分割窗格。</li>
 <li><strong>切换窗格</strong>：<code>Ctrl+b o</code> 循环切换窗格。</li>
 <li><strong>同步窗格</strong>：在多个窗格中同步输入，适合同时运行相同命令。</li>
+<li><strong>关闭窗格</strong>：<code>tmux kill-pane</code>杀死当前活动窗格；<code>tmux kill-pane -t 窗格编号</code>杀死指定窗格。<code>tmux killp -a</code> 关闭除了当前激活窗格外的所有窗格。</li>
 </ul>
 </li>
 <li><strong>复制模式</strong><ul>
@@ -374,7 +375,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>Post link: </strong>
-      <a href="https://mrdjun.github.io/p/41c36989.html" title="Linux tmux命令">https://mrdjun.github.io/p/41c36989.html</a>
+      <a href="https://mrdjun.github.io/p/298f56e1.html" title="LINUX-tmux">https://mrdjun.github.io/p/298f56e1.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/BY-NC-SA%204.0/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0</a> unless stating additionally.
